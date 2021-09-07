@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: List
-        run: ls -la /home/runner/work/biome/biome/.github/workflows
+        run: ls -la ~
 
       - uses: ./.github/workflows/before.yml
 

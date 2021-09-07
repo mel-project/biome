@@ -3,7 +3,7 @@ name: TestAndBuildGo17
 on:
   pull_request:
     paths:
-      - 'go17'
+      - 'go17/**'
     branches: [ master ]
 
 env:

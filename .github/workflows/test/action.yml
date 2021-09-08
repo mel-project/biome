@@ -3,8 +3,11 @@ description: "Set up everything for biome."
 runs:
   using: "composite"
   steps:
-    - run: echo "Things"
+    - run: curl -L "https://github.com/biome-sh/biome/releases/download/v$BIOME_VERSION/bio-$BIOME_VERSION-x86_64-linux.tar.gz" | tar zxv
+      env:
+        BIOME_VERSION: "1.6.372"
       shell: bash
+
 
 #name: "Prerequisites"
 #description: "Set up everything for biome."

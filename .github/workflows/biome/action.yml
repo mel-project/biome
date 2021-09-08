@@ -3,6 +3,9 @@ description: "Set up everything for biome."
 runs:
   using: "composite"
   steps:
+    - run: sudo apt update
+      shell: bash
+
     - run: curl -L "https://github.com/biome-sh/biome/releases/download/v$BIOME_VERSION/bio-$BIOME_VERSION-x86_64-linux.tar.gz" | tar zxv
       env:
         BIOME_VERSION: "1.6.372"
@@ -11,25 +14,13 @@ runs:
     - run: sudo mv bio /usr/local/bin/bio
       shell: bash
 
-    - run: bio --version
+    - run: sudo apt remove -y curl
       shell: bash
 
-
-#name: "Prerequisites"
-#description: "Set up everything for biome."
-#runs:
-#  using: "composite"
-#  steps:
-#    - name: Update Apt
-#      run: sudo apt update
-#
-#        - run: curl -L "https://github.com/biome-sh/biome/releases/download/v$BIOME_VERSION/bio-$BIOME_VERSION-x86_64-linux.tar.gz" | tar zxv
-#          env:
-#            BIOME_VERSION: "1.6.372"
-#          shell: bash
-
-
-
+    - run: echo "$BIOME_PUBLIC_KEY" | bio origin key import
+      env:
+        BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+      shell: bash
 
 
 #name: "Prerequisites"
@@ -44,7 +35,7 @@ runs:
 #        env:
 #          BIOME_VERSION: "1.6.372"
 #        shell: bash
-
+#
 #    - name: Install Biome
 #      run: sudo mv bio /usr/local/bin/bio
 #      shell: bash

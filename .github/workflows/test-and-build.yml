@@ -20,7 +20,7 @@ jobs:
       - name: List
         run: ls -la
 
-      - uses: ./.github/workflows/action.yml
+      - uses: .github/workflows/action.yml
 
       - name: Test
         run: echo "Thingy"

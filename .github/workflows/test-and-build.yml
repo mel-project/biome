@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: ./.github/actions/workflows/test
+      - uses: ./.github/workflows/test
 
 #      - uses: themeliolabs/actions-biome@v1
 

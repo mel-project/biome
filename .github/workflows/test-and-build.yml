@@ -2,8 +2,8 @@ name: TestAndBuildGo17
 
 on:
   pull_request:
-    paths:
-      - 'go17/**'
+#    paths:
+#      - 'go17/**'
     branches: [ master ]
 
 env:

@@ -15,10 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: List
-        run: ls -la ~
-
-      - uses: ./.github/workflows/before.yml
+      - uses: ./.github/workflows/action.yml
 
       - name: Test
         run: echo "Thingy"

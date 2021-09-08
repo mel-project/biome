@@ -17,13 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: ./.github/workflows/test
-
-#      - uses: themeliolabs/actions-biome@v1
-
-      - name: Test
-        run: echo "Thingy"
-
+      - uses: ./.github/workflows/biome
 
 #      - name: Build, Run BATS Tests
 #        env:

@@ -20,6 +20,15 @@ jobs:
       - uses: ./.github/workflows/biome
         with:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - name: Test
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bio build go17
+
 
 #      - name: Build, Run BATS Tests
 #        env:

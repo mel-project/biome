@@ -26,6 +26,22 @@ runs:
         BIOME_PUBLIC_KEY: ${{ inputs.BIOME_PUBLIC_KEY }}
       shell: bash
 
+    - run: echo "$BIOME_PUBLIC_KEY" | sudo bio origin key import
+      env:
+        BIOME_PUBLIC_KEY: ${{ inputs.BIOME_PUBLIC_KEY }}
+      shell: bash
+
+    - run: echo "$BIOME_SIGNING_KEY" | bio origin key import
+      env:
+        BIOME_PUBLIC_KEY: ${{ inputs.BIOME_SIGNING_KEY }}
+      shell: bash
+
+    - run: echo "$BIOME_SIGNING_KEY" | sudo bio origin key import
+      env:
+        BIOME_PUBLIC_KEY: ${{ inputs.BIOME_SIGNING_KEY }}
+      shell: bash
+
+
 
 
 #name: "Prerequisites"

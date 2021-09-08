@@ -4,6 +4,9 @@ inputs:
   BIOME_PUBLIC_KEY:
     description: 'The biome public key, fetched from secrets.'
     required: true
+  BIOME_SIGNING_KEY:
+    description: 'The biome signing key, fetched from secrets.'
+    required: true
 runs:
   using: "composite"
   steps:

@@ -17,7 +17,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: themeliolabs/actions-biome@v1
+      - uses: ./.github/actions/test
+
+#      - uses: themeliolabs/actions-biome@v1
 
       - name: Test
         run: echo "Thingy"

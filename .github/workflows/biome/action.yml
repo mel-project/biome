@@ -36,12 +36,12 @@ runs:
 
     - run: echo "$BIOME_SIGNING_KEY" | bio origin key import
       env:
-        BIOME_PUBLIC_KEY: ${{ inputs.BIOME_SIGNING_KEY }}
+        BIOME_SIGNING_KEY: ${{ inputs.BIOME_SIGNING_KEY }}
       shell: bash
 
     - run: echo "$BIOME_SIGNING_KEY" | sudo bio origin key import
       env:
-        BIOME_PUBLIC_KEY: ${{ inputs.BIOME_SIGNING_KEY }}
+        BIOME_SIGNING_KEY: ${{ inputs.BIOME_SIGNING_KEY }}
       shell: bash
 
 

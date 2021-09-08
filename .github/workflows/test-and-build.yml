@@ -18,6 +18,8 @@ jobs:
       - uses: actions/checkout@v2
 
       - uses: ./.github/workflows/biome
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
 
 #      - name: Build, Run BATS Tests
 #        env:

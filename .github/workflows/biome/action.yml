@@ -1,5 +1,9 @@
 name: "Prerequisites"
 description: "Set up everything for biome."
+inputs:
+  BIOME_PUBLIC_KEY:
+    description: 'The biome public key, fetched from secrets.'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -19,8 +23,9 @@ runs:
 
     - run: echo "$BIOME_PUBLIC_KEY" | bio origin key import
       env:
-        BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+        BIOME_PUBLIC_KEY: ${{ inputs.BIOME_PUBLIC_KEY }}
       shell: bash
+
 
 
 #name: "Prerequisites"

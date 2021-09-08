@@ -3,8 +3,6 @@ description: "Set up everything for biome."
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v2
-
     - name: Update Apt
       run: sudo apt update
 

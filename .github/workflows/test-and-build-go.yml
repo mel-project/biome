@@ -25,10 +25,10 @@ jobs:
       - name: Cache Biome
         uses: actions/cache@v2
         env:
-          cache-name: cache-node-modules
+          CACHE_NAME: cache-biome
         with:
           path: ~/.hab/cache
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('go/plan.sh') }}
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('go/plan.sh') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-

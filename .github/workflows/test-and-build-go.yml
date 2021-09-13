@@ -34,6 +34,9 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
+      - name: List
+        run: ls -la ~/.hab/cache/artifacts
+
       - name: Test
         env:
           HAB_ORIGIN: "themelio"

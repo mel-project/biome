@@ -5,6 +5,9 @@ on:
     paths:
       - 'go/**'
     branches: [ master ]
+  workflow_run:
+    workflows: ["TestAndBuildGo17"]
+    types: [completed]
 
 env:
   CARGO_TERM_COLOR: always
@@ -30,7 +33,7 @@ jobs:
           path: ~/.hab/cache
           key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('go/plan.sh') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 

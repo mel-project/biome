@@ -2,8 +2,8 @@ name: TestAndBuildGo17
 
 on:
   pull_request:
-#    paths:
-#      - 'go17/**'
+    paths:
+      - 'go17/**'
     branches: [ master ]
 
 env:
@@ -30,7 +30,7 @@ jobs:
           path: ~/.hab/cache
           key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('go17/plan.sh') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 

@@ -16,6 +16,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Echo
+        run: echo $CHANGED
+
       - name: Test
         if: ${{ env.CHANGED == 'true' }}
         run: exit 1

@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Test
-        if: ${{ env.CHANGED == 'true' }}
+#        if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
 
   build:
@@ -27,9 +27,7 @@ jobs:
 
     steps:
       - name: Thingy
-        env:
-          TEST: ${{ steps.verify.outputs.build }}
-        run: echo $TEST
+        run: echo ${{ job.verify.outputs.build }}
 
 #      - uses: actions/checkout@v2
 #

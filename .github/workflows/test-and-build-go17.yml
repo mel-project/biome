@@ -16,16 +16,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Echo
-        run: echo $CHANGED
-
       - name: Test
         if: ${{ env.CHANGED == 'true' }}
-        run: exit 1
+        run: echo "::set-output build=true"
 
   build:
     needs: verify
-    if: contains(needs.verify.outputs.status, 'failure')
+    if: contains(needs.verify.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:

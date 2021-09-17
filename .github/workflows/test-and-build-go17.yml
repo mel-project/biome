@@ -2,13 +2,10 @@ name: TestAndBuildGo17
 
 on:
   pull_request:
-#    paths:
-#      - 'go17/**'
     branches: [ master ]
 
 env:
   CARGO_TERM_COLOR: always
-#  CHANGED: $(git diff --quiet HEAD master -- go17 || echo true)
 
 jobs:
   verify:
@@ -25,7 +22,6 @@ jobs:
 
       - name: Set Enviromnent Variable
         shell: bash
-#        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- go17 || echo true)" >> $GITHUB_ENV
         run: echo "CHANGED=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
 
       - name: Echo

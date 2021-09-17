@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Thingy
-        run: echo ${{ job.verify.outputs.build }}
+        run: echo ${{ needs.verify.outputs.build }}
 
 #      - uses: actions/checkout@v2
 #

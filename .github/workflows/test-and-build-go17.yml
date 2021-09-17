@@ -12,7 +12,7 @@ env:
   changed: true
 
 jobs:
-  verify-changes:
+  verify:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,8 +21,8 @@ jobs:
         run: exit 1
 
   build:
-    needs: verify-changes
-    if: !contains(needs.check.outputs.status, 'failure')
+    needs: verify
+    if: contains(needs.check.outputs.status, 'failure')
     runs-on: ubuntu-latest
 
     steps:

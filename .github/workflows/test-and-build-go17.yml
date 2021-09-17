@@ -12,16 +12,22 @@ env:
   changed: true
 
 jobs:
-  skip-build:
+  verify-changes:
     runs-on: ubuntu-latest
 
     steps:
       - name: Test
         if: ${{ env.CHANGED == 'true' }}
-        run: exit 0
+        run: exit 1
 
-      - name: Other
-        run: echo "Should not run"
+  build:
+    needs: verify-changes
+    if: !contains(needs.check.outputs.status, 'failure')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Thingy
+        run: echo Things
 
 #      - uses: actions/checkout@v2
 #

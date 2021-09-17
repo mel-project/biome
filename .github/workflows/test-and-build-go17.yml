@@ -17,6 +17,8 @@ jobs:
 
     steps:
       - name: Echo
+        env:
+          CHANGED: ${{ env.CHANGED }}
         run: echo ${{ env.CHANGED }}
 
       - name: Test

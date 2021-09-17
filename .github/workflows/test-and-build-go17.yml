@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Test
         if: ${{ env.CHANGED == 'true' }}
-        run: echo "::set-output build=true"
+        run: echo "::set-output name=build::true"
 
   build:
     needs: verify

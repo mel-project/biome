@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Echo
-        run: echo $CARGO_TERM_COLOR
+        run: echo $CHANGED
 
       - name: Test
         if: ${{ env.CHANGED == 'true' }}
@@ -25,7 +25,7 @@ jobs:
 
   build:
     needs: verify
-    if: contains(needs.check.outputs.status, 'failure')
+    if: contains(needs.verify.outputs.status, 'failure')
     runs-on: ubuntu-latest
 
     steps:

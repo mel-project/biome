@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Test
         if: ${{ env.CHANGED == 'true' }}
-        run: echo $CHANGED && exit 0
+        run: exit 0
 
       - name: Other
         run: echo "Should not run"

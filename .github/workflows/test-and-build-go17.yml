@@ -22,12 +22,12 @@ jobs:
 
   build:
     needs: verify
-    if: contains(needs.verify.outputs.build, 'true')
+#    if: contains(needs.verify.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:
       - name: Thingy
-        run: echo Things
+        run: echo ${{ needs.verify.outputs.build }}
 
 #      - uses: actions/checkout@v2
 #

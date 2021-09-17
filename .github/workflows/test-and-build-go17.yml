@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Set Enviromnent Variable
-        run: echo "CHANGED=$(git diff --quiet HEAD master -- go17 || echo true)" >> $GITHUB_ENV
+        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- go17 || echo true)" >> $GITHUB_ENV
 
       - name: Echo
         env:

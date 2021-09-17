@@ -8,74 +8,75 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-#  CHANGED: $(git diff --quiet HEAD master -- go17 || echo false)
-  CHANGED: false
+  CHANGED: $(git diff --quiet HEAD master -- go17 || echo false)
+#  CHANGED: false
 
 jobs:
   skip-build:
-    if: ${{ env.CHANGED == 'false' }}
-
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-
-      - uses: themeliolabs/actions-biome@v1
-        with:
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-
-      - name: Cache Biome
-        uses: actions/cache@v2
-        env:
-          CACHE_NAME: cache-biome
-        with:
-          path: ~/.hab/cache
-          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('go17/plan.sh') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-  build:
-    if: ${{ env.CHANGED == 'true' }}
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - uses: themeliolabs/actions-biome@v1
-        with:
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-
-      - name: Cache Biome
-        uses: actions/cache@v2
-        env:
-          CACHE_NAME: cache-biome
-        with:
-          path: ~/.hab/cache
-          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('go17/plan.sh') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
       - name: Test
-        env:
-          HAB_ORIGIN: "themelio"
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bio pkg build go17
+        if: ${{ env.CHANGED == 'false' }}
+        run: echo Thingy
+#      - uses: actions/checkout@v2
+#
+#      - uses: themeliolabs/actions-biome@v1
+#        with:
+#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+#          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+#
+#      - name: Cache Biome
+#        uses: actions/cache@v2
+#        env:
+#          CACHE_NAME: cache-biome
+#        with:
+#          path: ~/.hab/cache
+#          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('go17/plan.sh') }}
+#          restore-keys: |
+#            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+#            ${{ runner.os }}-build-
+#            ${{ runner.os }}-
 
-
-#      - name: Build, Run BATS Tests
+#  build:
+#    if: ${{ env.CHANGED == 'true' }}
+#
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      - uses: themeliolabs/actions-biome@v1
+#        with:
+#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+#          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+#
+#      - name: Cache Biome
+#        uses: actions/cache@v2
+#        env:
+#          CACHE_NAME: cache-biome
+#        with:
+#          path: ~/.hab/cache
+#          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('go17/plan.sh') }}
+#          restore-keys: |
+#            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+#            ${{ runner.os }}-build-
+#            ${{ runner.os }}-
+#
+#      - name: Test
 #        env:
 #          HAB_ORIGIN: "themelio"
 #          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        run: ./biome/themelio-node/scripts/ci-test.sh
+#        run: bio pkg build go17
+#
+#
+##      - name: Build, Run BATS Tests
+##        env:
+##          HAB_ORIGIN: "themelio"
+##          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+##          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+##        run: ./biome/themelio-node/scripts/ci-test.sh
 
 
 

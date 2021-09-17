@@ -18,7 +18,11 @@ jobs:
       build: ${{ steps.changed.outputs.build }}
 
     steps:
-      - name: Test
+
+      - name: Echo
+        run: echo $CHANGED
+
+      - name: Check For Changes
         id: changed
         if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"

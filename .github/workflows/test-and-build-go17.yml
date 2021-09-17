@@ -12,7 +12,7 @@ env:
 
 jobs:
   skip-build:
-    if: ${{ env.CHANGED == false }}
+    if: ${{ env.CHANGED == 'false' }}
 
     runs-on: ubuntu-latest
 
@@ -37,7 +37,7 @@ jobs:
             ${{ runner.os }}-
 
   build:
-    if: ${{ env.CHANGED == true }}
+    if: ${{ env.CHANGED == 'true' }}
 
     runs-on: ubuntu-latest
 

@@ -15,9 +15,12 @@ jobs:
   verify:
     runs-on: ubuntu-latest
 
+    outputs:
+      build: ${{ steps.step1.outputs.build }}
+
     steps:
       - name: Test
-        id: thingy
+        id: step1
 #        if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
 
@@ -28,7 +31,7 @@ jobs:
 
     steps:
       - name: Thingy
-        run: echo ${{ steps.thingy.output.build }}
+        run: echo ${{ needs.verify.outputs.build }}
 
 #      - uses: actions/checkout@v2
 #

@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Test
         if: ${{ env.CHANGED == 'false' }}
-        run: echo Thingy
+        run: echo $CHANGED
 #      - uses: actions/checkout@v2
 #
 #      - uses: themeliolabs/actions-biome@v1

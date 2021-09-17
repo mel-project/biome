@@ -8,8 +8,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-#  CHANGED: $(git diff --quiet HEAD master -- go17 || echo true)
-#  CHANGED: true
+  CHANGED: $(git diff --quiet HEAD master -- go17 || echo true)
 
 jobs:
   verify:

@@ -25,7 +25,8 @@ jobs:
 
       - name: Set Enviromnent Variable
         shell: bash
-        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- go17 || echo true)" >> $GITHUB_ENV
+#        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- go17 || echo true)" >> $GITHUB_ENV
+        run: echo "CHANGED=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
 
       - name: Echo
         env:

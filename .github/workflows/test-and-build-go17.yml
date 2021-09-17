@@ -16,17 +16,17 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      build: ${{ steps.step1.outputs.build }}
+      build: ${{ steps.changed.outputs.build }}
 
     steps:
       - name: Test
-        id: step1
-#        if: ${{ env.CHANGED == 'true' }}
+        id: changed
+        if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
 
   build:
     needs: verify
-#    if: contains(needs.verify.outputs.build, 'true')
+    if: contains(needs.verify.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:

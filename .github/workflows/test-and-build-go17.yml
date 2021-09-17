@@ -8,7 +8,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  CHANGED: $(git diff --quiet HEAD master -- go17 || echo true)
+#  CHANGED: $(git diff --quiet HEAD master -- go17 || echo true)
 
 jobs:
   verify:
@@ -19,7 +19,12 @@ jobs:
 
     steps:
 
+      - name: Set Enviromnent Variable
+        run: echo "CHANGED=$(git diff --quiet HEAD master -- go17 || echo true)" >> $GITHUB_ENV
+
       - name: Echo
+        env:
+          CHANGED: $(git diff --quiet HEAD master -- go17 || echo true)
         run: echo $CHANGED
 
       - name: Check For Changes

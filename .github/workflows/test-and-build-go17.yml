@@ -17,6 +17,7 @@ jobs:
 
     steps:
       - name: Test
+        id: thingy
 #        if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
 
@@ -27,7 +28,7 @@ jobs:
 
     steps:
       - name: Thingy
-        run: echo ${{ needs.verify.outputs.build }}
+        run: echo ${{ steps.thingy.output.build }}
 
 #      - uses: actions/checkout@v2
 #

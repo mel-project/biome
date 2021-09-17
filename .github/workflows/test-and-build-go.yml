@@ -6,8 +6,10 @@ on:
       - 'go/**'
     branches: [ master ]
   workflow_run:
-    workflows: ["TestAndBuildGo17"]
-    types: [completed]
+    workflows:
+      - TestAndBuildGo17
+    types:
+      - completed
 
 env:
   CARGO_TERM_COLOR: always

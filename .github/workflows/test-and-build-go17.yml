@@ -20,6 +20,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Test
+        run: git log
+
       - name: Set Enviromnent Variable
         run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- go17 || echo true)" >> $GITHUB_ENV
 

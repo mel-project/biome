@@ -8,10 +8,11 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  CHANGED: $(git diff --quiet HEAD master -- go17 || echo false)
 
 jobs:
   skip-build:
-    if: git diff --quiet HEAD master -- go17 || echo false
+    if: ${{ CHANGED == false }}
 
     runs-on: ubuntu-latest
 
@@ -36,7 +37,7 @@ jobs:
             ${{ runner.os }}-
 
   build:
-    if: ${{ $(git diff --quiet HEAD master -- go17 || echo true) }}
+    if: ${{ CHANGED == true }}
 
     runs-on: ubuntu-latest
 

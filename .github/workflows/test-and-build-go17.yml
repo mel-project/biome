@@ -27,7 +27,9 @@ jobs:
 
     steps:
       - name: Thingy
-        run: echo ${{ steps.verify.outputs.build }}
+        env:
+          TEST: ${{ steps.verify.outputs.build }}
+        run: echo $TEST
 
 #      - uses: actions/checkout@v2
 #

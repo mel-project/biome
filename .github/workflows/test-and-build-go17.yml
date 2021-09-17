@@ -17,7 +17,11 @@ jobs:
     steps:
       - name: Test
         if: ${{ env.CHANGED == 'true' }}
-        run: echo $CHANGED
+        run: echo $CHANGED && exit 0
+
+      - name: Other
+        run: echo "Should not run"
+
 #      - uses: actions/checkout@v2
 #
 #      - uses: themeliolabs/actions-biome@v1

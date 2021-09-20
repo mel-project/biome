@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      build: ${{ steps.thingy.outputs.complete }}
+      complete: ${{ steps.build.outputs.complete }}
 
     steps:
       - name: Thingy
@@ -75,7 +75,7 @@ jobs:
 #        run: echo "::set-output name=complete::true"
 
       - name: Check For Changes
-        id: thingy
+        id: build
         run: echo "::set-output name=complete::true"
 
 

@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      build: ${{ steps.build.outputs.build }}
+      build: ${{ steps.build.outputs.complete }}
 
     steps:
 #      I think I need a 'Check For Changes' type step here instead of the job-global if statement

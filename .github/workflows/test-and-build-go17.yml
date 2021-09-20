@@ -24,10 +24,31 @@ jobs:
         shell: bash
         run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- go17 || echo true)" >> $GITHUB_ENV
 
-#      - name: Check For Changes
-#        id: changed
-#        if: ${{ env.CHANGED == 'true' }}
-#        run: echo "::set-output name=build::true"
+      - name: Check For Changes
+        id: changed
+        if: ${{ env.CHANGED == 'true' }}
+        run: echo "::set-output name=build::true"
+
+  verify-go:
+    runs-on: ubuntu-latest
+
+    outputs:
+      build: ${{ steps.changed.outputs.build }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch
+        run: git fetch
+
+      - name: Set Enviromnent Variable
+        shell: bash
+        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- go || echo true)" >> $GITHUB_ENV
+
+      - name: Check For Changes
+        id: changed
+        if: ${{ env.CHANGED == 'true' }}
+        run: echo "::set-output name=build::true"
 
   build-go17:
     needs: verify-go17
@@ -57,6 +78,25 @@ jobs:
 #            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
 #            ${{ runner.os }}-build-
 #            ${{ runner.os }}-
+
+  build-go:
+    needs: verify-go
+    if: contains(needs.verify-go.outputs.build, 'true') && contains(needs.verify-go.outputs.build, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      #      I think I need a 'Check For Changes' type step here instead of the job-global if statement
+      - name: Thingy
+        run: echo ${{ needs.verify-go.outputs.build }}
+
+
+
+# I need to duplicate the go build step:
+# build-go-go17-changed and build-go
+
+
+
+
 
 #  build:
 #    if: ${{ env.CHANGED == 'true' }}

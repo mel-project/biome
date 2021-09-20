@@ -98,7 +98,7 @@ jobs:
       - verify-go17
       - verify-go
       - build-go17
-    if: contains(needs.verify-go.outputs.build, 'true') && contains(needs.verify-go.outputs.build, 'true') && contains(needs.build-go17.outputs.complete, 'true')
+    if: contains(needs.verify-go.outputs.build, 'true') && contains(needs.verify-go.outputs.build, 'true') && contains(needs.build-go17.outputs.complete, 'false')
     runs-on: ubuntu-latest
 
     steps:

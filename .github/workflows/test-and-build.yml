@@ -150,7 +150,7 @@ jobs:
       - verify-go17
       - verify-go
       - verify-grafana
-    if: !contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true')
+    if: contains(needs.verify-grafana.outputs.build, 'true') && !contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:

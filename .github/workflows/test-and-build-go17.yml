@@ -125,11 +125,6 @@ jobs:
 
 
 
-# I need to duplicate the go build step:
-# build-go-go17-changed and build-go
-
-
-
 
 
 #  build:

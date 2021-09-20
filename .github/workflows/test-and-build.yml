@@ -160,6 +160,33 @@ jobs:
       - name: Show Go17 Build Output
         run: echo ${{ needs.build-go17.outputs.complete }}
 
+  build-grafana-if-go17-changed:
+    needs:
+      - build-go17
+    if: contains(needs.verify-go17.outputs.build, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show Go17 Verify Output
+        run: echo ${{ needs.verify-go17.outputs.build }}
+
+      - name: Show Go17 Build Output
+        run: echo ${{ needs.build-go17.outputs.complete }}
+
+  build-grafana-if-go-changed:
+    needs:
+      - verify-go17
+      - build-go
+    if: contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show Go17 Verify Output
+        run: echo ${{ needs.verify-go17.outputs.build }}
+
+      - name: Show Go17 Build Output
+        run: echo ${{ needs.build-go17.outputs.complete }}
+
 #  build-grafana-if-go17-changed:
 #    needs:
 #      - verify-go17

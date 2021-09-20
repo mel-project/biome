@@ -50,6 +50,27 @@ jobs:
         if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
 
+  verify-grafana:
+    runs-on: ubuntu-latest
+
+    outputs:
+      build: ${{ steps.changed.outputs.build }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch
+        run: git fetch
+
+      - name: Set Enviromnent Variable
+        shell: bash
+        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- grafana || echo true)" >> $GITHUB_ENV
+
+      - name: Check For Changes
+        id: changed
+        if: ${{ env.CHANGED == 'true' }}
+        run: echo "::set-output name=build::true"
+
   build-go17:
     needs: verify-go17
     if: contains(needs.verify-go17.outputs.build, 'true')
@@ -114,6 +135,21 @@ jobs:
       - verify-go
       - build-go17
     if: contains(needs.verify-go.outputs.build, 'true') && contains(needs.verify-go17.outputs.build, 'true') && contains(needs.build-go17.outputs.complete, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show Go17 Verify Output
+        run: echo ${{ needs.verify-go17.outputs.build }}
+
+      - name: Show Go17 Build Output
+        run: echo ${{ needs.build-go17.outputs.complete }}
+
+
+  build-grafana:
+    needs:
+      - verify-go17
+      - verify-go
+    if: contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:

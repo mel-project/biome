@@ -55,10 +55,23 @@ jobs:
     if: contains(needs.verify-go17.outputs.build, 'true')
     runs-on: ubuntu-latest
 
+    outputs:
+      build: ${{ steps.complete.outputs.build }}
+
     steps:
 #      I think I need a 'Check For Changes' type step here instead of the job-global if statement
       - name: Thingy
         run: echo ${{ needs.verify-go17.outputs.build }}
+
+      - name: Set Enviromnent Variable
+        shell: bash
+        run: echo "COMPLETE=true" >> $GITHUB_ENV
+
+      - name: Check For Changes
+        id: complete
+        if: ${{ env.COMPLETE == 'true' }}
+        run: echo "::set-output name=complete::true"
+
 
 #      - uses: actions/checkout@v2
 #
@@ -79,11 +92,11 @@ jobs:
 #            ${{ runner.os }}-build-
 #            ${{ runner.os }}-
 
-  build-go:
+  build-go-if-go17-changed:
     needs:
       - verify-go17
       - verify-go
-    if: contains(needs.verify-go.outputs.build, 'true') && contains(needs.verify-go.outputs.build, 'true')
+    if: contains(needs.verify-go.outputs.build, 'true') && contains(needs.verify-go.outputs.build, 'true') && contains(needs.build-go17.outputs.complete, 'true')
     runs-on: ubuntu-latest
 
     steps:

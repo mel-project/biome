@@ -67,6 +67,9 @@ jobs:
         shell: bash
         run: echo "COMPLETE=true" >> $GITHUB_ENV
 
+      - name: Thingy
+        run: echo ${{ env.COMPLETE }}
+
       - name: Check For Changes
         id: build
         if: ${{ env.COMPLETE == 'true' }}

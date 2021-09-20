@@ -67,7 +67,7 @@ jobs:
         shell: bash
         run: echo "COMPLETE=true" >> $GITHUB_ENV
 
-      - name: Thingy
+      - name: Echo COMPLETE Environment Variable
         run: echo ${{ env.COMPLETE }}
 
       - name: Check For Changes
@@ -105,9 +105,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      #      I think I need a 'Check For Changes' type step here instead of the job-global if statement
-      - name: Thingy
-        run: echo ${{ needs.verify-go17.outputs.complete }}
+      - name: Show Go17 Verify Output
+        run: echo ${{ needs.verify-go17.outputs.build }}
+
+      - name: Show Go17 Build Output
+        run: echo ${{ needs.build-go17.outputs.complete }}
 
 
 

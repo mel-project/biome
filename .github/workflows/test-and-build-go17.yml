@@ -24,10 +24,10 @@ jobs:
         shell: bash
         run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- go17 || echo true)" >> $GITHUB_ENV
 
-      - name: Check For Changes
-        id: changed
-        if: ${{ env.CHANGED == 'true' }}
-        run: echo "::set-output name=build::true"
+#      - name: Check For Changes
+#        id: changed
+#        if: ${{ env.CHANGED == 'true' }}
+#        run: echo "::set-output name=build::true"
 
   build-go17:
     needs: verify-go17
@@ -35,6 +35,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+#      I think I need a 'Check For Changes' type step here instead of the job-global if statement
       - name: Thingy
         run: echo ${{ needs.verify-go17.outputs.build }}
 

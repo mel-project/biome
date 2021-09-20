@@ -101,13 +101,12 @@ jobs:
       - verify-go
       - build-go17
 #    if: contains(needs.verify-go.outputs.build, 'true') && contains(needs.verify-go.outputs.build, 'true') && contains(needs.build-go17.outputs.complete, 'true')
-    if: contains(needs.build-go17.outputs.complete, 'true')
     runs-on: ubuntu-latest
 
     steps:
       #      I think I need a 'Check For Changes' type step here instead of the job-global if statement
       - name: Thingy
-        run: echo ${{ needs.verify-go.outputs.build }}
+        run: echo ${{ needs.verify-go17.outputs.complete }}
 
 
 

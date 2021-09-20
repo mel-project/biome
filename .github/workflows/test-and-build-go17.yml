@@ -59,20 +59,23 @@ jobs:
       build: ${{ steps.build.outputs.complete }}
 
     steps:
-#      I think I need a 'Check For Changes' type step here instead of the job-global if statement
       - name: Thingy
         run: echo ${{ needs.verify-go17.outputs.build }}
 
-      - name: Set Enviromnent Variable
-        shell: bash
-        run: echo "COMPLETE=true" >> $GITHUB_ENV
-
-      - name: Echo COMPLETE Environment Variable
-        run: echo ${{ env.COMPLETE }}
+#      - name: Set Enviromnent Variable
+#        shell: bash
+#        run: echo "COMPLETE=true" >> $GITHUB_ENV
+#
+#      - name: Echo COMPLETE Environment Variable
+#        run: echo ${{ env.COMPLETE }}
+#
+#      - name: Check For Changes
+#        id: build
+#        if: ${{ env.COMPLETE == 'true' }}
+#        run: echo "::set-output name=complete::true"
 
       - name: Check For Changes
         id: build
-        if: ${{ env.COMPLETE == 'true' }}
         run: echo "::set-output name=complete::true"
 
 

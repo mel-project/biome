@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      build: ${{ steps.complete.outputs.build }}
+      build: ${{ steps.build.outputs.build }}
 
     steps:
 #      I think I need a 'Check For Changes' type step here instead of the job-global if statement
@@ -68,7 +68,7 @@ jobs:
         run: echo "COMPLETE=true" >> $GITHUB_ENV
 
       - name: Check For Changes
-        id: complete
+        id: build
         if: ${{ env.COMPLETE == 'true' }}
         run: echo "::set-output name=complete::true"
 

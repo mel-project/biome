@@ -95,25 +95,6 @@ jobs:
         if: ${{ env.COMPLETE == 'true' }}
         run: echo "::set-output name=complete::true"
 
-#      - uses: actions/checkout@v2
-#
-#      - uses: themeliolabs/actions-biome@v1
-#        with:
-#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-#          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-#
-#      - name: Cache Biome
-#        uses: actions/cache@v2
-#        env:
-#          CACHE_NAME: cache-biome
-#        with:
-#          path: ~/.hab/cache
-#          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('go17/plan.sh') }}
-#          restore-keys: |
-#            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-#            ${{ runner.os }}-build-
-#            ${{ runner.os }}-
-
   build-go:
     needs:
       - verify-go17
@@ -127,7 +108,6 @@ jobs:
 
       - name: Show Go17 Build Output
         run: echo ${{ needs.build-go17.outputs.complete }}
-
 
   build-go-if-go17-changed:
     needs:
@@ -144,6 +124,19 @@ jobs:
       - name: Show Go17 Build Output
         run: echo ${{ needs.build-go17.outputs.complete }}
 
+  build-grafana-if-go17-and-go-changed:
+    needs:
+      - build-go17
+      - build-go-if-go17-changed
+    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go-if-go17-changed.outputs.complete, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show Go17 Verify Output
+        run: echo ${{ needs.verify-go17.outputs.build }}
+
+      - name: Show Go17 Build Output
+        run: echo ${{ needs.build-go17.outputs.complete }}
 
   build-grafana:
     needs:
@@ -160,19 +153,6 @@ jobs:
       - name: Show Go17 Build Output
         run: echo ${{ needs.build-go17.outputs.complete }}
 
-  build-grafana-if-go17-and-go-changed:
-    needs:
-      - build-go17
-      - build-go
-    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go.outputs.complete, 'true')
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Show Go17 Verify Output
-        run: echo ${{ needs.verify-go17.outputs.build }}
-
-      - name: Show Go17 Build Output
-        run: echo ${{ needs.build-go17.outputs.complete }}
 
 #  build-grafana-if-go-changed:
 #    needs:
@@ -204,6 +184,27 @@ jobs:
 #      - name: Show Go17 Build Output
 #        run: echo ${{ needs.build-go17.outputs.complete }}
 
+
+
+
+#      - uses: actions/checkout@v2
+#
+#      - uses: themeliolabs/actions-biome@v1
+#        with:
+#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+#          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+#
+#      - name: Cache Biome
+#        uses: actions/cache@v2
+#        env:
+#          CACHE_NAME: cache-biome
+#        with:
+#          path: ~/.hab/cache
+#          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('go17/plan.sh') }}
+#          restore-keys: |
+#            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+#            ${{ runner.os }}-build-
+#            ${{ runner.os }}-
 
 
 

@@ -266,6 +266,22 @@ jobs:
       - name: Show Go17 Build Output
         run: echo ${{ needs.build-go17.outputs.complete }}
 
+  build-promtail-if-go17-and-go-changed:
+    needs:
+      - build-go17
+      - build-go-if-go17-changed
+      - verify-promtail
+    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go-if-go17-changed.outputs.complete, 'true') && contains(needs.verify-promtail.outputs.build, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show Go17 Verify Output
+        run: echo ${{ needs.verify-go17.outputs.build }}
+
+      - name: Show Go17 Build Output
+        run: echo ${{ needs.build-go17.outputs.complete }}
+
+
 # Go Change Builds
 
   build-grafana-if-go-changed:
@@ -304,6 +320,21 @@ jobs:
       - verify-prometheus
       - build-go
     if: contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show Go17 Verify Output
+        run: echo ${{ needs.verify-go17.outputs.build }}
+
+      - name: Show Go17 Build Output
+        run: echo ${{ needs.build-go17.outputs.complete }}
+
+  build-promtail-if-go-changed:
+    needs:
+      - verify-go17
+      - verify-promtail
+      - build-go
+    if: contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && contains(needs.verify-promtail.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:
@@ -360,6 +391,20 @@ jobs:
       - name: Show Go17 Build Output
         run: echo ${{ needs.build-go17.outputs.complete }}
 
+  build-promtail:
+    needs:
+      - verify-go17
+      - verify-go
+      - verify-promtail
+    if: contains(needs.verify-promtail.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && !contains(needs.verify-go.outputs.build, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show Go17 Verify Output
+        run: echo ${{ needs.verify-go17.outputs.build }}
+
+      - name: Show Go17 Build Output
+        run: echo ${{ needs.build-go17.outputs.complete }}
 
 
 

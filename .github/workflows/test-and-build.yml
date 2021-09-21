@@ -163,7 +163,7 @@ jobs:
   build-grafana-if-go17-changed:
     needs:
       - build-go17
-    if: contains(needs.build-go17.outputs.build, 'true')
+    if: contains(needs.build-go17.outputs.complete, 'true')
     runs-on: ubuntu-latest
 
     steps:

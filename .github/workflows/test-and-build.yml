@@ -149,8 +149,31 @@ jobs:
       complete: ${{ steps.build.outputs.complete }}
 
     steps:
-      - name: Thingy
-        run: echo ${{ needs.verify-go17.outputs.build }}
+      - uses: actions/checkout@v2
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: ~/.hab/cache
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('go17/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Test Build Go17
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bio pkg build go17
 
       - name: Set Enviromnent Variable
         shell: bash
@@ -431,24 +454,6 @@ jobs:
 
 
 
-#      - uses: actions/checkout@v2
-#
-#      - uses: themeliolabs/actions-biome@v1
-#        with:
-#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-#          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-#
-#      - name: Cache Biome
-#        uses: actions/cache@v2
-#        env:
-#          CACHE_NAME: cache-biome
-#        with:
-#          path: ~/.hab/cache
-#          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('go17/plan.sh') }}
-#          restore-keys: |
-#            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-#            ${{ runner.os }}-build-
-#            ${{ runner.os }}-
 
 
 

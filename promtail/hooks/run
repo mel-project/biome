@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Redirect stderr
+exec 2>&1
+
+LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:{{pkgPathFor "core/systemd"}}/lib:{{pkgPathFor "core/glibc"}}/lib"
+export LD_LIBRARY_PATH
+
+exec promtail -log.level={{ cfg.log_level }} -config.file "{{ pkg.svc_config_path }}/config.yaml"

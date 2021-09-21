@@ -225,7 +225,8 @@ jobs:
     needs:
       - build-go17
       - build-go-if-go17-changed
-    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go-if-go17-changed.outputs.complete, 'true')
+      - verify-grafana
+    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go-if-go17-changed.outputs.complete, 'true') && contains(needs.verify-grafana.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:
@@ -239,7 +240,7 @@ jobs:
     needs:
       - build-go17
       - build-go-if-go17-changed
-    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go-if-go17-changed.outputs.complete, 'true')
+    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go-if-go17-changed.outputs.complete, 'true') && contains(needs.verify-loki.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:

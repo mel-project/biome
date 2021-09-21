@@ -8,6 +8,9 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+
+# Verify Section
+
   verify-go17:
     runs-on: ubuntu-latest
 
@@ -70,6 +73,72 @@ jobs:
         id: changed
         if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
+
+  verify-loki:
+    runs-on: ubuntu-latest
+
+    outputs:
+      build: ${{ steps.changed.outputs.build }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch
+        run: git fetch
+
+      - name: Set Enviromnent Variable
+        shell: bash
+        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- loki || echo true)" >> $GITHUB_ENV
+
+      - name: Check For Changes
+        id: changed
+        if: ${{ env.CHANGED == 'true' }}
+        run: echo "::set-output name=build::true"
+
+  verify-prometheus:
+    runs-on: ubuntu-latest
+
+    outputs:
+      build: ${{ steps.changed.outputs.build }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch
+        run: git fetch
+
+      - name: Set Enviromnent Variable
+        shell: bash
+        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- prometheus || echo true)" >> $GITHUB_ENV
+
+      - name: Check For Changes
+        id: changed
+        if: ${{ env.CHANGED == 'true' }}
+        run: echo "::set-output name=build::true"
+
+  verify-promtail:
+    runs-on: ubuntu-latest
+
+    outputs:
+      build: ${{ steps.changed.outputs.build }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch
+        run: git fetch
+
+      - name: Set Enviromnent Variable
+        shell: bash
+        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- promtail || echo true)" >> $GITHUB_ENV
+
+      - name: Check For Changes
+        id: changed
+        if: ${{ env.CHANGED == 'true' }}
+        run: echo "::set-output name=build::true"
+
+
+# Build Go17 And Go Section
 
   build-go17:
     needs: verify-go17

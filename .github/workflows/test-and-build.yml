@@ -160,10 +160,11 @@ jobs:
       - name: Show Go17 Build Output
         run: echo ${{ needs.build-go17.outputs.complete }}
 
-  build-grafana-if-go17-changed:
+  build-grafana-if-go17-and-go-changed:
     needs:
       - build-go17
-    if: contains(needs.build-go17.outputs.complete, 'true')
+      - build-go
+    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go.outputs.complete, 'true')
     runs-on: ubuntu-latest
 
     steps:

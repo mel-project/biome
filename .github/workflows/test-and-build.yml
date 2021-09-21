@@ -235,6 +235,20 @@ jobs:
       - name: Show Go17 Build Output
         run: echo ${{ needs.build-go17.outputs.complete }}
 
+  build-loki-if-go17-and-go-changed:
+    needs:
+      - build-go17
+      - build-go-if-go17-changed
+    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go-if-go17-changed.outputs.complete, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show Go17 Verify Output
+        run: echo ${{ needs.verify-go17.outputs.build }}
+
+      - name: Show Go17 Build Output
+        run: echo ${{ needs.build-go17.outputs.complete }}
+
 # Go Change Builds
 
   build-grafana-if-go-changed:
@@ -243,6 +257,21 @@ jobs:
       - verify-grafana
       - build-go
     if: contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && contains(needs.verify-grafana.outputs.build, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show Go17 Verify Output
+        run: echo ${{ needs.verify-go17.outputs.build }}
+
+      - name: Show Go17 Build Output
+        run: echo ${{ needs.build-go17.outputs.complete }}
+
+  build-loki-if-go-changed:
+    needs:
+      - verify-go17
+      - verify-loki
+      - build-go
+    if: contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && contains(needs.verify-loki.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:
@@ -269,6 +298,20 @@ jobs:
       - name: Show Go17 Build Output
         run: echo ${{ needs.build-go17.outputs.complete }}
 
+  build-loki:
+    needs:
+      - verify-go17
+      - verify-go
+      - verify-loki
+    if: contains(needs.verify-loki.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && !contains(needs.verify-go.outputs.build, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show Go17 Verify Output
+        run: echo ${{ needs.verify-go17.outputs.build }}
+
+      - name: Show Go17 Build Output
+        run: echo ${{ needs.build-go17.outputs.complete }}
 
 
 

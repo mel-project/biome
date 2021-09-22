@@ -315,7 +315,7 @@ jobs:
       - name: Install Go17
         run: sudo bio pkg install go17-dev.hart
 
-      - name: Install Go17
+      - name: Install Go
         run: sudo bio pkg install go-go17-changed-dev.hart
 
       - name: Fix Directory Permissions
@@ -336,19 +336,12 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: Test Build Grafana
+      - name: Build, Run BATS Tests
         env:
           HAB_ORIGIN: "themelio"
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bio pkg build grafana
-
-#      - name: Build, Run BATS Tests
-#        env:
-#          HAB_ORIGIN: "themelio"
-#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        run: ./grafana/scripts/ci-test.sh
+        run: ./grafana/scripts/ci-test.sh
 
   build-loki-if-go17-and-go-changed:
     needs:

@@ -181,7 +181,7 @@ jobs:
       - name: Create Hart Export
         uses: actions/upload-artifact@v2
         with:
-          name: go17-hart-file
+          name: go17-dev
           path: results/go17-dev.hart
 
       - name: Set Enviromnent Variable
@@ -262,8 +262,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: go17-dev
 
+      - name: List
+        run: ls -la results
+
+#      - uses: actions/checkout@v2
+#
 #      - uses: themeliolabs/actions-biome@v1
 #        with:
 #          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}

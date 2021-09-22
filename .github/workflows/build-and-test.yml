@@ -275,7 +275,7 @@ jobs:
           BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
 
       - name: Install Go17
-        run: bio pkg install results/go17-dev.hart
+        run: bio pkg install go17-dev.hart
 
 #      - name: Fix Directory Permissions
 #        run: sudo chown -R $(whoami):$(id -ng) /hab

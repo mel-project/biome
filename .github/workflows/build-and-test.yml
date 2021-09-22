@@ -262,20 +262,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+      - uses: actions/checkout@v2
+
       - uses: actions/download-artifact@v2
         with:
           name: go17-dev
 
-      - name: List
-        run: ls -la results
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
 
-#      - uses: actions/checkout@v2
-#
-#      - uses: themeliolabs/actions-biome@v1
-#        with:
-#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-#          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-#
+      - name: Install Go17
+        run: bio pkg install results/go17-dev.hart
+
 #      - name: Fix Directory Permissions
 #        run: sudo chown -R $(whoami):$(id -ng) /hab
 #

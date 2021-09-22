@@ -176,7 +176,7 @@ jobs:
         run: bio pkg build go17
 
       - name: Copy Hart File
-        run: cp $(ls -1t results/go17-*.hart | head -1) results/go17-dev.hart
+        run: cp $(ls -1t results/themelio-go17-*.hart | head -1) results/go17-dev.hart
 
       - name: Create Hart Export
         uses: actions/upload-artifact@v2

@@ -234,8 +234,42 @@ jobs:
       complete: ${{ steps.build.outputs.complete }}
 
     steps:
-      - name: Thingy
-        run: echo ${{ needs.verify-go17.outputs.build }}
+      - uses: actions/checkout@v2
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: ~/.hab/cache
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('go/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Test Build Go
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bio pkg build go
+
+      - name: Copy Hart File
+        run: cp $(ls -1t results/themelio-go-*.hart | head -1) results/go-go17-changed-dev.hart
+
+      - name: Create Hart Export
+        uses: actions/upload-artifact@v2
+        with:
+          name: go-go17-changed-dev
+          path: results/go-go17-changed-dev.hart
+
+#  go-go17-changed-dev
 
       - name: Set Enviromnent Variable
         shell: bash
@@ -269,6 +303,10 @@ jobs:
         with:
           name: go17-dev
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: go-go17-changed-dev
+
       - uses: themeliolabs/actions-biome@v1
         with:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
@@ -276,6 +314,9 @@ jobs:
 
       - name: Install Go17
         run: sudo bio pkg install go17-dev.hart
+
+      - name: Install Go17
+        run: sudo bio pkg install go-go17-changed-dev.hart
 
       - name: Fix Directory Permissions
         run: sudo chown -R $(whoami):$(id -ng) /hab
@@ -295,7 +336,7 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: Test Build Go17
+      - name: Test Build Grafana
         env:
           HAB_ORIGIN: "themelio"
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}

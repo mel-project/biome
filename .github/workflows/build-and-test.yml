@@ -175,6 +175,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bio pkg build go17
 
+      - name: Copy Hart File
+        run: cp $(ls -1t results/go17-*.hart | head -1) results/go17-dev.hart
+
+      - name: Create Hart Export
+        uses: actions/upload-artifact@v2
+        with:
+          name: go17-hart-file
+          path: results/go17-dev.hart
+
       - name: Set Enviromnent Variable
         shell: bash
         run: echo "COMPLETE=true" >> $GITHUB_ENV
@@ -253,11 +262,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Show Go17 Verify Output
-        run: echo ${{ needs.verify-go17.outputs.build }}
+      - uses: actions/checkout@v2
 
-      - name: Show Go17 Build Output
-        run: echo ${{ needs.build-go17.outputs.complete }}
+#      - uses: themeliolabs/actions-biome@v1
+#        with:
+#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+#          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+#
+#      - name: Fix Directory Permissions
+#        run: sudo chown -R $(whoami):$(id -ng) /hab
+#
+#      - name: Cache Biome
+#        uses: actions/cache@v2
+#        env:
+#          CACHE_NAME: cache-biome
+#        with:
+#          path: |
+#            ~/.hab/cache/artifacts
+#            /hab/cache/artifacts
+#            /hab/pkgs
+#          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('grafana/plan.sh') }}
+#          restore-keys: |
+#            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+#            ${{ runner.os }}-build-
+#            ${{ runner.os }}-
+#
+## Here, I need to install the artifacts from the go17 and go steps.
+#
+#      - name: Build, Run BATS Tests
+#        env:
+#          HAB_ORIGIN: "themelio"
+#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        run: ./grafana/scripts/ci-test.sh
 
   build-loki-if-go17-and-go-changed:
     needs:

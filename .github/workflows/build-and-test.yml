@@ -277,26 +277,31 @@ jobs:
       - name: Install Go17
         run: sudo bio pkg install go17-dev.hart
 
-#      - name: Fix Directory Permissions
-#        run: sudo chown -R $(whoami):$(id -ng) /hab
-#
-#      - name: Cache Biome
-#        uses: actions/cache@v2
-#        env:
-#          CACHE_NAME: cache-biome
-#        with:
-#          path: |
-#            ~/.hab/cache/artifacts
-#            /hab/cache/artifacts
-#            /hab/pkgs
-#          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('grafana/plan.sh') }}
-#          restore-keys: |
-#            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-#            ${{ runner.os }}-build-
-#            ${{ runner.os }}-
-#
-## Here, I need to install the artifacts from the go17 and go steps.
-#
+      - name: Fix Directory Permissions
+        run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: |
+            ~/.hab/cache/artifacts
+            /hab/cache/artifacts
+            /hab/pkgs
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('grafana/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Test Build Go17
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bio pkg build grafana
+
 #      - name: Build, Run BATS Tests
 #        env:
 #          HAB_ORIGIN: "themelio"

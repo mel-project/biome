@@ -21,15 +21,15 @@ source results/last_build.env
 
 sudo bio pkg install --binlink --force "results/${pkg_artifact}"
 
-#sudo useradd hab -s /bin/bash -p '*'
-#
-##export DISABLE_HEALTH_CHECK=true
-#
-#sudo bio svc load "${pkg_ident}"
-#
-#echo "Sleeping for 5 seconds for the service to start."
-#sleep 5
-#
-#bats "${SCRIPTS_DIRECTORY}/test.bats"
-#
-#sudo bio svc unload "${pkg_ident}" || true
+sudo useradd hab -s /bin/bash -p '*'
+
+#export DISABLE_HEALTH_CHECK=true
+
+sudo bio svc load "${pkg_ident}"
+
+echo "Sleeping for 5 seconds for the service to start."
+sleep 5
+
+bats "${SCRIPTS_DIRECTORY}/test.bats" || bio svc unload "${pkg_ident}" && exit 1
+
+sudo bio svc unload "${pkg_ident}" || true

@@ -16,10 +16,10 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
 }
 
 @test "Service is running" {
-  [ "$(bio svc status | grep "grafana\.default" | awk '{print $4}' | grep up)" ]
+  [ "$(sudo bio svc status | grep "grafana\.default" | awk '{print $4}' | grep up)" ]
 }
 
 @test "Listening on port 80" {
-  result="$(netstat -peanut | grep LISTEN | grep grafana| awk '{print $4}' | tr -d ':')"
+  result="$(sudo netstat -peanut | grep LISTEN | grep grafana| awk '{print $4}' | tr -d ':')"
   [ "${result}" -eq 80 ]
 }

@@ -2,8 +2,8 @@
 
 set -e
 
-TESTDIR="$(dirname "${0}")"
-PLAN_DIRECTORY="$(dirname "${TESTDIR}")"
+SCRIPTS_DIRECTORY="$(dirname "${0}")"
+PLAN_DIRECTORY="$(dirname "${SCRIPTS_DIRECTORY}")"
 
 bio pkg install --binlink core/bats
 bio pkg install --binlink core/curl
@@ -50,7 +50,7 @@ fi
 echo "Sleeping for 5 seconds for the service to start."
 sleep 5
 
-if bats "${TESTDIR}/test.bats"; then
+if bats "${SCRIPTS_DIRECTORY}/test-local.bats"; then
   bio svc unload "${pkg_ident}"
 else
   bio svc unload "${pkg_ident}"

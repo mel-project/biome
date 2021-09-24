@@ -6,7 +6,7 @@ SCRIPTS_DIRECTORY="$(dirname "${0}")"
 PLAN_DIRECTORY="$(dirname "${SCRIPTS_DIRECTORY}")"
 
 sudo bio pkg install --binlink core/bats
-bio pkg install --binlink core/net-tools
+sudo bio pkg install --binlink core/net-tools --force
 
 #cp "${PLAN_DIRECTORY}/plan-debug.sh" "${PLAN_DIRECTORY}/plan.sh"
 

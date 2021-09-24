@@ -20,6 +20,6 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
 }
 
 @test "Listening on port 9090" {
-  result="$(netstat -peanut | grep LISTEN | grep prometheus | awk '{print $4}' | tr -d ':')"
+  result="$(sudo netstat -peanut | grep LISTEN | grep prometheus | awk '{print $4}' | tr -d ':')"
   [ "${result}" -eq 9090 ]
 }

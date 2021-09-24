@@ -30,6 +30,11 @@ sudo bio svc load "${pkg_ident}"
 echo "Sleeping for 5 seconds for the service to start."
 sleep 5
 
-bats "${SCRIPTS_DIRECTORY}/test.bats" || bio svc unload "${pkg_ident}" && exit 1
+# I need to verify that the CI fails if the BATS tests fail.
 
-sudo bio svc unload "${pkg_ident}" || true
+if bats "${SCRIPTS_DIRECTORY}/test.bats"; then
+  bio svc unload "${pkg_ident}"
+else
+  bio svc unload "${pkg_ident}"
+  exit 1
+fi

@@ -33,8 +33,8 @@ sleep 5
 # I need to verify that the CI fails if the BATS tests fail.
 
 if bats "${SCRIPTS_DIRECTORY}/test.bats"; then
-  bio svc unload "${pkg_ident}"
+  sudo bio svc unload "${pkg_ident}"
 else
-  bio svc unload "${pkg_ident}"
+  sudo bio svc unload "${pkg_ident}"
   exit 1
 fi

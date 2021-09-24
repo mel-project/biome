@@ -12,6 +12,7 @@ prom_pkg_dir="${HAB_CACHE_SRC_PATH}/${pkg_name}-${pkg_version}"
 prom_build_dir="${prom_pkg_dir}/src/${pkg_source}"
 pkg_build_deps=(
   core/cacerts
+  core/curl
   core/gcc
   themelio/go
   core/make

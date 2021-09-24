@@ -12,7 +12,7 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
 
 @test "Curl returns 302" {
   result="$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:80)"
-  [ "$result" = "404" ]
+  [ "$result" = "302" ]
 }
 
 @test "Service is running" {

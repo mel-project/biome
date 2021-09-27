@@ -27,6 +27,9 @@ jobs:
     - name: Remove
       run: sudo rm /usr/bin/nisdomainname
 
+    - name: Remove
+      run: sudo rm /usr/bin/hostname
+
     - name: Install
       run: sudo bio pkg install --binlink core/net-tools --force
 

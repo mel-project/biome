@@ -11,28 +11,6 @@ jobs:
 
 # Verify Section
 
-  testy-thing:
-    runs-on: ubuntu-latest
-
-    steps:
-
-    - uses: themeliolabs/actions-biome@v1
-      with:
-        BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-        BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-
-    - name: Uninstall
-      run: sudo apt -y remove net-tools
-
-    - name: Remove
-      run: sudo rm /usr/bin/nisdomainname
-
-    - name: Remove
-      run: sudo rm /usr/bin/hostname
-
-    - name: Install
-      run: sudo bio pkg install --binlink core/net-tools --force
-
   verify-go17:
     runs-on: ubuntu-latest
 
@@ -399,6 +377,12 @@ jobs:
 
       - name: Remove net-tools
         run: sudo apt -y remove net-tools
+
+      - name: Remove nisdomainname
+        run: sudo rm /usr/bin/nisdomainname
+
+      - name: Remove hostname
+        run: sudo rm /usr/bin/hostname
 
       - name: Cache Biome
         uses: actions/cache@v2

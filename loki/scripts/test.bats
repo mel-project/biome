@@ -6,7 +6,7 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
 }
 
 @test "Service is running" {
-  [ "$(bio svc status | grep "loki\.default" | awk '{print $4}' | grep up)" ]
+  [ "$(sudo bio svc status | grep "loki\.default" | awk '{print $4}' | grep up)" ]
 }
 
 @test "Listening on port 3100" {

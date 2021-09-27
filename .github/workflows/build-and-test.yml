@@ -24,6 +24,9 @@ jobs:
     - name: Uninstall
       run: sudo apt -y remove net-tools
 
+    - name: Remove
+      run: sudo rm /usr/bin/nisdomainname
+
     - name: Install
       run: sudo bio pkg install --binlink core/net-tools --force
 

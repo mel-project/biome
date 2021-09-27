@@ -21,6 +21,9 @@ jobs:
         BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
         BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
 
+    - name: Uninstall
+      run: sudo apt -y remove net-tools
+
     - name: Install
       run: sudo bio pkg install --binlink core/net-tools --force
 

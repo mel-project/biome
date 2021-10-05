@@ -6,14 +6,18 @@ pkg_source="https://github.com/caddyserver/caddy/releases/download/v${pkg_versio
 pkg_shasum=7b28c989091a03c6aa5e397eb37d3e2c7ed3826c894534e30fd2de2f4084e770
 pkg_description="This is a load balancer for prometheus."
 pkg_upstream_url=https://caddyserver.com
-pkg_deps=(core/glibc)
-pkg_svc_run="caddy -conf ${pkg_svc_config_path}/Caddyfile"
+pkg_deps=(
+  core/gettext
+  core/glibc
+)
 pkg_exposes=(port)
 pkg_exports=(
   [port]=http.port
 )
 pkg_bin_dirs=(bin)
 pkg_dirname="${pkg_name}-v${pkg_version}"
+pkg_svc_user="root"
+pkg_svc_group="$pkg_svc_user"
 
 do_build() {
   return 0

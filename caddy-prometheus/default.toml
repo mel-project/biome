@@ -1,4 +1,10 @@
-hostname = "prometheus.themelio.org"
+log_level = "DEBUG"
+
+[proxy]
+listening_hostname = "prometheus.themelio.org"
+forwarding_hostname = "prometheus"
+forwarding_port = 9090
+admin_email = "meade@themelio.org"
 
 [http]
 port = 80
@@ -6,6 +12,3 @@ port = 80
 [https]
 enabled = true
 port = 443
-
-[gzip]
-enabled = true

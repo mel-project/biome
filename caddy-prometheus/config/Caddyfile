@@ -1,25 +1,27 @@
-{{cfg.hostname}} {
-  tls meade@themelio.org
-
-  {{#if cfg.gzip.enabled ~}}
-  gzip
-  {{/if ~}}
-
-  header / {
-    Strict-Transport-Security "max-age=15768000"
-    X-XSS-Protection "1; mode=block"
-    X-Content-Type-Options "nosniff"
-    X-Frame-Options "DENY"
+{
+  log {
+    level {{cfg.log_level}}
   }
 
-  proxy / localhost:9090 {
-    transparent
-    policy round_robin
+  email {{cfg.proxy.admin_email}}
+
+  storage file_system {
+    root {{ pkg.svc_data_path }}
   }
 }
 
-www.prometheus.themelio.org {
+{{cfg.proxy.listening_hostname}} {
+  encode zstd gzip
+
+  basicauth {
+    $BASIC_AUTH_USER $BASIC_AUTH_HASHED_PASSWORD
+  }
+
+  reverse_proxy http://{{cfg.proxy.forwarding_hostname}}:{{cfg.proxy.forwarding_port}}
+}
+
+www.{{cfg.proxy.listening_hostname}} {
   redir 301 {
-    https://prometheus.themelio.org{uri}
+    https://{{cfg.proxy.listening_hostname}}{uri}
   }
 }

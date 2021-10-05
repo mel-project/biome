@@ -137,6 +137,69 @@ jobs:
         if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
 
+  verify-caddy-grafana:
+    runs-on: ubuntu-latest
+
+    outputs:
+      build: ${{ steps.changed.outputs.build }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch
+        run: git fetch
+
+      - name: Set Enviromnent Variable
+        shell: bash
+        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- caddy-grafana || echo true)" >> $GITHUB_ENV
+
+      - name: Check For Changes
+        id: changed
+        if: ${{ env.CHANGED == 'true' }}
+        run: echo "::set-output name=build::true"
+
+  verify-caddy-loki:
+    runs-on: ubuntu-latest
+
+    outputs:
+      build: ${{ steps.changed.outputs.build }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch
+        run: git fetch
+
+      - name: Set Enviromnent Variable
+        shell: bash
+        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- caddy-loki || echo true)" >> $GITHUB_ENV
+
+      - name: Check For Changes
+        id: changed
+        if: ${{ env.CHANGED == 'true' }}
+        run: echo "::set-output name=build::true"
+
+  verify-caddy-prometheus:
+    runs-on: ubuntu-latest
+
+    outputs:
+      build: ${{ steps.changed.outputs.build }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch
+        run: git fetch
+
+      - name: Set Enviromnent Variable
+        shell: bash
+        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- caddy-prometheus || echo true)" >> $GITHUB_ENV
+
+      - name: Check For Changes
+        id: changed
+        if: ${{ env.CHANGED == 'true' }}
+        run: echo "::set-output name=build::true"
+
 
 # Build Go17 And Go Section
 
@@ -168,7 +231,7 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: Test Build Go17
+      - name: Build Go17
         env:
           HAB_ORIGIN: "themelio"
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
@@ -207,8 +270,40 @@ jobs:
       complete: ${{ steps.build.outputs.complete }}
 
     steps:
-      - name: Thingy
-        run: echo ${{ needs.verify-go17.outputs.build }}
+      - uses: actions/checkout@v2
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: ~/.hab/cache
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('go/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build Go
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bio pkg build go
+
+      - name: Copy Hart File
+        run: cp $(ls -1t results/themelio-go-*.hart | head -1) results/go-dev.hart
+
+      - name: Create Hart Export
+        uses: actions/upload-artifact@v2
+        with:
+          name: go-dev
+          path: results/go-dev.hart
 
       - name: Set Enviromnent Variable
         shell: bash
@@ -253,7 +348,7 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: Test Build Go
+      - name: Build Go
         env:
           HAB_ORIGIN: "themelio"
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}

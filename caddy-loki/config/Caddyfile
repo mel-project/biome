@@ -1,0 +1,25 @@
+loki.themelio.org {
+  tls meade@themelio.org
+
+  {{#if cfg.gzip.enabled ~}}
+  gzip
+  {{/if ~}}
+
+  header / {
+    Strict-Transport-Security "max-age=15768000"
+    X-XSS-Protection "1; mode=block"
+    X-Content-Type-Options "nosniff"
+    X-Frame-Options "DENY"
+  }
+
+  proxy / localhost:3100 {
+    transparent
+    policy round_robin
+  }
+}
+
+www.loki.themelio.org {
+  redir 301 {
+    https://loki.themelio.org{uri}
+  }
+}

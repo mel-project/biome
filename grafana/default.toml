@@ -1,6 +1,9 @@
-listening_port = 80
+listening_port = 3000
+run_mode = "production"
 admin_user = "admin"
-admin_pass = "password"
+admin_pass = "admin"
+gzip = true
+organisation_name = "Themelio"
 
 ldap_enabled = "false"
 ldap_host = ""
@@ -14,3 +17,17 @@ ldap_viewer_group = "*"
 protocol = "http"
 cert_file = ""
 cert_key = ""
+
+[prometheus]
+enabled = true
+url = "http://prometheus:9090"
+basic_auth_enabled = true
+basic_auth_user = "changeme"
+basic_auth_password = "changeme"
+
+[loki]
+enabled = true
+url = "http://loki:3100"
+basic_auth_enabled = true
+basic_auth_user = "changeme"
+basic_auth_password = "changeme"

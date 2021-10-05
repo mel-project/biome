@@ -1,3 +1,5 @@
+hostname = "grafana.themelio.org"
+
 [http]
 port = 80
 

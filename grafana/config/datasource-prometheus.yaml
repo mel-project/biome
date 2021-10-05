@@ -4,7 +4,10 @@ datasources:
   - name: Prometheus
     type: prometheus
     access: proxy
-    {{~#with bind.prom.first as |ds| }}
-    url: http://{{ds.sys.ip}}:{{ds.cfg.prom_ds_http}}
-    {{~/with}}
+    url: {{cfg.prometheus.url}}
+    {{ ~#if cfg.prometheus.basic_auth_enabled }}
+    basicAuth: true
+    basicAuthUser: {{cfg.prometheus.basic_auth_user}}
+    basicAuthPassword: {{cfg.prometheus.basic_auth_password}}
+    {{/if}}
     isDefault: true

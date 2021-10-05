@@ -13,11 +13,14 @@ loki_build_dir="${loki_pkg_dir}/src/${pkg_source}"
 pkg_build_deps=(
   core/busybox-static
   core/gcc
+  core/git
   themelio/go
   core/make
 )
+pkg_deps=(
+  core/coreutils
+)
 pkg_bin_dirs=(bin)
-pkg_svc_run="loki --config.file ${pkg_svc_config_path}/config.yaml"
 pkg_exports=(
   [http_port]=http_port
   [grpc_port]=grpc_port
@@ -50,6 +53,8 @@ do_prepare() {
 
 do_build() {
   pushd "${loki_pkg_dir}/src/github.com/grafana/loki" > /dev/null || exit 1
+  sed -e "s#SHELL = /usr/bin/env bash#SHELL = $(pkg_path_for core/coreutils)/bin/env bash#" -i Makefile
+  fix_interpreter "tools/image-tag" core/coreutils bin/env
   make loki
   make logcli
   popd > /dev/null || exit 1

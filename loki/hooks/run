@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Redirect stderr
+exec 2>&1
+
+exec loki -log.level={{ cfg.log_level }} --config.file "{{ pkg.svc_config_path }}/config.yaml"

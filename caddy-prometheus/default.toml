@@ -1,3 +1,5 @@
+hostname = "prometheus.themelio.org"
+
 [http]
 port = 80
 

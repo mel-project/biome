@@ -1,4 +1,4 @@
-prometheus.themelio.org {
+{{cfg.hostname}} {
   tls meade@themelio.org
 
   {{#if cfg.gzip.enabled ~}}

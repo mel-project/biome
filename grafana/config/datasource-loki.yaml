@@ -4,8 +4,11 @@ datasources:
   - name: Loki
     type: loki
     access: proxy
-    {{~#with bind.loki.first as |ds| }}
-    url: http://{{ds.sys.ip}}:{{ds.cfg.loki_ds_http}}
-    {{~/with}}
+    url: {{cfg.loki.url}}
+    {{ ~#if cfg.loki.basic_auth_enabled }}
+    basicAuth: true
+    basicAuthUser: {{cfg.loki.basic_auth_user}}
+    basicAuthPassword: {{cfg.loki.basic_auth_password}}
+    {{/if}}
     jsonData:
       maxLines: 1000

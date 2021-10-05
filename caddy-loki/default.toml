@@ -1,3 +1,5 @@
+hostname = "loki.themelio.org"
+
 [http]
 port = 80
 

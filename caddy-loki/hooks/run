@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Redirect stderr
+exec 2>&1
+
+envsubst < {{pkg.svc_config_path}}/Caddyfile > {{pkg.svc_config_path}}/Caddyfile-complete
+
+XDG_DATA_HOME={{pkg.svc_data_path}}
+
+export XDG_DATA_HOME
+
+XDG_CONFIG_HOME={{pkg.svc_data_path}}
+
+export XDG_CONFIG_HOME
+
+exec caddy run -config {{pkg.svc_config_path}}/Caddyfile-complete

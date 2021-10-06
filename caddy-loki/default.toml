@@ -1,4 +1,10 @@
-hostname = "loki.themelio.org"
+log_level = "DEBUG"
+
+[proxy]
+listening_hostname = "loki.themelio.org"
+forwarding_hostname = "loki"
+forwarding_port = 3100
+admin_email = "meade@themelio.org"
 
 [http]
 port = 80
@@ -6,6 +12,3 @@ port = 80
 [https]
 enabled = true
 port = 443
-
-[gzip]
-enabled = true

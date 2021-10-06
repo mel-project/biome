@@ -20,6 +20,9 @@ scrape_configs:
         target_label: __address__
         action: replace
         replacement: '${1}:8080'
+      - source_labels: [ __meta_openstack_private_ip ]
+        target_label: ip_address
+        replacement: '${1}'
 
   - job_name: 'openstack-de1'
     openstack_sd_configs:
@@ -34,6 +37,9 @@ scrape_configs:
         target_label: __address__
         action: replace
         replacement: '${1}:8080'
+      - source_labels: [ __meta_openstack_private_ip ]
+        target_label: ip_address
+        replacement: '${1}'
 
   - job_name: 'openstack-gra5'
     openstack_sd_configs:
@@ -48,6 +54,9 @@ scrape_configs:
         target_label: __address__
         action: replace
         replacement: '${1}:8080'
+      - source_labels: [ __meta_openstack_private_ip ]
+        target_label: ip_address
+        replacement: '${1}'
 
   - job_name: 'openstack-gra7'
     openstack_sd_configs:
@@ -62,6 +71,9 @@ scrape_configs:
         target_label: __address__
         action: replace
         replacement: '${1}:8080'
+      - source_labels: [ __meta_openstack_private_ip ]
+        target_label: ip_address
+        replacement: '${1}'
 
   - job_name: 'openstack-gra9'
     openstack_sd_configs:
@@ -76,6 +88,9 @@ scrape_configs:
         target_label: __address__
         action: replace
         replacement: '${1}:8080'
+      - source_labels: [ __meta_openstack_private_ip ]
+        target_label: ip_address
+        replacement: '${1}'
 
   - job_name: 'openstack-gra11'
     openstack_sd_configs:
@@ -90,6 +105,9 @@ scrape_configs:
         target_label: __address__
         action: replace
         replacement: '${1}:8080'
+      - source_labels: [ __meta_openstack_private_ip ]
+        target_label: ip_address
+        replacement: '${1}'
 
   - job_name: 'openstack-sbg5'
     openstack_sd_configs:
@@ -104,6 +122,9 @@ scrape_configs:
         target_label: __address__
         action: replace
         replacement: '${1}:8080'
+      - source_labels: [ __meta_openstack_private_ip ]
+        target_label: ip_address
+        replacement: '${1}'
 
   - job_name: 'openstack-sgp1'
     openstack_sd_configs:
@@ -118,6 +139,9 @@ scrape_configs:
         target_label: __address__
         action: replace
         replacement: '${1}:8080'
+      - source_labels: [ __meta_openstack_private_ip ]
+        target_label: ip_address
+        replacement: '${1}'
 
   - job_name: 'openstack-syd1'
     openstack_sd_configs:
@@ -132,6 +156,9 @@ scrape_configs:
         target_label: __address__
         action: replace
         replacement: '${1}:8080'
+      - source_labels: [ __meta_openstack_private_ip ]
+        target_label: ip_address
+        replacement: '${1}'
 
   - job_name: 'openstack-uk1'
     openstack_sd_configs:
@@ -146,6 +173,9 @@ scrape_configs:
         target_label: __address__
         action: replace
         replacement: '${1}:8080'
+      - source_labels: [ __meta_openstack_private_ip ]
+        target_label: ip_address
+        replacement: '${1}'
 
   - job_name: 'openstack-waw1'
     openstack_sd_configs:
@@ -160,3 +190,6 @@ scrape_configs:
         target_label: __address__
         action: replace
         replacement: '${1}:8080'
+      - source_labels: [ __meta_openstack_private_ip ]
+        target_label: ip_address
+        replacement: '${1}'

@@ -5,6 +5,7 @@ listening_hostname = "loki.themelio.org"
 forwarding_hostname = "loki"
 forwarding_port = 3100
 admin_email = "meade@themelio.org"
+basic_auth_enabled = true
 
 [http]
 port = 80

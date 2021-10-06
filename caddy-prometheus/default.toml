@@ -5,6 +5,7 @@ listening_hostname = "prometheus.themelio.org"
 forwarding_hostname = "prometheus"
 forwarding_port = 9090
 admin_email = "meade@themelio.org"
+basic_auth_enabled = true
 
 [http]
 port = 80

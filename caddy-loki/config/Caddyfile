@@ -13,9 +13,11 @@
 {{cfg.proxy.listening_hostname}} {
   encode zstd gzip
 
+  {{ ~#if cfg.proxy.basic_auth_enabled }}
   basicauth {
     $BASIC_AUTH_USER $BASIC_AUTH_HASHED_PASSWORD
   }
+  {{/if}}
 
   reverse_proxy http://{{cfg.proxy.forwarding_hostname}}:{{cfg.proxy.forwarding_port}}
 }

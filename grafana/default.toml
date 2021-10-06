@@ -21,6 +21,7 @@ cert_key = ""
 [prometheus]
 enabled = true
 url = "http://prometheus:9090"
+#url = "https://prometheus.themelio.org"
 basic_auth_enabled = true
 basic_auth_user = "changeme"
 basic_auth_password = "changeme"
@@ -28,6 +29,7 @@ basic_auth_password = "changeme"
 [loki]
 enabled = true
 url = "http://loki:3100"
+#url = "https://loki.themelio.org"
 basic_auth_enabled = true
 basic_auth_user = "changeme"
 basic_auth_password = "changeme"

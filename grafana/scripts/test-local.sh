@@ -7,7 +7,7 @@ PLAN_DIRECTORY="$(dirname "${SCRIPTS_DIRECTORY}")"
 
 bio pkg install --binlink core/bats
 bio pkg install --binlink core/curl
-bio pkg install --binlink core/nmap
+bio pkg install --binlink core/net-tools
 
 source "${PLAN_DIRECTORY}/plan.sh"
 

@@ -206,7 +206,7 @@ jobs:
   build-caddy-prometheus:
     needs:
       - verify-caddy-prometheus
-    if: contains(needs.verify-grafana.outputs.build, 'true')
+    if: contains(needs.verify-caddy-prometheus.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:

@@ -30,7 +30,7 @@ sudo bio pkg export container "${hart_file}"
 source results/last_container_export.env
 
 for tag in ${tags//,/ }; do
-  local_tag="ghcr.io/themeliolabs/promtail:${tag}"
+  local_tag="ghcr.io/themeliolabs/caddy-prometheus:${tag}"
 
   docker tag "${name}:${tag}" "${local_tag}"
 

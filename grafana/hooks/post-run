@@ -1,0 +1,11 @@
+#!/bin/sh
+
+{{~#if cfg.prometheus.enabled}}
+cp {{pkg.svc_config_path}}/datasource-prometheus.yaml {{pkg.svc_var_path}}/provisioning/datasources
+{{~/if}}
+
+{{~#if cfg.loki.enabled}}
+cp {{pkg.svc_config_path}}/datasource-loki.yaml {{pkg.svc_var_path}}/provisioning/datasources
+{{~/if}}
+
+cp -rf {{pkg.svc_config_path}}/themelio-node.json {{pkg.svc_var_path}}/dashboards/

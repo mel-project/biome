@@ -1,0 +1,15 @@
+log_level = "DEBUG"
+
+[proxy]
+listening_hostname = "grafana.infra.themelio.org"
+forwarding_hostname = "grafana"
+forwarding_port = 3000
+admin_email = "meade@themelio.org"
+basic_auth_enabled = false
+
+[http]
+port = 80
+
+[https]
+enabled = true
+port = 443

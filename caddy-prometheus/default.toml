@@ -1,0 +1,15 @@
+log_level = "DEBUG"
+
+[proxy]
+listening_hostname = "prometheus.infra.themelio.org"
+forwarding_hostname = "prometheus"
+forwarding_port = 9090
+admin_email = "meade@themelio.org"
+basic_auth_enabled = true
+
+[http]
+port = 80
+
+[https]
+enabled = true
+port = 443

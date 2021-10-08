@@ -1,0 +1,33 @@
+listening_port = 3000
+run_mode = "production"
+admin_user = "admin"
+admin_pass = "admin"
+gzip = true
+organisation_name = "Themelio"
+
+ldap_enabled = "false"
+ldap_host = ""
+ldap_bind_dn = ""
+ldap_bind_password = ""
+ldap_search_base_dns = ""
+ldap_admin_group = ""
+ldap_editor_group = ""
+ldap_viewer_group = "*"
+
+protocol = "http"
+cert_file = ""
+cert_key = ""
+
+[prometheus]
+enabled = true
+url = "https://prometheus.infra.themelio.org"
+basic_auth_enabled = true
+basic_auth_user = "changeme"
+basic_auth_password = "changeme"
+
+[loki]
+enabled = true
+url = "https://loki.infra.themelio.org"
+basic_auth_enabled = true
+basic_auth_user = "changeme"
+basic_auth_password = "changeme"

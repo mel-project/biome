@@ -1,0 +1,13 @@
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: {{cfg.prometheus.url}}
+    {{ ~#if cfg.prometheus.basic_auth_enabled }}
+    basicAuth: true
+    basicAuthUser: {{cfg.prometheus.basic_auth_user}}
+    basicAuthPassword: {{cfg.prometheus.basic_auth_password}}
+    {{/if}}
+    isDefault: true

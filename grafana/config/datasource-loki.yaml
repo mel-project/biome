@@ -1,0 +1,14 @@
+apiVersion: 1
+
+datasources:
+  - name: Loki
+    type: loki
+    access: proxy
+    url: {{cfg.loki.url}}
+    {{ ~#if cfg.loki.basic_auth_enabled }}
+    basicAuth: true
+    basicAuthUser: {{cfg.loki.basic_auth_user}}
+    basicAuthPassword: {{cfg.loki.basic_auth_password}}
+    {{/if}}
+    jsonData:
+      maxLines: 1000

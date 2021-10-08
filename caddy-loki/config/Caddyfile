@@ -1,0 +1,29 @@
+{
+  log {
+    level {{cfg.log_level}}
+  }
+
+  email {{cfg.proxy.admin_email}}
+
+  storage file_system {
+    root {{ pkg.svc_data_path }}
+  }
+}
+
+{{cfg.proxy.listening_hostname}} {
+  encode zstd gzip
+
+  {{ ~#if cfg.proxy.basic_auth_enabled }}
+  basicauth {
+    $BASIC_AUTH_USER $BASIC_AUTH_HASHED_PASSWORD
+  }
+  {{/if}}
+
+  reverse_proxy http://{{cfg.proxy.forwarding_hostname}}:{{cfg.proxy.forwarding_port}}
+}
+
+www.{{cfg.proxy.listening_hostname}} {
+  redir 301 {
+    https://{{cfg.proxy.listening_hostname}}{uri}
+  }
+}

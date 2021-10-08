@@ -27,7 +27,7 @@ jobs:
         shell: bash
         run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- go17 || echo true)" >> $GITHUB_ENV
 
-      - name: Check For Changes
+      - name: Output Complete
         id: changed
         if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
@@ -48,7 +48,7 @@ jobs:
         shell: bash
         run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- go || echo true)" >> $GITHUB_ENV
 
-      - name: Check For Changes
+      - name: Output Complete
         id: changed
         if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
@@ -69,7 +69,7 @@ jobs:
         shell: bash
         run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- grafana || echo true)" >> $GITHUB_ENV
 
-      - name: Check For Changes
+      - name: Output Complete
         id: changed
         if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
@@ -90,7 +90,7 @@ jobs:
         shell: bash
         run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- loki || echo true)" >> $GITHUB_ENV
 
-      - name: Check For Changes
+      - name: Output Complete
         id: changed
         if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
@@ -111,7 +111,7 @@ jobs:
         shell: bash
         run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- prometheus || echo true)" >> $GITHUB_ENV
 
-      - name: Check For Changes
+      - name: Output Complete
         id: changed
         if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
@@ -132,7 +132,7 @@ jobs:
         shell: bash
         run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- promtail || echo true)" >> $GITHUB_ENV
 
-      - name: Check For Changes
+      - name: Output Complete
         id: changed
         if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
@@ -153,7 +153,7 @@ jobs:
         shell: bash
         run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- caddy-grafana || echo true)" >> $GITHUB_ENV
 
-      - name: Check For Changes
+      - name: Output Complete
         id: changed
         if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
@@ -174,7 +174,7 @@ jobs:
         shell: bash
         run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- caddy-loki || echo true)" >> $GITHUB_ENV
 
-      - name: Check For Changes
+      - name: Output Complete
         id: changed
         if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
@@ -195,7 +195,7 @@ jobs:
         shell: bash
         run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- caddy-prometheus || echo true)" >> $GITHUB_ENV
 
-      - name: Check For Changes
+      - name: Output Complete
         id: changed
         if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
@@ -375,7 +375,7 @@ jobs:
       - name: Echo COMPLETE Environment Variable
         run: echo ${{ env.COMPLETE }}
 
-      - name: Check For Changes
+      - name: Output Complete
         id: build
         if: ${{ env.COMPLETE == 'true' }}
         run: echo "::set-output name=complete::true"
@@ -433,7 +433,7 @@ jobs:
       - name: Echo COMPLETE Environment Variable
         run: echo ${{ env.COMPLETE }}
 
-      - name: Check For Changes
+      - name: Output Complete
         id: build
         if: ${{ env.COMPLETE == 'true' }}
         run: echo "::set-output name=complete::true"
@@ -492,7 +492,7 @@ jobs:
       - name: Echo COMPLETE Environment Variable
         run: echo ${{ env.COMPLETE }}
 
-      - name: Check For Changes
+      - name: Output Complete
         id: build
         if: ${{ env.COMPLETE == 'true' }}
         run: echo "::set-output name=complete::true"

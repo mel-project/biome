@@ -7,419 +7,10 @@ on:
 env:
   CARGO_TERM_COLOR: always
 
-#jobs:
-#  build:
-#
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#
-#      - name: Update Apt
-#        run: sudo apt update
-#
-#      - name: Install TzData
-#        run: env DEBIAN_FRONTEND="noninteractive" sudo apt install -y tzdata
-#
-#      - uses: themeliolabs/actions-biome@v1
-#        with:
-#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-#          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-#
-#      - name: Fix Directory Permissions
-#        run: sudo chown -R $(whoami):$(id -ng) /hab
-#
-#      - name: Cache Biome
-#        uses: actions/cache@v2
-#        env:
-#          CACHE_NAME: cache-biome
-#        with:
-#          path: |
-#            ~/.hab/cache/artifacts
-#            /hab/cache/artifacts
-#            /hab/pkgs
-#          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('go-17/plan.sh') }}
-#          restore-keys: |
-#            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-#            ${{ runner.os }}-build-
-#            ${{ runner.os }}-
-#
-#      - name: Login to GitHub Container Registry
-#        uses: docker/login-action@v1
-#        with:
-#          registry: ghcr.io
-#          username: ${{ github.actor }}
-#          password: ${{ secrets.GITHUB_TOKEN }}
-#
-#
-#      - name: Build, Publish Artifact And Mark As Stable, Export And Publish Docker Image
-#        env:
-#          HAB_ORIGIN: "themelio"
-#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-#          HAB_BLDR_URL: "https://bldr.habitat.sh"
-#          BIOME_BLDR_URL: "https://bldr.biome.sh"
-#          BIOME_AUTH_TOKEN: ${{ secrets.BIOME_AUTH_TOKEN }}
-#          HABITAT_AUTH_TOKEN: ${{ secrets.HABITAT_AUTH_TOKEN }}
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
-#          OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
-#          OS_PROJECT_NAME: ${{ secrets.OS_PROJECT_NAME }}
-#          OS_USER_DOMAIN_NAME: ${{ secrets.OS_USER_DOMAIN_NAME }}
-#          OS_USERNAME: ${{ secrets.OS_USERNAME }}
-#          OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
-#        run: ./go-17/scripts/ci-publish.sh
-
-
 jobs:
-
-  # Verify Section
-
-  verify-go17:
-    runs-on: ubuntu-latest
-
-    outputs:
-      build: ${{ steps.changed.outputs.build }}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Fetch
-        run: git fetch
-
-      - name: Set Enviromnent Variable
-        shell: bash
-        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- go17 || echo true)" >> $GITHUB_ENV
-
-      - name: Output Complete
-        id: changed
-        if: ${{ env.CHANGED == 'true' }}
-        run: echo "::set-output name=build::true"
-
-  verify-go:
-    runs-on: ubuntu-latest
-
-    outputs:
-      build: ${{ steps.changed.outputs.build }}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Fetch
-        run: git fetch
-
-      - name: Set Enviromnent Variable
-        shell: bash
-        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- go || echo true)" >> $GITHUB_ENV
-
-      - name: Output Complete
-        id: changed
-        if: ${{ env.CHANGED == 'true' }}
-        run: echo "::set-output name=build::true"
-
-  verify-grafana:
-    runs-on: ubuntu-latest
-
-    outputs:
-      build: ${{ steps.changed.outputs.build }}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Fetch
-        run: git fetch
-
-      - name: Set Enviromnent Variable
-        shell: bash
-        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- grafana || echo true)" >> $GITHUB_ENV
-
-      - name: Output Complete
-        id: changed
-        if: ${{ env.CHANGED == 'true' }}
-        run: echo "::set-output name=build::true"
-
-  verify-loki:
-    runs-on: ubuntu-latest
-
-    outputs:
-      build: ${{ steps.changed.outputs.build }}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Fetch
-        run: git fetch
-
-      - name: Set Enviromnent Variable
-        shell: bash
-        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- loki || echo true)" >> $GITHUB_ENV
-
-      - name: Output Complete
-        id: changed
-        if: ${{ env.CHANGED == 'true' }}
-        run: echo "::set-output name=build::true"
-
-  verify-prometheus:
-    runs-on: ubuntu-latest
-
-    outputs:
-      build: ${{ steps.changed.outputs.build }}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Fetch
-        run: git fetch
-
-      - name: Set Enviromnent Variable
-        shell: bash
-        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- prometheus || echo true)" >> $GITHUB_ENV
-
-      - name: Output Complete
-        id: changed
-        if: ${{ env.CHANGED == 'true' }}
-        run: echo "::set-output name=build::true"
-
-  verify-promtail:
-    runs-on: ubuntu-latest
-
-    outputs:
-      build: ${{ steps.changed.outputs.build }}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Fetch
-        run: git fetch
-
-      - name: Set Enviromnent Variable
-        shell: bash
-        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- promtail || echo true)" >> $GITHUB_ENV
-
-      - name: Output Complete
-        id: changed
-        if: ${{ env.CHANGED == 'true' }}
-        run: echo "::set-output name=build::true"
-
-  verify-caddy-grafana:
-    runs-on: ubuntu-latest
-
-    outputs:
-      build: ${{ steps.changed.outputs.build }}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Fetch
-        run: git fetch
-
-      - name: Set Enviromnent Variable
-        shell: bash
-        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- caddy-grafana || echo true)" >> $GITHUB_ENV
-
-      - name: Output Complete
-        id: changed
-        if: ${{ env.CHANGED == 'true' }}
-        run: echo "::set-output name=build::true"
-
-  verify-caddy-loki:
-    runs-on: ubuntu-latest
-
-    outputs:
-      build: ${{ steps.changed.outputs.build }}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Fetch
-        run: git fetch
-
-      - name: Set Enviromnent Variable
-        shell: bash
-        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- caddy-loki || echo true)" >> $GITHUB_ENV
-
-      - name: Output Complete
-        id: changed
-        if: ${{ env.CHANGED == 'true' }}
-        run: echo "::set-output name=build::true"
-
-  verify-caddy-prometheus:
-    runs-on: ubuntu-latest
-
-    outputs:
-      build: ${{ steps.changed.outputs.build }}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Fetch
-        run: git fetch
-
-      - name: Set Enviromnent Variable
-        shell: bash
-        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- caddy-prometheus || echo true)" >> $GITHUB_ENV
-
-      - name: Output Complete
-        id: changed
-        if: ${{ env.CHANGED == 'true' }}
-        run: echo "::set-output name=build::true"
-
-
   # Caddy Plans
 
-  build-caddy-prometheus:
-    needs:
-      - verify-caddy-prometheus
-    if: contains(needs.verify-caddy-prometheus.outputs.build, 'true')
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Update Apt
-        run: sudo apt update
-
-      - name: Install TzData
-        run: env DEBIAN_FRONTEND="noninteractive" sudo apt install -y tzdata
-
-      - uses: themeliolabs/actions-biome@v1
-        with:
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-
-      - name: Fix Directory Permissions
-        run: sudo chown -R $(whoami):$(id -ng) /hab
-
-      - name: Cache Biome
-        uses: actions/cache@v2
-        env:
-          CACHE_NAME: cache-biome
-        with:
-          path: |
-            ~/.hab/cache/artifacts
-            /hab/cache/artifacts
-            /hab/pkgs
-          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('caddy-prometheus/plan.sh') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - name: Build, Publish Artifact And Mark As Stable, Export And Publish Docker Image
-        env:
-          HAB_ORIGIN: "themelio"
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          HAB_BLDR_URL: "https://bldr.habitat.sh"
-          BIOME_BLDR_URL: "https://bldr.biome.sh"
-          BIOME_AUTH_TOKEN: ${{ secrets.BIOME_AUTH_TOKEN }}
-          HABITAT_AUTH_TOKEN: ${{ secrets.HABITAT_AUTH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
-          OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
-          OS_PROJECT_NAME: ${{ secrets.OS_PROJECT_NAME }}
-          OS_USER_DOMAIN_NAME: ${{ secrets.OS_USER_DOMAIN_NAME }}
-          OS_USERNAME: ${{ secrets.OS_USERNAME }}
-          OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
-        run: ./caddy-prometheus/scripts/ci-publish.sh
-
-      - name: Set Enviromnent Variable
-        shell: bash
-        run: echo "COMPLETE=true" >> $GITHUB_ENV
-
-      - name: Echo COMPLETE Environment Variable
-        run: echo ${{ env.COMPLETE }}
-
-      - name: Output Complete
-        id: build
-        if: ${{ env.COMPLETE == 'true' }}
-        run: echo "::set-output name=complete::true"
-
-  build-caddy-loki:
-    needs:
-      - verify-caddy-loki
-    if: contains(needs.verify-caddy-loki.outputs.build, 'true')
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Update Apt
-        run: sudo apt update
-
-      - name: Install TzData
-        run: env DEBIAN_FRONTEND="noninteractive" sudo apt install -y tzdata
-
-      - uses: themeliolabs/actions-biome@v1
-        with:
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-
-      - name: Fix Directory Permissions
-        run: sudo chown -R $(whoami):$(id -ng) /hab
-
-      - name: Cache Biome
-        uses: actions/cache@v2
-        env:
-          CACHE_NAME: cache-biome
-        with:
-          path: |
-            ~/.hab/cache/artifacts
-            /hab/cache/artifacts
-            /hab/pkgs
-          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('caddy-loki/plan.sh') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - name: Build, Publish Artifact And Mark As Stable, Export And Publish Docker Image
-        env:
-          HAB_ORIGIN: "themelio"
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          HAB_BLDR_URL: "https://bldr.habitat.sh"
-          BIOME_BLDR_URL: "https://bldr.biome.sh"
-          BIOME_AUTH_TOKEN: ${{ secrets.BIOME_AUTH_TOKEN }}
-          HABITAT_AUTH_TOKEN: ${{ secrets.HABITAT_AUTH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
-          OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
-          OS_PROJECT_NAME: ${{ secrets.OS_PROJECT_NAME }}
-          OS_USER_DOMAIN_NAME: ${{ secrets.OS_USER_DOMAIN_NAME }}
-          OS_USERNAME: ${{ secrets.OS_USERNAME }}
-          OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
-        run: ./caddy-loki/scripts/ci-publish.sh
-
-      - name: Set Enviromnent Variable
-        shell: bash
-        run: echo "COMPLETE=true" >> $GITHUB_ENV
-
-      - name: Echo COMPLETE Environment Variable
-        run: echo ${{ env.COMPLETE }}
-
-      - name: Output Complete
-        id: build
-        if: ${{ env.COMPLETE == 'true' }}
-        run: echo "::set-output name=complete::true"
-
   build-caddy-grafana:
-    needs:
-      - verify-caddy-grafana
-    if: contains(needs.verify-caddy-grafana.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:
@@ -479,29 +70,133 @@ jobs:
           OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
         run: ./caddy-grafana/scripts/ci-publish.sh
 
-      - name: Set Enviromnent Variable
-        shell: bash
-        run: echo "COMPLETE=true" >> $GITHUB_ENV
 
-      - name: Echo COMPLETE Environment Variable
-        run: echo ${{ env.COMPLETE }}
-
-      - name: Output Complete
-        id: build
-        if: ${{ env.COMPLETE == 'true' }}
-        run: echo "::set-output name=complete::true"
-
-
-
-  # Build Go17 And Go Section
-
-  build-go17:
-    needs: verify-go17
-    if: contains(needs.verify-go17.outputs.build, 'true')
+  build-caddy-prometheus:
     runs-on: ubuntu-latest
 
-    outputs:
-      complete: ${{ steps.build.outputs.complete }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update Apt
+        run: sudo apt update
+
+      - name: Install TzData
+        run: env DEBIAN_FRONTEND="noninteractive" sudo apt install -y tzdata
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - name: Fix Directory Permissions
+        run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: |
+            ~/.hab/cache/artifacts
+            /hab/cache/artifacts
+            /hab/pkgs
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('caddy-prometheus/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Build, Publish Artifact And Mark As Stable, Export And Publish Docker Image
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          HAB_BLDR_URL: "https://bldr.habitat.sh"
+          BIOME_BLDR_URL: "https://bldr.biome.sh"
+          BIOME_AUTH_TOKEN: ${{ secrets.BIOME_AUTH_TOKEN }}
+          HABITAT_AUTH_TOKEN: ${{ secrets.HABITAT_AUTH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
+          OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
+          OS_PROJECT_NAME: ${{ secrets.OS_PROJECT_NAME }}
+          OS_USER_DOMAIN_NAME: ${{ secrets.OS_USER_DOMAIN_NAME }}
+          OS_USERNAME: ${{ secrets.OS_USERNAME }}
+          OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
+        run: ./caddy-prometheus/scripts/ci-publish.sh
+
+
+  build-caddy-loki:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update Apt
+        run: sudo apt update
+
+      - name: Install TzData
+        run: env DEBIAN_FRONTEND="noninteractive" sudo apt install -y tzdata
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - name: Fix Directory Permissions
+        run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: |
+            ~/.hab/cache/artifacts
+            /hab/cache/artifacts
+            /hab/pkgs
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('caddy-loki/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Build, Publish Artifact And Mark As Stable, Export And Publish Docker Image
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          HAB_BLDR_URL: "https://bldr.habitat.sh"
+          BIOME_BLDR_URL: "https://bldr.biome.sh"
+          BIOME_AUTH_TOKEN: ${{ secrets.BIOME_AUTH_TOKEN }}
+          HABITAT_AUTH_TOKEN: ${{ secrets.HABITAT_AUTH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
+          OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
+          OS_PROJECT_NAME: ${{ secrets.OS_PROJECT_NAME }}
+          OS_USER_DOMAIN_NAME: ${{ secrets.OS_USER_DOMAIN_NAME }}
+          OS_USERNAME: ${{ secrets.OS_USERNAME }}
+          OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
+        run: ./caddy-loki/scripts/ci-publish.sh
+
+
+# Go Plans
+
+  build-go17:
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -560,107 +255,11 @@ jobs:
           OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
         run: ./go17/scripts/ci-publish.sh
 
-      - name: Set Enviromnent Variable
-        shell: bash
-        run: echo "COMPLETE=true" >> $GITHUB_ENV
-
-      - name: Echo COMPLETE Environment Variable
-        run: echo ${{ env.COMPLETE }}
-
-      - name: Output Complete
-        id: build
-        if: ${{ env.COMPLETE == 'true' }}
-        run: echo "::set-output name=complete::true"
-
-  build-go:
-    needs:
-      - verify-go17
-      - verify-go
-    if: contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true')
-    runs-on: ubuntu-latest
-
-    outputs:
-      complete: ${{ steps.build.outputs.complete }}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Update Apt
-        run: sudo apt update
-
-      - name: Install TzData
-        run: env DEBIAN_FRONTEND="noninteractive" sudo apt install -y tzdata
-
-      - uses: themeliolabs/actions-biome@v1
-        with:
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-
-      - name: Fix Directory Permissions
-        run: sudo chown -R $(whoami):$(id -ng) /hab
-
-      - name: Cache Biome
-        uses: actions/cache@v2
-        env:
-          CACHE_NAME: cache-biome
-        with:
-          path: |
-            ~/.hab/cache/artifacts
-            /hab/cache/artifacts
-            /hab/pkgs
-          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('go/plan.sh') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - name: Build, Publish Artifact And Mark As Stable, Export And Publish Docker Image
-        env:
-          HAB_ORIGIN: "themelio"
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          HAB_BLDR_URL: "https://bldr.habitat.sh"
-          BIOME_BLDR_URL: "https://bldr.biome.sh"
-          BIOME_AUTH_TOKEN: ${{ secrets.BIOME_AUTH_TOKEN }}
-          HABITAT_AUTH_TOKEN: ${{ secrets.HABITAT_AUTH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
-          OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
-          OS_PROJECT_NAME: ${{ secrets.OS_PROJECT_NAME }}
-          OS_USER_DOMAIN_NAME: ${{ secrets.OS_USER_DOMAIN_NAME }}
-          OS_USERNAME: ${{ secrets.OS_USERNAME }}
-          OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
-        run: ./go/scripts/ci-publish.sh
-
-      - name: Set Enviromnent Variable
-        shell: bash
-        run: echo "COMPLETE=true" >> $GITHUB_ENV
-
-      - name: Echo COMPLETE Environment Variable
-        run: echo ${{ env.COMPLETE }}
-
-      - name: Output Complete
-        id: build
-        if: ${{ env.COMPLETE == 'true' }}
-        run: echo "::set-output name=complete::true"
 
   build-go-if-go17-changed:
     needs:
-      - verify-go17
-      - verify-go
       - build-go17
-    if: contains(needs.verify-go.outputs.build, 'true') && contains(needs.verify-go17.outputs.build, 'true') && contains(needs.build-go17.outputs.complete, 'true')
     runs-on: ubuntu-latest
-
-    outputs:
-      complete: ${{ steps.build.outputs.complete }}
 
     steps:
       - uses: actions/checkout@v2
@@ -719,28 +318,13 @@ jobs:
           OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
         run: ./go/scripts/ci-publish.sh
 
-      - name: Set Enviromnent Variable
-        shell: bash
-        run: echo "COMPLETE=true" >> $GITHUB_ENV
 
-      - name: Echo COMPLETE Environment Variable
-        run: echo ${{ env.COMPLETE }}
-
-      - name: Output Complete
-        id: build
-        if: ${{ env.COMPLETE == 'true' }}
-        run: echo "::set-output name=complete::true"
-
-
-
-  # Go17 And Go Change Plan Builds
+# Services
 
   build-grafana-if-go17-and-go-changed:
     needs:
       - build-go17
       - build-go-if-go17-changed
-      - verify-grafana
-    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go-if-go17-changed.outputs.complete, 'true') && contains(needs.verify-grafana.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:
@@ -804,8 +388,6 @@ jobs:
     needs:
       - build-go17
       - build-go-if-go17-changed
-      - verify-loki
-    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go-if-go17-changed.outputs.complete, 'true') && contains(needs.verify-loki.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:
@@ -869,8 +451,6 @@ jobs:
     needs:
       - build-go17
       - build-go-if-go17-changed
-      - verify-prometheus
-    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go-if-go17-changed.outputs.complete, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:
@@ -934,8 +514,6 @@ jobs:
     needs:
       - build-go17
       - build-go-if-go17-changed
-      - verify-promtail
-    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go-if-go17-changed.outputs.complete, 'true') && contains(needs.verify-promtail.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:
@@ -994,528 +572,3 @@ jobs:
           OS_USERNAME: ${{ secrets.OS_USERNAME }}
           OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
         run: ./prometheus/scripts/ci-publish.sh
-
-
-  # Go Change Builds
-
-  build-grafana-if-go-changed:
-    needs:
-      - verify-go17
-      - verify-grafana
-      - build-go
-    if: contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && contains(needs.verify-grafana.outputs.build, 'true')
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Update Apt
-        run: sudo apt update
-
-      - name: Install TzData
-        run: env DEBIAN_FRONTEND="noninteractive" sudo apt install -y tzdata
-
-      - uses: themeliolabs/actions-biome@v1
-        with:
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-
-      - name: Fix Directory Permissions
-        run: sudo chown -R $(whoami):$(id -ng) /hab
-
-      - name: Cache Biome
-        uses: actions/cache@v2
-        env:
-          CACHE_NAME: cache-biome
-        with:
-          path: |
-            ~/.hab/cache/artifacts
-            /hab/cache/artifacts
-            /hab/pkgs
-          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('grafana/plan.sh') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - name: Build, Publish Artifact And Mark As Stable, Export And Publish Docker Image
-        env:
-          HAB_ORIGIN: "themelio"
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          HAB_BLDR_URL: "https://bldr.habitat.sh"
-          BIOME_BLDR_URL: "https://bldr.biome.sh"
-          BIOME_AUTH_TOKEN: ${{ secrets.BIOME_AUTH_TOKEN }}
-          HABITAT_AUTH_TOKEN: ${{ secrets.HABITAT_AUTH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
-          OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
-          OS_PROJECT_NAME: ${{ secrets.OS_PROJECT_NAME }}
-          OS_USER_DOMAIN_NAME: ${{ secrets.OS_USER_DOMAIN_NAME }}
-          OS_USERNAME: ${{ secrets.OS_USERNAME }}
-          OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
-        run: ./grafana/scripts/ci-publish.sh
-
-  build-loki-if-go-changed:
-    needs:
-      - verify-go17
-      - verify-loki
-      - build-go
-    if: contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && contains(needs.verify-loki.outputs.build, 'true')
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Update Apt
-        run: sudo apt update
-
-      - name: Install TzData
-        run: env DEBIAN_FRONTEND="noninteractive" sudo apt install -y tzdata
-
-      - uses: themeliolabs/actions-biome@v1
-        with:
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-
-      - name: Fix Directory Permissions
-        run: sudo chown -R $(whoami):$(id -ng) /hab
-
-      - name: Cache Biome
-        uses: actions/cache@v2
-        env:
-          CACHE_NAME: cache-biome
-        with:
-          path: |
-            ~/.hab/cache/artifacts
-            /hab/cache/artifacts
-            /hab/pkgs
-          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('loki/plan.sh') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - name: Build, Publish Artifact And Mark As Stable, Export And Publish Docker Image
-        env:
-          HAB_ORIGIN: "themelio"
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          HAB_BLDR_URL: "https://bldr.habitat.sh"
-          BIOME_BLDR_URL: "https://bldr.biome.sh"
-          BIOME_AUTH_TOKEN: ${{ secrets.BIOME_AUTH_TOKEN }}
-          HABITAT_AUTH_TOKEN: ${{ secrets.HABITAT_AUTH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
-          OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
-          OS_PROJECT_NAME: ${{ secrets.OS_PROJECT_NAME }}
-          OS_USER_DOMAIN_NAME: ${{ secrets.OS_USER_DOMAIN_NAME }}
-          OS_USERNAME: ${{ secrets.OS_USERNAME }}
-          OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
-        run: ./loki/scripts/ci-publish.sh
-
-  build-prometheus-if-go-changed:
-    needs:
-      - verify-go17
-      - verify-prometheus
-      - build-go
-    if: contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Update Apt
-        run: sudo apt update
-
-      - name: Install TzData
-        run: env DEBIAN_FRONTEND="noninteractive" sudo apt install -y tzdata
-
-      - uses: themeliolabs/actions-biome@v1
-        with:
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-
-      - name: Fix Directory Permissions
-        run: sudo chown -R $(whoami):$(id -ng) /hab
-
-      - name: Cache Biome
-        uses: actions/cache@v2
-        env:
-          CACHE_NAME: cache-biome
-        with:
-          path: |
-            ~/.hab/cache/artifacts
-            /hab/cache/artifacts
-            /hab/pkgs
-          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('prometheus/plan.sh') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - name: Build, Publish Artifact And Mark As Stable, Export And Publish Docker Image
-        env:
-          HAB_ORIGIN: "themelio"
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          HAB_BLDR_URL: "https://bldr.habitat.sh"
-          BIOME_BLDR_URL: "https://bldr.biome.sh"
-          BIOME_AUTH_TOKEN: ${{ secrets.BIOME_AUTH_TOKEN }}
-          HABITAT_AUTH_TOKEN: ${{ secrets.HABITAT_AUTH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
-          OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
-          OS_PROJECT_NAME: ${{ secrets.OS_PROJECT_NAME }}
-          OS_USER_DOMAIN_NAME: ${{ secrets.OS_USER_DOMAIN_NAME }}
-          OS_USERNAME: ${{ secrets.OS_USERNAME }}
-          OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
-        run: ./prometheus/scripts/ci-publish.sh
-
-  build-promtail-if-go-changed:
-    needs:
-      - verify-go17
-      - verify-promtail
-      - build-go
-    if: contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && contains(needs.verify-promtail.outputs.build, 'true')
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Update Apt
-        run: sudo apt update
-
-      - name: Install TzData
-        run: env DEBIAN_FRONTEND="noninteractive" sudo apt install -y tzdata
-
-      - uses: themeliolabs/actions-biome@v1
-        with:
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-
-      - name: Fix Directory Permissions
-        run: sudo chown -R $(whoami):$(id -ng) /hab
-
-      - name: Cache Biome
-        uses: actions/cache@v2
-        env:
-          CACHE_NAME: cache-biome
-        with:
-          path: |
-            ~/.hab/cache/artifacts
-            /hab/cache/artifacts
-            /hab/pkgs
-          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('promtail/plan.sh') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - name: Build, Publish Artifact And Mark As Stable, Export And Publish Docker Image
-        env:
-          HAB_ORIGIN: "themelio"
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          HAB_BLDR_URL: "https://bldr.habitat.sh"
-          BIOME_BLDR_URL: "https://bldr.biome.sh"
-          BIOME_AUTH_TOKEN: ${{ secrets.BIOME_AUTH_TOKEN }}
-          HABITAT_AUTH_TOKEN: ${{ secrets.HABITAT_AUTH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
-          OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
-          OS_PROJECT_NAME: ${{ secrets.OS_PROJECT_NAME }}
-          OS_USER_DOMAIN_NAME: ${{ secrets.OS_USER_DOMAIN_NAME }}
-          OS_USERNAME: ${{ secrets.OS_USERNAME }}
-          OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
-        run: ./promtail/scripts/ci-publish.sh
-
-  # Plan-Only Change Builds
-
-  build-grafana:
-    needs:
-      - verify-go17
-      - verify-go
-      - verify-grafana
-    if: contains(needs.verify-grafana.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && !contains(needs.verify-go.outputs.build, 'true')
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Update Apt
-        run: sudo apt update
-
-      - name: Install TzData
-        run: env DEBIAN_FRONTEND="noninteractive" sudo apt install -y tzdata
-
-      - uses: themeliolabs/actions-biome@v1
-        with:
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-
-      - name: Fix Directory Permissions
-        run: sudo chown -R $(whoami):$(id -ng) /hab
-
-      - name: Cache Biome
-        uses: actions/cache@v2
-        env:
-          CACHE_NAME: cache-biome
-        with:
-          path: |
-            ~/.hab/cache/artifacts
-            /hab/cache/artifacts
-            /hab/pkgs
-          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('grafana/plan.sh') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - name: Build, Publish Artifact And Mark As Stable, Export And Publish Docker Image
-        env:
-          HAB_ORIGIN: "themelio"
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          HAB_BLDR_URL: "https://bldr.habitat.sh"
-          BIOME_BLDR_URL: "https://bldr.biome.sh"
-          BIOME_AUTH_TOKEN: ${{ secrets.BIOME_AUTH_TOKEN }}
-          HABITAT_AUTH_TOKEN: ${{ secrets.HABITAT_AUTH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
-          OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
-          OS_PROJECT_NAME: ${{ secrets.OS_PROJECT_NAME }}
-          OS_USER_DOMAIN_NAME: ${{ secrets.OS_USER_DOMAIN_NAME }}
-          OS_USERNAME: ${{ secrets.OS_USERNAME }}
-          OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
-        run: ./grafana/scripts/ci-publish.sh
-
-  build-loki:
-    needs:
-      - verify-go17
-      - verify-go
-      - verify-loki
-    if: contains(needs.verify-loki.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && !contains(needs.verify-go.outputs.build, 'true')
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Update Apt
-        run: sudo apt update
-
-      - name: Install TzData
-        run: env DEBIAN_FRONTEND="noninteractive" sudo apt install -y tzdata
-
-      - uses: themeliolabs/actions-biome@v1
-        with:
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-
-      - name: Fix Directory Permissions
-        run: sudo chown -R $(whoami):$(id -ng) /hab
-
-      - name: Cache Biome
-        uses: actions/cache@v2
-        env:
-          CACHE_NAME: cache-biome
-        with:
-          path: |
-            ~/.hab/cache/artifacts
-            /hab/cache/artifacts
-            /hab/pkgs
-          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('loki/plan.sh') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - name: Build, Publish Artifact And Mark As Stable, Export And Publish Docker Image
-        env:
-          HAB_ORIGIN: "themelio"
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          HAB_BLDR_URL: "https://bldr.habitat.sh"
-          BIOME_BLDR_URL: "https://bldr.biome.sh"
-          BIOME_AUTH_TOKEN: ${{ secrets.BIOME_AUTH_TOKEN }}
-          HABITAT_AUTH_TOKEN: ${{ secrets.HABITAT_AUTH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
-          OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
-          OS_PROJECT_NAME: ${{ secrets.OS_PROJECT_NAME }}
-          OS_USER_DOMAIN_NAME: ${{ secrets.OS_USER_DOMAIN_NAME }}
-          OS_USERNAME: ${{ secrets.OS_USERNAME }}
-          OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
-        run: ./loki/scripts/ci-publish.sh
-
-  build-prometheus:
-    needs:
-      - verify-go17
-      - verify-go
-      - verify-prometheus
-    if: contains(needs.verify-prometheus.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && !contains(needs.verify-go.outputs.build, 'true')
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Update Apt
-        run: sudo apt update
-
-      - name: Install TzData
-        run: env DEBIAN_FRONTEND="noninteractive" sudo apt install -y tzdata
-
-      - uses: themeliolabs/actions-biome@v1
-        with:
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-
-      - name: Fix Directory Permissions
-        run: sudo chown -R $(whoami):$(id -ng) /hab
-
-      - name: Cache Biome
-        uses: actions/cache@v2
-        env:
-          CACHE_NAME: cache-biome
-        with:
-          path: |
-            ~/.hab/cache/artifacts
-            /hab/cache/artifacts
-            /hab/pkgs
-          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('prometheus/plan.sh') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - name: Build, Publish Artifact And Mark As Stable, Export And Publish Docker Image
-        env:
-          HAB_ORIGIN: "themelio"
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          HAB_BLDR_URL: "https://bldr.habitat.sh"
-          BIOME_BLDR_URL: "https://bldr.biome.sh"
-          BIOME_AUTH_TOKEN: ${{ secrets.BIOME_AUTH_TOKEN }}
-          HABITAT_AUTH_TOKEN: ${{ secrets.HABITAT_AUTH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
-          OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
-          OS_PROJECT_NAME: ${{ secrets.OS_PROJECT_NAME }}
-          OS_USER_DOMAIN_NAME: ${{ secrets.OS_USER_DOMAIN_NAME }}
-          OS_USERNAME: ${{ secrets.OS_USERNAME }}
-          OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
-        run: ./prometheus/scripts/ci-publish.sh
-
-  build-promtail:
-    needs:
-      - verify-go17
-      - verify-go
-      - verify-promtail
-    if: contains(needs.verify-promtail.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && !contains(needs.verify-go.outputs.build, 'true')
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Update Apt
-        run: sudo apt update
-
-      - name: Install TzData
-        run: env DEBIAN_FRONTEND="noninteractive" sudo apt install -y tzdata
-
-      - uses: themeliolabs/actions-biome@v1
-        with:
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-
-      - name: Fix Directory Permissions
-        run: sudo chown -R $(whoami):$(id -ng) /hab
-
-      - name: Cache Biome
-        uses: actions/cache@v2
-        env:
-          CACHE_NAME: cache-biome
-        with:
-          path: |
-            ~/.hab/cache/artifacts
-            /hab/cache/artifacts
-            /hab/pkgs
-          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('promtail/plan.sh') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - name: Build, Publish Artifact And Mark As Stable, Export And Publish Docker Image
-        env:
-          HAB_ORIGIN: "themelio"
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          HAB_BLDR_URL: "https://bldr.habitat.sh"
-          BIOME_BLDR_URL: "https://bldr.biome.sh"
-          BIOME_AUTH_TOKEN: ${{ secrets.BIOME_AUTH_TOKEN }}
-          HABITAT_AUTH_TOKEN: ${{ secrets.HABITAT_AUTH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
-          OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
-          OS_PROJECT_NAME: ${{ secrets.OS_PROJECT_NAME }}
-          OS_USER_DOMAIN_NAME: ${{ secrets.OS_USER_DOMAIN_NAME }}
-          OS_USERNAME: ${{ secrets.OS_USERNAME }}
-          OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
-        run: ./promtail/scripts/ci-publish.sh

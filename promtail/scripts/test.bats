@@ -11,15 +11,15 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
 }
 
 @test "Service is running" {
-  [ "$(bio svc status | grep "promtail\.default" | awk '{print $4}' | grep up)" ]
+  [ "$(sudo bio svc status | grep "promtail\.default" | awk '{print $4}' | grep up)" ]
 }
 
 @test "Listening on port 9080" {
-  result="$(netstat -peanut | grep LISTEN | grep promtail | grep 9080 | awk '{print $4}' | tr -d ":")"
+  result="$(sudo netstat -peanut | grep LISTEN | grep promtail | grep 9080 | awk '{print $4}' | tr -d ":")"
   [ "${result}" -eq 9080 ]
 }
 
 @test "Listening on port 9095" {
-  result="$(netstat -peanut | grep LISTEN | grep promtail | grep 9095 | awk '{print $4}' | tr -d ":")"
+  result="$(sudo netstat -peanut | grep LISTEN | grep promtail | grep 9095 | awk '{print $4}' | tr -d ":")"
   [ "${result}" -eq 9095 ]
 }

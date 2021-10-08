@@ -9,7 +9,7 @@ source "${PLAN_DIRECTORY}/plan.sh"
 
 bio pkg build "${pkg_name}"
 
-source "${PLAN_DIRECTORY}/results/last_build.env"
+source "results/last_build.env"
 
 
 hart_file="${PLAN_DIRECTORY}/results/${pkg_artifact}"

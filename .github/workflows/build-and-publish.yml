@@ -256,7 +256,7 @@ jobs:
         run: ./go17/scripts/ci-publish.sh
 
 
-  build-go-if-go17-changed:
+  build-go:
     needs:
       - build-go17
     runs-on: ubuntu-latest
@@ -321,10 +321,10 @@ jobs:
 
 # Services
 
-  build-grafana-if-go17-and-go-changed:
+  build-grafana:
     needs:
       - build-go17
-      - build-go-if-go17-changed
+      - build-go
     runs-on: ubuntu-latest
 
     steps:
@@ -384,10 +384,10 @@ jobs:
           OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
         run: ./grafana/scripts/ci-publish.sh
 
-  build-loki-if-go17-and-go-changed:
+  build-loki:
     needs:
       - build-go17
-      - build-go-if-go17-changed
+      - build-go
     runs-on: ubuntu-latest
 
     steps:
@@ -447,10 +447,10 @@ jobs:
           OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
         run: ./loki/scripts/ci-publish.sh
 
-  build-prometheus-if-go17-and-go-changed:
+  build-prometheus:
     needs:
       - build-go17
-      - build-go-if-go17-changed
+      - build-go
     runs-on: ubuntu-latest
 
     steps:
@@ -510,10 +510,10 @@ jobs:
           OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
         run: ./prometheus/scripts/ci-publish.sh
 
-  build-promtail-if-go17-and-go-changed:
+  build-promtail:
     needs:
       - build-go17
-      - build-go-if-go17-changed
+      - build-go
     runs-on: ubuntu-latest
 
     steps:

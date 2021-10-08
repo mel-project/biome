@@ -1,7 +1,7 @@
 log_level = "DEBUG"
 
 [proxy]
-listening_hostname = "loki.themelio.org"
+listening_hostname = "loki.infra.themelio.org"
 forwarding_hostname = "loki"
 forwarding_port = 3100
 admin_email = "meade@themelio.org"

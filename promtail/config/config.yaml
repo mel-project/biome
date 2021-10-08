@@ -8,7 +8,7 @@ positions:
   filename: {{pkg.svc_var_path}}/positions.yaml
 
 clients:
-  - url: http://loki:3100/loki/api/v1/push
+  - url: {{cfg.loki_url}}
 
 scrape_configs:
   - job_name: containers

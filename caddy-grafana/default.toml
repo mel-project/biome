@@ -1,7 +1,7 @@
 log_level = "DEBUG"
 
 [proxy]
-listening_hostname = "grafana.themelio.org"
+listening_hostname = "grafana.infra.themelio.org"
 forwarding_hostname = "grafana"
 forwarding_port = 3000
 admin_email = "meade@themelio.org"

@@ -1,7 +1,7 @@
 log_level = "DEBUG"
 
 [proxy]
-listening_hostname = "prometheus.themelio.org"
+listening_hostname = "prometheus.infra.themelio.org"
 forwarding_hostname = "prometheus"
 forwarding_port = 9090
 admin_email = "meade@themelio.org"

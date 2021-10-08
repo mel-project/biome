@@ -3,7 +3,50 @@
 # Redirect stderr
 exec 2>&1
 
-LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:{{pkgPathFor "core/systemd"}}/lib:{{pkgPathFor "core/glibc"}}/lib"
-export LD_LIBRARY_PATH
+rm -rf /etc/ssl
+mkdir -p /etc/ssl
+ln -s "{{pkgPathFor "core/cacerts"}}/ssl/certs/cacert.pem" /etc/ssl/ca-bundle.pem
 
+#LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:{{pkgPathFor "core/systemd"}}/lib:{{pkgPathFor "core/glibc"}}/lib"
+#export LD_LIBRARY_PATH
+
+#PKG_CONFIG_PATH=/hab/pkgs/core/systemd/247/20210827145500/lib/pkgconfig:/hab/pkgs/core/systemd/247/20210827145500/share/pkgconfig
+#export PKG_CONFIG_PATH
+#
+#LD_RUN_PATH=/hab/pkgs/core/glibc/2.33/20210826050111/lib:/hab/pkgs/core/systemd/247/20210827145500/lib:/hab/pkgs/core/systemd/247/20210827145500/var/lib:/hab/pkgs/core/systemd/247/20210827145500/usr/lib
+#export LD_RUN_PATH
+
+
+#mkdir -p /lib/x86_64-linux-gnu/
+#ln -sf {{pkgPathFor "core/systemd"}}/lib/libsystemd.so /lib/x86_64-linux-gnu/libsystemd.so
+#
+#mkdir -p /usr/include/systemd
+#ln -sf {{pkgPathFor "core/systemd"}}/include/systemd /usr/include/
+#
+#mkdir -p /usr/lib/x86_64-linux-gnu/pkgconfig/
+#ln -sf {{pkgPathFor "core/systemd"}}/lib/pkgconfig/libsystemd.pc /usr/lib/x86_64-linux-gnu/pkgconfig/libsystemd.pc
+
+
+#exec sleep 33333333333
 exec promtail -log.level={{ cfg.log_level }} -config.file "{{ pkg.svc_config_path }}/config.yaml"
+
+# Biome
+# bio pkg install --binlink core/strace
+# cd /tmp/promtail
+# strace -o promtail_complete_strace_log promtail -log.level=debug -config.file /hab/svc/promtail/config/config.yaml
+# strace -e openat -o promtail_openat_strace_log promtail -log.level=debug -config.file /hab/svc/promtail/config/config.yaml
+
+
+# Official Docker
+# apt update && apt -y install strace
+# cd /tmp/promtail-official
+# strace -o promtail_official_complete_strace_log promtail -log.level=debug -config.file /etc/promtail/docker-config.yml
+# strace -e openat -o promtail_official_openat_strace_log promtail -log.level=debug -config.file /etc/promtail/docker-config.yml
+
+
+
+# Arch
+# mkdir -p /tmp/promtail-arch
+# cd /tmp/promtail-arch
+# strace -o promtail_arch_complete_strace_log promtail -log.level=debug -config.file /home/meade/Code/themelio/themelio-core/how-to-use/docker-config-arch.yml
+# strace -e openat -o promtail_arch_openat_strace_log promtail -log.level=debug -config.file /home/meade/Code/themelio/themelio-core/how-to-use/docker-config-arch.yml

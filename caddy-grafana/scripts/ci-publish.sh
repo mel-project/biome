@@ -8,11 +8,14 @@ PLAN_DIRECTORY="$(dirname "${SCRIPTS_DIRECTORY}")"
 source "${PLAN_DIRECTORY}/plan.sh"
 
 
-bio pkg build "biome/${pkg_name}"
+pushd "${PLAN_DIRECTORY}"
+build
+popd
 
-source results/last_build.env
+source "${PLAN_DIRECTORY}/results/last_build.env"
 
-hart_file="results/${pkg_artifact}"
+
+hart_file="${PLAN_DIRECTORY}/results/${pkg_artifact}"
 
 
 echo "Publishing artifact to the stable channel"

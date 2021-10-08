@@ -7,10 +7,7 @@ PLAN_DIRECTORY="$(dirname "${SCRIPTS_DIRECTORY}")"
 
 source "${PLAN_DIRECTORY}/plan.sh"
 
-
-pushd "${PLAN_DIRECTORY}"
-build
-popd
+bio pkg build "${pkg_name}"
 
 source "${PLAN_DIRECTORY}/results/last_build.env"
 

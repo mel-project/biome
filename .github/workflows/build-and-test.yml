@@ -485,8 +485,6 @@ jobs:
           name: go-go17-changed-dev
           path: results/go-go17-changed-dev.hart
 
-#  go-go17-changed-dev
-
       - name: Set Enviromnent Variable
         shell: bash
         run: echo "COMPLETE=true" >> $GITHUB_ENV
@@ -713,11 +711,57 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Show Go17 Verify Output
-        run: echo ${{ needs.verify-go17.outputs.build }}
+      - uses: actions/checkout@v2
 
-      - name: Show Go17 Build Output
-        run: echo ${{ needs.build-go17.outputs.complete }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: go17-dev
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: go-go17-changed-dev
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - name: Install Go
+        run: sudo bio pkg install go-go17-changed-dev.hart
+
+      - name: Fix Directory Permissions
+        run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Remove net-tools
+        run: sudo apt -y remove net-tools
+
+      - name: Remove nisdomainname
+        run: sudo rm /usr/bin/nisdomainname
+
+      - name: Remove hostname
+        run: sudo rm /usr/bin/hostname
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: |
+            ~/.hab/cache/artifacts
+            /hab/cache/artifacts
+            /hab/pkgs
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('grafana/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build, Run BATS Tests
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./grafana/scripts/ci-test.sh
 
   build-loki-if-go-changed:
     needs:
@@ -728,11 +772,57 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Show Go17 Verify Output
-        run: echo ${{ needs.verify-go17.outputs.build }}
+      - uses: actions/checkout@v2
 
-      - name: Show Go17 Build Output
-        run: echo ${{ needs.build-go17.outputs.complete }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: go17-dev
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: go-go17-changed-dev
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - name: Install Go
+        run: sudo bio pkg install go-go17-changed-dev.hart
+
+      - name: Fix Directory Permissions
+        run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Remove net-tools
+        run: sudo apt -y remove net-tools
+
+      - name: Remove nisdomainname
+        run: sudo rm /usr/bin/nisdomainname
+
+      - name: Remove hostname
+        run: sudo rm /usr/bin/hostname
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: |
+            ~/.hab/cache/artifacts
+            /hab/cache/artifacts
+            /hab/pkgs
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('loki/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build, Run BATS Tests
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./loki/scripts/ci-test.sh
 
   build-prometheus-if-go-changed:
     needs:
@@ -743,11 +833,48 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Show Go17 Verify Output
-        run: echo ${{ needs.verify-go17.outputs.build }}
+      - uses: actions/checkout@v2
 
-      - name: Show Go17 Build Output
-        run: echo ${{ needs.build-go17.outputs.complete }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: go17-dev
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: go-go17-changed-dev
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - name: Install Go
+        run: sudo bio pkg install go-go17-changed-dev.hart
+
+      - name: Fix Directory Permissions
+        run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: |
+            ~/.hab/cache/artifacts
+            /hab/cache/artifacts
+            /hab/pkgs
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('prometheus/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build, Run BATS Tests
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./prometheus/scripts/ci-test.sh
 
   build-promtail-if-go-changed:
     needs:
@@ -775,11 +902,54 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Show Go17 Verify Output
-        run: echo ${{ needs.verify-go17.outputs.build }}
+      - uses: actions/checkout@v2
 
-      - name: Show Go17 Build Output
-        run: echo ${{ needs.build-go17.outputs.complete }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: go17-dev
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: go-go17-changed-dev
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - name: Fix Directory Permissions
+        run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Remove net-tools
+        run: sudo apt -y remove net-tools
+
+      - name: Remove nisdomainname
+        run: sudo rm /usr/bin/nisdomainname
+
+      - name: Remove hostname
+        run: sudo rm /usr/bin/hostname
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: |
+            ~/.hab/cache/artifacts
+            /hab/cache/artifacts
+            /hab/pkgs
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('grafana/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build, Run BATS Tests
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./grafana/scripts/ci-test.sh
 
   build-loki:
     needs:
@@ -790,11 +960,54 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Show Go17 Verify Output
-        run: echo ${{ needs.verify-go17.outputs.build }}
+      - uses: actions/checkout@v2
 
-      - name: Show Go17 Build Output
-        run: echo ${{ needs.build-go17.outputs.complete }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: go17-dev
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: go-go17-changed-dev
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - name: Fix Directory Permissions
+        run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Remove net-tools
+        run: sudo apt -y remove net-tools
+
+      - name: Remove nisdomainname
+        run: sudo rm /usr/bin/nisdomainname
+
+      - name: Remove hostname
+        run: sudo rm /usr/bin/hostname
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: |
+            ~/.hab/cache/artifacts
+            /hab/cache/artifacts
+            /hab/pkgs
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('loki/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build, Run BATS Tests
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./loki/scripts/ci-test.sh
 
   build-prometheus:
     needs:
@@ -805,11 +1018,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Show Go17 Verify Output
-        run: echo ${{ needs.verify-go17.outputs.build }}
+      - uses: actions/checkout@v2
 
-      - name: Show Go17 Build Output
-        run: echo ${{ needs.build-go17.outputs.complete }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: go17-dev
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: go-go17-changed-dev
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - name: Fix Directory Permissions
+        run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: |
+            ~/.hab/cache/artifacts
+            /hab/cache/artifacts
+            /hab/pkgs
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('prometheus/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build, Run BATS Tests
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./prometheus/scripts/ci-test.sh
 
   build-promtail:
     needs:
@@ -825,72 +1072,3 @@ jobs:
 
       - name: Show Go17 Build Output
         run: echo ${{ needs.build-go17.outputs.complete }}
-
-
-
-
-
-
-
-#  build-grafana-if-go17-changed:
-#    needs:
-#      - verify-go17
-#      - verify-go
-#      - verify-grafana
-#      - build-go17
-#    if: contains(needs.verify-go.outputs.build, 'true') && contains(needs.verify-go17.outputs.build, 'true') && contains(needs.build-go17.outputs.complete, 'true')
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Show Go17 Verify Output
-#        run: echo ${{ needs.verify-go17.outputs.build }}
-#
-#      - name: Show Go17 Build Output
-#        run: echo ${{ needs.build-go17.outputs.complete }}
-
-
-
-
-
-
-
-
-#  build:
-#    if: ${{ env.CHANGED == 'true' }}
-#
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#
-#      - uses: themeliolabs/actions-biome@v1
-#        with:
-#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-#          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-#
-#      - name: Cache Biome
-#        uses: actions/cache@v2
-#        env:
-#          CACHE_NAME: cache-biome
-#        with:
-#          path: ~/.hab/cache
-#          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('go17/plan.sh') }}
-#          restore-keys: |
-#            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-#            ${{ runner.os }}-build-
-#            ${{ runner.os }}-
-#
-#      - name: Test
-#        env:
-#          HAB_ORIGIN: "themelio"
-#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        run: bio pkg build go17
-#
-#
-##      - name: Build, Run BATS Tests
-##        env:
-##          HAB_ORIGIN: "themelio"
-##          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-##          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-##        run: ./biome/themelio-node/scripts/ci-test.sh

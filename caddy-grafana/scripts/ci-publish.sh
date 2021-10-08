@@ -12,7 +12,7 @@ bio pkg build "${pkg_name}"
 source "results/last_build.env"
 
 
-hart_file="${PLAN_DIRECTORY}/results/${pkg_artifact}"
+hart_file="results/${pkg_artifact}"
 
 
 echo "Publishing artifact to the stable channel"

@@ -10,9 +10,9 @@ positions:
 clients:
   - url: {{cfg.loki_url}}
   {{ ~#if cfg.basic_auth_enabled }}
-  basic_auth:
-    username: {{cfg.basic_auth_username}}
-    password: {{cfg.basic_auth_password}}
+    basic_auth:
+      username: {{cfg.basic_auth_username}}
+      password: {{cfg.basic_auth_password}}
   {{/if}}
 
 scrape_configs:

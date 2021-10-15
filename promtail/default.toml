@@ -1,4 +1,5 @@
 log_level = "error"
 http_port = 9080
 grpc_port = 9095
-loki_url = "https://loki.infra.prometheus.org/loki/api/v1/push"
+loki_url = "http://loki:3100/loki/api/v1/push"
+basic_auth_enabled = false

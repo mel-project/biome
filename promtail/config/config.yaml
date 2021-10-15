@@ -9,6 +9,11 @@ positions:
 
 clients:
   - url: {{cfg.loki_url}}
+  {{ ~#if cfg.basic_auth_enabled }}
+  - basic_auth:
+      username: $BASIC_AUTH_USER
+      password: $BASIC_AUTH_PASSWORD
+  {{/if}}
 
 scrape_configs:
   - job_name: containers

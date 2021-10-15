@@ -3,3 +3,5 @@ http_port = 9080
 grpc_port = 9095
 loki_url = "http://loki:3100/loki/api/v1/push"
 basic_auth_enabled = false
+basic_auth_username = ""
+basic_auth_password = ""

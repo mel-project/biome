@@ -4,6 +4,7 @@ admin_user = "admin"
 admin_pass = "admin"
 gzip = true
 organisation_name = "Themelio"
+root_url = "http://localhost:3000"
 
 ldap_enabled = "false"
 ldap_host = ""

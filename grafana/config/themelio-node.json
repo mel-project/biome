@@ -153,6 +153,18 @@
               "mode": "off"
             }
           },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Metrics (Specific)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node/themelio-node?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            },
+            {
+              "targetBlank": true,
+              "title": "Logs (Error)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            }
+          ],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -233,6 +245,18 @@
               "mode": "off"
             }
           },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Metrics (Specific)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node/themelio-node?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            },
+            {
+              "targetBlank": true,
+              "title": "Logs (Error)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            }
+          ],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -313,6 +337,18 @@
               "mode": "off"
             }
           },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Metrics (Specific)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node/themelio-node?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            },
+            {
+              "targetBlank": true,
+              "title": "Logs (Error)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            }
+          ],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -400,6 +436,18 @@
               "mode": "off"
             }
           },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Metrics (Specific)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node/themelio-node?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            },
+            {
+              "targetBlank": true,
+              "title": "Logs (Error)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            }
+          ],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -480,6 +528,18 @@
               "mode": "off"
             }
           },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Metrics (Specific)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node/themelio-node?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            },
+            {
+              "targetBlank": true,
+              "title": "Logs (Error)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            }
+          ],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -560,6 +620,18 @@
               "mode": "off"
             }
           },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Metrics (Specific)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node/themelio-node?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            },
+            {
+              "targetBlank": true,
+              "title": "Logs (Error)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            }
+          ],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -640,6 +712,18 @@
               "mode": "off"
             }
           },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Metrics (Specific)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node/themelio-node?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            },
+            {
+              "targetBlank": true,
+              "title": "Logs (Error)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            }
+          ],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -692,6 +776,18 @@
           "color": {
             "mode": "thresholds"
           },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Metrics (Specific)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node/themelio-node?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            },
+            {
+              "targetBlank": true,
+              "title": "Logs (Error)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            }
+          ],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -746,6 +842,18 @@
           "color": {
             "mode": "thresholds"
           },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Metrics (Specific)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node/themelio-node?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            },
+            {
+              "targetBlank": true,
+              "title": "Logs (Error)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            }
+          ],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -801,6 +909,18 @@
           "color": {
             "mode": "thresholds"
           },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Metrics (Specific)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node/themelio-node?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            },
+            {
+              "targetBlank": true,
+              "title": "Logs (Error)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            }
+          ],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",

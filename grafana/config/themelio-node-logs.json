@@ -22,7 +22,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 3,
-  "iteration": 1634768607016,
+  "iteration": 1634769229781,
   "links": [],
   "panels": [
     {
@@ -50,7 +50,7 @@
           "refId": "A"
         }
       ],
-      "title": "Error (By IP Address)",
+      "title": "Error",
       "type": "logs"
     },
     {
@@ -78,7 +78,7 @@
           "refId": "A"
         }
       ],
-      "title": "Warning (By IP Address)",
+      "title": "Warning",
       "type": "logs"
     },
     {
@@ -106,7 +106,7 @@
           "refId": "A"
         }
       ],
-      "title": "Info (By IP Address)",
+      "title": "Info",
       "type": "logs"
     }
   ],
@@ -173,8 +173,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "51.83.250.64:8080",
+          "value": "51.83.250.64:8080"
         },
         "datasource": null,
         "definition": "label_values({network=~\"$network\", hostname=~\"$hostname\"}, instance) ",

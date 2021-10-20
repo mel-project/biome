@@ -7,8 +7,7 @@ PLAN_DIRECTORY="$(dirname "${SCRIPTS_DIRECTORY}")"
 
 sudo bio pkg install --binlink core/bats
 sudo bio pkg install --binlink core/curl
-
-#cp "${PLAN_DIRECTORY}/plan-debug.sh" "${PLAN_DIRECTORY}/plan.sh"
+sudo bio pkg install --binlink core/net-tools
 
 source "${PLAN_DIRECTORY}/plan.sh"
 
@@ -21,8 +20,6 @@ source results/last_build.env
 sudo bio pkg install --binlink --force "results/${pkg_artifact}"
 
 sudo useradd hab -s /bin/bash -p '*'
-
-#export DISABLE_HEALTH_CHECK=true
 
 sudo bio svc load "${pkg_ident}"
 

@@ -9,3 +9,4 @@ cp {{pkg.svc_config_path}}/datasource-loki.yaml {{pkg.svc_var_path}}/provisionin
 {{~/if}}
 
 cp -rf {{pkg.svc_config_path}}/themelio-node.json {{pkg.svc_var_path}}/dashboards/
+cp -rf {{pkg.svc_config_path}}/themelio-node-logs.json {{pkg.svc_var_path}}/dashboards/

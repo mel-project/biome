@@ -22,36 +22,101 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 3,
-  "iteration": 1632947355594,
+  "iteration": 1634762972650,
   "links": [],
   "panels": [
     {
-      "datasource": "Loki",
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Metrics (Specific)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node/themelio-node?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            },
+            {
+              "targetBlank": true,
+              "title": "Logs",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}&var-ip_address=All"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
         "y": 0
       },
-      "id": 19,
+      "id": 6,
       "options": {
-        "dedupStrategy": "none",
-        "enableLogDetails": true,
-        "prettifyLogMessage": false,
-        "showCommonLabels": false,
-        "showLabels": false,
-        "showTime": false,
-        "sortOrder": "Descending",
-        "wrapLogMessage": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
       },
+      "pluginVersion": "8.1.0",
       "targets": [
         {
-          "expr": "{job=\"containerlogs\"} |= \"public_ip=$ip_address\"",
+          "exemplar": true,
+          "expr": "sum(themelio_node_highest_block{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "",
           "refId": "A"
         }
       ],
-      "title": "Logs (By IP Address)",
-      "type": "logs"
+      "title": "Highest Block",
+      "transformations": [],
+      "type": "timeseries"
     },
     {
       "datasource": null,
@@ -177,7 +242,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "bytes"
         },
         "overrides": []
       },
@@ -187,7 +253,7 @@
         "x": 0,
         "y": 8
       },
-      "id": 6,
+      "id": 4,
       "options": {
         "legend": {
           "calcs": [],
@@ -202,15 +268,13 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(themelio_node_highest_block{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
-          "format": "time_series",
-          "hide": false,
+          "expr": "sum(themelio_node_network_transmitted_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "title": "Highest Block",
+      "title": "Network Transmitted",
       "transformations": [],
       "type": "timeseries"
     },
@@ -356,7 +420,7 @@
         "x": 0,
         "y": 16
       },
-      "id": 4,
+      "id": 8,
       "options": {
         "legend": {
           "calcs": [],
@@ -371,13 +435,13 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(themelio_node_network_transmitted_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
+          "expr": "sum(themelio_node_memory_total_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "title": "Network Transmitted",
+      "title": "Memory Total",
       "transformations": [],
       "type": "timeseries"
     },
@@ -516,7 +580,7 @@
         "x": 0,
         "y": 24
       },
-      "id": 8,
+      "id": 13,
       "options": {
         "legend": {
           "calcs": [],
@@ -531,13 +595,13 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(themelio_node_memory_total_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
+          "expr": "sum(themelio_node_root_filesystem_total_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "title": "Memory Total",
+      "title": "Root Filesystem Total Size",
       "transformations": [],
       "type": "timeseries"
     },
@@ -626,86 +690,6 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 32
-      },
-      "id": 13,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.1.0",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "sum(themelio_node_root_filesystem_total_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Root Filesystem Total Size",
-      "transformations": [],
-      "type": "timeseries"
-    },
-    {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "color": {
             "mode": "thresholds"
           },
           "mappings": [],
@@ -726,7 +710,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 40
+        "y": 32
       },
       "id": 15,
       "options": {
@@ -780,7 +764,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 52
+        "y": 44
       },
       "id": 16,
       "options": {
@@ -835,7 +819,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 62
+        "y": 54
       },
       "id": 17,
       "options": {

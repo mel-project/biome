@@ -19,11 +19,13 @@
     ]
   },
   "editable": true,
+  "fiscalYearStartMonth": 0,
   "gnetId": null,
   "graphTooltip": 0,
   "id": 3,
-  "iteration": 1634769229781,
+  "iteration": 1634851216104,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
       "datasource": "Loki",
@@ -46,7 +48,7 @@
       },
       "targets": [
         {
-          "expr": "{job=\"containerlogs\"} |= \"ERROR\"",
+          "expr": "{job=\"containerlogs\"} |= \"ERROR\" | logfmt | public_ip = ip(`$ip_address`)",
           "refId": "A"
         }
       ],
@@ -74,7 +76,8 @@
       },
       "targets": [
         {
-          "expr": "{job=\"containerlogs\"} |= \"WARN\"",
+          "expr": "{job=\"containerlogs\"} |= \"WARN\" | logfmt | public_ip = ip(`$ip_address`)",
+          "hide": false,
           "refId": "A"
         }
       ],
@@ -102,7 +105,7 @@
       },
       "targets": [
         {
-          "expr": "{job=\"containerlogs\"} |= \"DEBUG\"",
+          "expr": "{job=\"containerlogs\"} |= \"DEBUG\" | logfmt | public_ip = ip(`$ip_address`)",
           "refId": "A"
         }
       ],
@@ -110,7 +113,7 @@
       "type": "logs"
     }
   ],
-  "schemaVersion": 30,
+  "schemaVersion": 31,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -145,7 +148,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -172,9 +175,9 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "51.83.250.64:8080",
-          "value": "51.83.250.64:8080"
+          "selected": true,
+          "text": "51.79.92.25:8080",
+          "value": "51.79.92.25:8080"
         },
         "datasource": null,
         "definition": "label_values({network=~\"$network\", hostname=~\"$hostname\"}, instance) ",
@@ -200,15 +203,15 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "51.79.92.25",
+          "value": "51.79.92.25"
         },
         "datasource": null,
         "definition": "label_values({network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\",}, ip_address) ",
         "description": null,
         "error": null,
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": null,
         "multi": false,
         "name": "ip_address",
@@ -233,5 +236,5 @@
   "timezone": "",
   "title": "Themelio-Node Logs",
   "uid": "themelio-node-logs",
-  "version": 1
+  "version": 5
 }

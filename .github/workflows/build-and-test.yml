@@ -981,14 +981,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: go17-dev
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: go-go17-changed-dev
-
       - uses: themeliolabs/actions-biome@v1
         with:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
@@ -1038,14 +1030,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: go17-dev
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: go-go17-changed-dev
 
       - uses: themeliolabs/actions-biome@v1
         with:
@@ -1097,14 +1081,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: go17-dev
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: go-go17-changed-dev
-
       - uses: themeliolabs/actions-biome@v1
         with:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
@@ -1112,6 +1088,15 @@ jobs:
 
       - name: Fix Directory Permissions
         run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Remove net-tools
+        run: sudo apt -y remove net-tools
+
+      - name: Remove nisdomainname
+        run: sudo rm /usr/bin/nisdomainname
+
+      - name: Remove hostname
+        run: sudo rm /usr/bin/hostname
 
       - name: Cache Biome
         uses: actions/cache@v2
@@ -1145,14 +1130,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: go17-dev
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: go-go17-changed-dev
 
       - uses: themeliolabs/actions-biome@v1
         with:

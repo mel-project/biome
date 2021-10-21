@@ -163,7 +163,7 @@
             },
             {
               "targetBlank": true,
-              "title": "Logs (Error)",
+              "title": "Logs",
               "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}"
             }
           ],
@@ -255,7 +255,7 @@
             },
             {
               "targetBlank": true,
-              "title": "Logs (Error)",
+              "title": "Logs",
               "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}"
             }
           ],
@@ -347,7 +347,7 @@
             },
             {
               "targetBlank": true,
-              "title": "Logs (Error)",
+              "title": "Logs",
               "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}"
             }
           ],
@@ -450,7 +450,7 @@
             },
             {
               "targetBlank": true,
-              "title": "Logs (Error)",
+              "title": "Logs",
               "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}"
             }
           ],
@@ -542,7 +542,7 @@
             },
             {
               "targetBlank": true,
-              "title": "Logs (Error)",
+              "title": "Logs",
               "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}"
             }
           ],
@@ -634,7 +634,7 @@
             },
             {
               "targetBlank": true,
-              "title": "Logs (Error)",
+              "title": "Logs",
               "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}"
             }
           ],
@@ -726,7 +726,7 @@
             },
             {
               "targetBlank": true,
-              "title": "Logs (Error)",
+              "title": "Logs",
               "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}"
             }
           ],
@@ -790,7 +790,7 @@
             },
             {
               "targetBlank": true,
-              "title": "Logs (Error)",
+              "title": "Logs",
               "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}"
             }
           ],
@@ -857,7 +857,7 @@
             },
             {
               "targetBlank": true,
-              "title": "Logs (Error)",
+              "title": "Logs",
               "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}"
             }
           ],
@@ -924,7 +924,7 @@
             },
             {
               "targetBlank": true,
-              "title": "Logs (Error)",
+              "title": "Logs",
               "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}"
             }
           ],

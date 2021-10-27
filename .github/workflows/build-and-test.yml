@@ -11,6 +11,27 @@ jobs:
 
 # Verify Section
 
+  verify-rust:
+    runs-on: ubuntu-latest
+
+    outputs:
+      build: ${{ steps.changed.outputs.build }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch
+        run: git fetch
+
+      - name: Set Enviromnent Variable
+        shell: bash
+        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- rust || echo true)" >> $GITHUB_ENV
+
+      - name: Output Complete
+        id: changed
+        if: ${{ env.CHANGED == 'true' }}
+        run: echo "::set-output name=build::true"
+
   verify-go17:
     runs-on: ubuntu-latest
 
@@ -199,6 +220,47 @@ jobs:
         id: changed
         if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
+
+# Rust
+
+  build-rust:
+    needs:
+      - verify-rust
+    if: contains(needs.verify-rust.outputs.build, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - name: Fix Directory Permissions
+        run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: |
+            ~/.hab/cache/artifacts
+            /hab/cache/artifacts
+            /hab/pkgs
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('rust/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build, Run BATS Tests
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bio pkg build caddy-prometheus
 
 
 # Caddy Plans

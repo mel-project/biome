@@ -5,7 +5,7 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
   [ "$result" = "${pkg_version}" ]
 }
 
-@test "Help flag works" {
+@test "Rust help flag works" {
   run rustc --help
   [ $status -eq 0 ]
 }
@@ -15,7 +15,7 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
   [ "$result" = "${pkg_version}" ]
 }
 
-@test "Help flag works" {
+@test "Cargo help flag works" {
   run cargo --help
   [ $status -eq 0 ]
 }

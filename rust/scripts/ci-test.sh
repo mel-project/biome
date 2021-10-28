@@ -5,13 +5,13 @@ set -ex
 SCRIPTS_DIRECTORY="$(dirname "${0}")"
 PLAN_DIRECTORY="$(dirname "${SCRIPTS_DIRECTORY}")"
 
-sudo bio pkg install --binlink core/bats
+#sudo bio pkg install --binlink core/bats
 
-source "${PLAN_DIRECTORY}/plan.sh"
+#source "${PLAN_DIRECTORY}/plan.sh"
 
-bio pkg build "${pkg_name}"
+#bio pkg build "${pkg_name}"
 
-source results/last_build.env
+#source results/last_build.env
 
 #sudo bio pkg install --binlink --force "results/${pkg_artifact}"
 
@@ -19,4 +19,4 @@ rustc --version
 
 cargo --version
 
-bats "${SCRIPTS_DIRECTORY}/test.bats"
+#bats "${SCRIPTS_DIRECTORY}/test.bats"

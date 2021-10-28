@@ -13,7 +13,7 @@ bio pkg build "${pkg_name}"
 
 source results/last_build.env
 
-sudo bio pkg install --binlink --force "results/${pkg_artifact}"
+#sudo bio pkg install --binlink --force "results/${pkg_artifact}"
 
 rustc --version
 

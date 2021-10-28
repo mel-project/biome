@@ -17,8 +17,4 @@ source results/last_build.env
 
 sudo bio pkg install --binlink --force "results/${pkg_artifact}"
 
-rustc --version
-
-cargo --version
-
 bats "${SCRIPTS_DIRECTORY}/test.bats"

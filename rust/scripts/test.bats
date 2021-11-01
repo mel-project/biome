@@ -2,7 +2,7 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
 
 @test "Rust version matches" {
   result="$(rustc --version | awk '{print $2}')"
-  [ "$result" = "${pkg_version}" ]
+  [ "$result" = "${rustc_version}" ]
 }
 
 @test "Help flag works" {
@@ -12,7 +12,7 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
 
 @test "Cargo version matches" {
   result="$(cargo --version | awk '{print $2}')"
-  [ "$result" = "${pkg_version}" ]
+  [ "$result" = "${cargo_version}" ]
 }
 
 @test "Help flag works" {

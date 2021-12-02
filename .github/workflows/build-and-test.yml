@@ -255,12 +255,21 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: Build, Run BATS Tests
-        env:
-          HAB_ORIGIN: "themelio"
-          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./rust/scripts/ci-test.sh
+      - name: Remove Rust
+        run: sudo rm -rf /usr/share/rust/
+
+      - name: See If Rust Exists
+        run: which rustc
+
+      - name: See If Cargo Exists
+        run: which cargo
+
+#      - name: Build, Run BATS Tests
+#        env:
+#          HAB_ORIGIN: "themelio"
+#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        run: ./rust/scripts/ci-test.sh
 
 
 # Caddy Plans

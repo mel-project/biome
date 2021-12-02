@@ -7,7 +7,7 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
 
 @test "Help flag works" {
   run grafana-server --help
-  [ $status -eq 0 ]
+  [ $status -eq 1 ]
 }
 
 @test "Curl returns 302" {

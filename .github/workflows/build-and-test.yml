@@ -258,18 +258,24 @@ jobs:
       - name: Remove Rust
         run: sudo rm -rf /usr/share/rust/
 
-      - name: See If Rust Exists
-        run: which rustc
+      - name: Remove Rustc
+        run: sudo rm -rf /home/runner/.cargo/bin/rustc
 
-      - name: See If Cargo Exists
-        run: which cargo
+      - name: Remove Cargo
+        run: sudo rm -rf /home/runner/.cargo/bin/cargo
 
-#      - name: Build, Run BATS Tests
-#        env:
-#          HAB_ORIGIN: "themelio"
-#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        run: ./rust/scripts/ci-test.sh
+#      - name: See If Rust Exists
+#        run: which rustc
+
+#      - name: See If Cargo Exists
+#        run: which cargo
+
+      - name: Build, Run BATS Tests
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./rust/scripts/ci-test.sh
 
 
 # Caddy Plans

@@ -255,6 +255,21 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
+      - name: Remove Rust
+        run: sudo rm -rf /usr/share/rust/
+
+      - name: Remove Rustc
+        run: sudo rm -rf /home/runner/.cargo/bin/rustc
+
+      - name: Remove Cargo
+        run: sudo rm -rf /home/runner/.cargo/bin/cargo
+
+#      - name: See If Rust Exists
+#        run: which rustc
+
+#      - name: See If Cargo Exists
+#        run: which cargo
+
       - name: Build, Run BATS Tests
         env:
           HAB_ORIGIN: "themelio"
@@ -724,6 +739,15 @@ jobs:
       - name: Fix Directory Permissions
         run: sudo chown -R $(whoami):$(id -ng) /hab
 
+      - name: Remove net-tools
+        run: sudo apt -y remove net-tools
+
+      - name: Remove nisdomainname
+        run: sudo rm /usr/bin/nisdomainname
+
+      - name: Remove hostname
+        run: sudo rm /usr/bin/hostname
+
       - name: Cache Biome
         uses: actions/cache@v2
         env:
@@ -815,21 +839,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: go17-dev
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: go-go17-changed-dev
-
       - uses: themeliolabs/actions-biome@v1
         with:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: go-dev
+
       - name: Install Go
-        run: sudo bio pkg install go-go17-changed-dev.hart
+        run: sudo bio pkg install go-dev.hart
 
       - name: Fix Directory Permissions
         run: sudo chown -R $(whoami):$(id -ng) /hab
@@ -876,21 +896,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: go17-dev
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: go-go17-changed-dev
-
       - uses: themeliolabs/actions-biome@v1
         with:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: go-dev
+
       - name: Install Go
-        run: sudo bio pkg install go-go17-changed-dev.hart
+        run: sudo bio pkg install go-dev.hart
 
       - name: Fix Directory Permissions
         run: sudo chown -R $(whoami):$(id -ng) /hab
@@ -937,24 +953,29 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: go17-dev
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: go-go17-changed-dev
-
       - uses: themeliolabs/actions-biome@v1
         with:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: go-dev
+
       - name: Install Go
-        run: sudo bio pkg install go-go17-changed-dev.hart
+        run: sudo bio pkg install go-dev.hart
 
       - name: Fix Directory Permissions
         run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Remove net-tools
+        run: sudo apt -y remove net-tools
+
+      - name: Remove nisdomainname
+        run: sudo rm /usr/bin/nisdomainname
+
+      - name: Remove hostname
+        run: sudo rm /usr/bin/hostname
 
       - name: Cache Biome
         uses: actions/cache@v2
@@ -989,21 +1010,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: go17-dev
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: go-go17-changed-dev
-
       - uses: themeliolabs/actions-biome@v1
         with:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: go-dev
+
       - name: Install Go
-        run: sudo bio pkg install go-go17-changed-dev.hart
+        run: sudo bio pkg install go-dev.hart
 
       - name: Fix Directory Permissions
         run: sudo chown -R $(whoami):$(id -ng) /hab

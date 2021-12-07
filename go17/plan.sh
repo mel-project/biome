@@ -1,16 +1,28 @@
 pkg_name=go17
 pkg_origin=themelio
-pkg_version=1.7.6
+pkg_version=1.16
 pkg_description="Go is an open source programming language that makes it easy to
   build simple, reliable, and efficient software."
 pkg_upstream_url=https://golang.org/
 pkg_license=('BSD')
 pkg_maintainer="Meade Kincke <meade@themelio.org>"
 pkg_source=https://storage.googleapis.com/golang/go${pkg_version}.src.tar.gz
-pkg_shasum=1a67a4e688673fdff7ba41e73482b0e59ac5bd0f7acf703bc6d50cc775c5baba
+pkg_shasum=7688063d55656105898f323d90a79a39c378d86fe89ae192eb3b7fc46347c95a
 pkg_dirname=go
-pkg_deps=(core/glibc core/iana-etc core/cacerts)
-pkg_build_deps=(core/coreutils core/inetutils core/bash core/patch core/gcc core/go14 core/perl)
+pkg_deps=(
+  core/cacerts
+  core/glibc
+  core/iana-etc
+)
+pkg_build_deps=(
+  core/bash
+  core/coreutils
+  core/gcc
+  core/go14
+  core/inetutils
+  core/patch
+  core/perl
+)
 pkg_bin_dirs=(bin)
 
 do_prepare() {

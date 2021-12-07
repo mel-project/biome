@@ -1,13 +1,13 @@
 pkg_name=promtail
 pkg_origin=themelio
-pkg_version="2.3.0"
+pkg_version="2.4.1"
 pkg_maintainer="Meade Kincke <meade@themelio.org>"
 pkg_description="Promtail is an agent which ships the contents of local logs to a private Loki instance or Grafana Cloud."
 pkg_license=('Apache-2.0')
 pkg_upstream_url=https://github.com/grafana/loki
 pkg_source="https://github.com/grafana/loki/archive/v${pkg_version}.tar.gz"
 pkg_filename="v${pkg_version}.tar.gz"
-pkg_shasum="c71174a2fbb7b6183cb84fc3a5e328cb4276a495c7c0be8ec53c377ec0363489"
+pkg_shasum="a26c22941b406b8c42e55091c23798301181df74063aaaf0f678acffc66d8c27"
 loki_pkg_dir="${HAB_CACHE_SRC_PATH}/${pkg_name}-${pkg_version}"
 loki_build_dir="${loki_pkg_dir}/src/${pkg_source}"
 pkg_build_deps=(
@@ -72,7 +72,7 @@ do_build() {
   sed -e "s#SHELL = /usr/bin/env bash#SHELL = $(pkg_path_for core/coreutils)/bin/env bash#" -i Makefile
   fix_interpreter "tools/image-tag" core/coreutils bin/env
 
-  make touch-protos
+#  make touch-protos
 #  CGO_CFLAGS="-I$(pkg_path_for core/systemd)/include" make BUILD_IN_CONTAINER=false promtail
 
   CGO_CFLAGS="-I$(pkg_path_for core/systemd)/include" go build -trimpath -buildmode=pie -mod=readonly -modcacherw -ldflags "-X github.com/grafana/loki/pkg/util/build.Version=$pkg_version -X github.com/grafana/loki/pkg/util/build.BuildDate=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -linkmode external -extldflags \"${LDFLAGS}\"" ./clients/cmd/promtail

@@ -123,9 +123,6 @@ do_install() {
     cp -av pkg/linux_${GOARCH}_race "${pkg_prefix}/pkg/"
   fi
 
-  # For godoc
-  install -v -Dm644 favicon.ico "${pkg_prefix}/favicon.ico"
-
   # Install the license
   install -v -Dm644 LICENSE "${pkg_prefix}/share/licenses/LICENSE"
 

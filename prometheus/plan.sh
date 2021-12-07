@@ -2,12 +2,12 @@ pkg_name=prometheus
 pkg_description="Prometheus monitoring"
 pkg_upstream_url=http://prometheus.io
 pkg_origin=themelio
-pkg_version=2.30.3
+pkg_version=2.31.1
 pkg_maintainer="Meade Kincke <meade@themelio.org>"
 pkg_license=('Apache-2.0')
 pkg_bin_dirs=(bin)
 pkg_source="https://github.com/prometheus/prometheus/archive/v${pkg_version}.tar.gz"
-pkg_shasum=66a835096e717c11db2ecb5f948c6346868fa1f877196ee2237fb4630df97c06
+pkg_shasum=869a8be315721115be628f766ec3ff71aa50f1a027cee776ea54d7ba070a5026
 prom_pkg_dir="${HAB_CACHE_SRC_PATH}/${pkg_name}-${pkg_version}"
 prom_build_dir="${prom_pkg_dir}/src/${pkg_source}"
 pkg_build_deps=(
@@ -45,6 +45,12 @@ do_unpack() {
   popd || exit 1
 }
 
+do_check() {
+  pushd "${prom_pkg_dir}/src/github.com/prometheus/prometheus" || exit 1
+  make test
+  popd || exit 1
+}
+
 do_build() {
   pushd "${prom_pkg_dir}/src/github.com/prometheus/prometheus" || exit 1
 
@@ -54,25 +60,38 @@ do_build() {
 
   pip install yamllint
 
-  cp "$PLAN_CONTEXT/files/build.sh" "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/module"
-  cp "$PLAN_CONTEXT/files/fix.sh" "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/react-app"
-  cp "$PLAN_CONTEXT/files/Makefile" .
-  export INTERPRETER_OLD="/usr/bin/env"
-  export INTERPRETER_NEW="$(pkg_path_for coreutils)/bin/env"
-  fix_interpreter "${prom_pkg_dir}/src/github.com/prometheus/prometheus/scripts/build_react_app.sh" core/coreutils bin/env
-  USER="root" PREFIX="${pkg_prefix}/bin" make build
+  cd web/ui/module/codemirror-promql
+  npm install
+  fix_interpreter "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/module/codemirror-promql/node_modules/.bin/*" core/coreutils bin/env
+  npm run build
+  cd "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui"
+  go generate -x -v
+  cd "${prom_pkg_dir}/src/github.com/prometheus/prometheus"
+  make ui-install
+  npm install -g react-scripts
+  fix_interpreter "$(which react-scripts)" core/coreutils bin/env
+  cd "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/react-app"
+  npm install
+  fix_interpreter "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/react-app/node_modules/.bin/*" core/coreutils bin/env
+  cd "${prom_pkg_dir}/src/github.com/prometheus/prometheus"
+  make ui-build
+
+  LDFLAGS="-X github.com/prometheus/common/version.Version=$pkg_version \
+    -X github.com/prometheus/common/version.Revision=$pkg_version \
+    -X github.com/prometheus/common/version.Branch=tarball \
+    -X github.com/prometheus/common/version.BuildUser=meade@themelio.org \
+    -X github.com/prometheus/common/version.BuildDate=$(date -u '+%Y%m%d-%H:%M:%S')"
+
+  go build -trimpath -buildmode=pie -mod=readonly -modcacherw -ldflags "-linkmode external $LDFLAGS" ./cmd/prometheus
+  go build -trimpath -buildmode=pie -mod=readonly -modcacherw -ldflags "-linkmode external $LDFLAGS" ./cmd/promtool
 
   popd || exit 1
 
   rm -rf /etc/ssl
 }
 
-do_check() {
-  pushd "${prom_pkg_dir}/src/github.com/prometheus/prometheus" || exit 1
-  make test
-  popd || exit 1
-}
-
 do_install() {
-  return 0
+  cd "${prom_pkg_dir}/src/github.com/prometheus/prometheus"
+  install -Dm755 promtool "${pkg_prefix}/bin/promtool"
+  install -Dm755 prometheus "${pkg_prefix}/bin/prometheus"
 }

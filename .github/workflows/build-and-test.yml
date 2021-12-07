@@ -830,21 +830,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: go17-dev
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: go-go17-changed-dev
-
       - uses: themeliolabs/actions-biome@v1
         with:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: go-dev
+
       - name: Install Go
-        run: sudo bio pkg install go-go17-changed-dev.hart
+        run: sudo bio pkg install go-dev.hart
 
       - name: Fix Directory Permissions
         run: sudo chown -R $(whoami):$(id -ng) /hab
@@ -891,21 +887,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: go17-dev
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: go-go17-changed-dev
-
       - uses: themeliolabs/actions-biome@v1
         with:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: go-dev
+
       - name: Install Go
-        run: sudo bio pkg install go-go17-changed-dev.hart
+        run: sudo bio pkg install go-dev.hart
 
       - name: Fix Directory Permissions
         run: sudo chown -R $(whoami):$(id -ng) /hab
@@ -952,21 +944,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: go17-dev
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: go-go17-changed-dev
-
       - uses: themeliolabs/actions-biome@v1
         with:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: go-dev
+
       - name: Install Go
-        run: sudo bio pkg install go-go17-changed-dev.hart
+        run: sudo bio pkg install go-dev.hart
 
       - name: Fix Directory Permissions
         run: sudo chown -R $(whoami):$(id -ng) /hab
@@ -1004,21 +992,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: go17-dev
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: go-go17-changed-dev
-
       - uses: themeliolabs/actions-biome@v1
         with:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: go-dev
+
       - name: Install Go
-        run: sudo bio pkg install go-go17-changed-dev.hart
+        run: sudo bio pkg install go-dev.hart
 
       - name: Fix Directory Permissions
         run: sudo chown -R $(whoami):$(id -ng) /hab

@@ -27,8 +27,8 @@ sudo useradd hab -s /bin/bash -p '*'
 
 sudo bio svc load "${pkg_ident}"
 
-echo "Sleeping for 5 seconds for the service to start."
-sleep 5
+echo "Sleeping for 7 seconds for the service to start."
+sleep 7
 
 if bats "${SCRIPTS_DIRECTORY}/test.bats"; then
   sudo bio svc unload "${pkg_ident}"

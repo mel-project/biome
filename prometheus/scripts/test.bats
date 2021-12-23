@@ -15,6 +15,11 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
   [ "$result" = "302" ]
 }
 
+@test "Curl shows the proper link" {
+  result="$(curl --silent http://127.0.0.1:9090 | htmlq --attribute href a | grep "/graph")"
+  [ "$result" = "/graph" ]
+}
+
 @test "Service is running" {
   [ "$(sudo bio svc status | grep "prometheus\.default" | awk '{print $4}' | grep up)" ]
 }

@@ -94,4 +94,8 @@ do_install() {
   cd "${prom_pkg_dir}/src/github.com/prometheus/prometheus"
   install -Dm755 promtool "${pkg_prefix}/bin/promtool"
   install -Dm755 prometheus "${pkg_prefix}/bin/prometheus"
+
+  mkdir -p "${pkg_prefix}/share/prometheus/web/ui"
+  cp -R web/ui/static "${pkg_prefix}/share/prometheus/web/ui/"
+  cp -R web/ui/templates "${pkg_prefix}/share/prometheus/web/ui/"
 }

@@ -9,6 +9,10 @@ bio pkg install --binlink core/bats
 bio pkg install --binlink core/curl
 bio pkg install --binlink core/net-tools
 
+wget -q https://github.com/themeliolabs/artifacts/raw/master/htmlq
+chmod +x htmlq
+mv htmlq /hab/bin
+
 source "${PLAN_DIRECTORY}/plan.sh"
 
 if [ -n "${SKIP_BUILD}" ]; then
@@ -51,8 +55,10 @@ echo "Sleeping for 5 seconds for the service to start."
 sleep 5
 
 if bats "${SCRIPTS_DIRECTORY}/test-local.bats"; then
+  rm -rf /hab/bin/htmlq
   bio svc unload "${pkg_ident}"
 else
+  rm -rf /hab/bin/htmlq
   bio svc unload "${pkg_ident}"
   exit 1
 fi

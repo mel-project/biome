@@ -15,6 +15,16 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
   [ "$result" = "302" ]
 }
 
+@test "Curl shows the proper link" {
+  result="$(curl --silent http://127.0.0.1:3000 | htmlq --attribute href a | grep "/login")"
+  [ "$result" = "/login" ]
+}
+
+@test "Login link can be reached" {
+  result="$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:3000/login)"
+  [ "$result" = "200" ]
+}
+
 @test "Service is running" {
   [ "$(bio svc status | grep "grafana\.default" | awk '{print $4}' | grep up)" ]
 }

@@ -9,6 +9,10 @@ sudo bio pkg install --binlink core/bats
 sudo bio pkg install --binlink core/curl
 sudo bio pkg install --binlink core/net-tools --force
 
+wget -q https://github.com/themeliolabs/artifacts/raw/master/htmlq
+chmod +x htmlq
+sudo mv htmlq /bin
+
 #cp "${PLAN_DIRECTORY}/plan-debug.sh" "${PLAN_DIRECTORY}/plan.sh"
 
 source "${PLAN_DIRECTORY}/plan.sh"
@@ -31,8 +35,10 @@ echo "Sleeping for 7 seconds for the service to start."
 sleep 7
 
 if bats "${SCRIPTS_DIRECTORY}/test.bats"; then
+  sudo rm -rf /bin/htmlq
   sudo bio svc unload "${pkg_ident}"
 else
+  sudo rm -rf /bin/htmlq
   sudo bio svc unload "${pkg_ident}"
   exit 1
 fi

@@ -20,6 +20,11 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
   [ "$result" = "/graph" ]
 }
 
+@test "Graph link can be reached" {
+  result="$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:9090/graph)"
+  [ "$result" = "200" ]
+}
+
 @test "Service is running" {
   [ "$(bio svc status | grep "prometheus\.default" | awk '{print $4}' | grep up)" ]
 }

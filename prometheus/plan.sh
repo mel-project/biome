@@ -47,7 +47,8 @@ do_unpack() {
 
 do_check() {
   pushd "${prom_pkg_dir}/src/github.com/prometheus/prometheus" || exit 1
-  make test
+#  make test
+  go test -short ./...
   popd || exit 1
 }
 

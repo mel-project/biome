@@ -3,14 +3,17 @@
 # Redirect stderr
 exec 2>&1
 
+ln -sf {{ pkg.path }}/share/prometheus/web/ui/static/ /static
+
+
 if [ "${PROVIDER}" == "OVH" ]; then
   envsubst < {{pkg.svc_config_path}}/prometheus-ovh.yml > {{pkg.svc_config_path}}/prometheus-ovh-complete.yml
 
-  exec prometheus --config.file={{pkg.svc_config_path}}/prometheus-ovh-complete.yml --web.listen-address=":{{ cfg.port }}" --storage.tsdb.path="{{ pkg.svc_data_path }}" --storage.tsdb.retention.size={{ cfg.storage.retention_size }}
+  exec prometheus --config.file={{pkg.svc_config_path}}/prometheus-ovh-complete.yml --web.listen-address=":{{ cfg.port }}" --storage.tsdb.path="{{ pkg.svc_data_path }}" --storage.tsdb.retention.size={{ cfg.storage.retention_size }} --log.level={{ cfg.log_level }}
 elif [ "${PROVIDER}" == "AWS" ]; then
   envsubst < {{pkg.svc_config_path}}/prometheus-aws.yml > {{pkg.svc_config_path}}/prometheus-aws-complete.yml
 
-  exec prometheus --config.file={{pkg.svc_config_path}}/prometheus-aws-complete.yml --web.listen-address=":{{ cfg.port }}" --storage.tsdb.path="{{ pkg.svc_data_path }}" --storage.tsdb.retention.size={{ cfg.storage.retention_size }}
+  exec prometheus --config.file={{pkg.svc_config_path}}/prometheus-aws-complete.yml --web.listen-address=":{{ cfg.port }}" --storage.tsdb.path="{{ pkg.svc_data_path }}" --storage.tsdb.retention.size={{ cfg.storage.retention_size }} --log.level={{ cfg.log_level }}
 else
-  exec prometheus --config.file={{pkg.svc_config_path}}/prometheus.yml --web.listen-address=":{{ cfg.port }}" --storage.tsdb.path="{{ pkg.svc_data_path }}" --storage.tsdb.retention.size={{ cfg.storage.retention_size }}
+  exec prometheus --config.file={{pkg.svc_config_path}}/prometheus.yml --web.listen-address=":{{ cfg.port }}" --storage.tsdb.path="{{ pkg.svc_data_path }}" --storage.tsdb.retention.size={{ cfg.storage.retention_size }} --log.level={{ cfg.log_level }}
 fi

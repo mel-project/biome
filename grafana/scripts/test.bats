@@ -33,4 +33,3 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
   result="$(sudo netstat -peanut | grep LISTEN | grep grafana| awk '{print $4}' | tr -d ':')"
   [ "${result}" -eq 3000 ]
 }
-

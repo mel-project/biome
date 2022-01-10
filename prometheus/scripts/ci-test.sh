@@ -30,7 +30,7 @@ sudo bio svc load "${pkg_ident}"
 echo "Sleeping for 5 seconds for the service to start."
 sleep 5
 
-CURL_OUTPUT=curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:9090/graph
+CURL_OUTPUT=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:9090/graph)
 
 echo "Curl output is: $CURL_OUTPUT"
 

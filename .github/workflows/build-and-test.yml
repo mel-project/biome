@@ -280,7 +280,7 @@ jobs:
           HAB_ORIGIN: "themelio"
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DO_CHECK: "true"
+#          DO_CHECK: "true"
         run: bio pkg build bats
 
 # Rust

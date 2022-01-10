@@ -31,9 +31,10 @@ do_build() {
 }
 
 do_check() {
-  mv lib/bats-core/ lib/bats
-  mv libexec/bats-core/* lib/bats/
+  cp -R lib/bats-core/ lib/bats
+  cp -R libexec/bats-core/* lib/bats/
   fix_interpreter 'lib/bats/*' core/coreutils bin/env
+  fix_interpreter '*' core/coreutils bin/env
 
   ./bin/bats --print-output-on-failure --tap test
 }

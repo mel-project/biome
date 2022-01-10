@@ -5,7 +5,7 @@ set -e
 SCRIPTS_DIRECTORY="$(dirname "${0}")"
 PLAN_DIRECTORY="$(dirname "${SCRIPTS_DIRECTORY}")"
 
-bio pkg install --binlink core/bats
+bio pkg install --binlink themelio/bats
 bio pkg install --binlink core/curl
 bio pkg install --binlink core/net-tools
 
@@ -54,7 +54,7 @@ fi
 echo "Sleeping for 7 seconds for the service to start."
 sleep 7
 
-if bats "${SCRIPTS_DIRECTORY}/test-local.bats"; then
+if bats --print-output-on-failure "${SCRIPTS_DIRECTORY}/test-local.bats"; then
   rm -rf /hab/bin/htmlq
   bio svc unload "${pkg_ident}"
 else

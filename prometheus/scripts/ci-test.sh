@@ -5,7 +5,7 @@ set -ex
 SCRIPTS_DIRECTORY="$(dirname "${0}")"
 PLAN_DIRECTORY="$(dirname "${SCRIPTS_DIRECTORY}")"
 
-sudo bio pkg install --binlink core/bats
+sudo bio pkg install --binlink themelio/bats
 sudo bio pkg install --binlink core/curl
 sudo bio pkg install --binlink core/net-tools
 
@@ -34,7 +34,7 @@ CURL_OUTPUT=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:9090/graph
 
 echo "Curl output is: $CURL_OUTPUT"
 
-if bats "${SCRIPTS_DIRECTORY}/test.bats"; then
+if bats --print-output-on-failure "${SCRIPTS_DIRECTORY}/test.bats"; then
   sudo rm -rf /bin/htmlq
   sudo bio svc unload "${pkg_ident}"
 else

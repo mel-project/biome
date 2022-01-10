@@ -1,8 +1,8 @@
 source "${BATS_TEST_DIRNAME}/../plan.sh"
 
 @test "Rust version matches" {
-  result="$(rustc --version | awk '{print $2}')"
-  [ "$result" = "${rustc_version}" ]
+  output="$(rustc --version | awk '{print $2}')"
+  [ "$output" = "${rustc_version}" ]
 }
 
 @test "Rust help flag works" {
@@ -11,8 +11,8 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
 }
 
 @test "Cargo version matches" {
-  result="$(cargo --version | awk '{print $2}')"
-  [ "$result" = "${cargo_version}" ]
+  output="$(cargo --version | awk '{print $2}')"
+  [ "$output" = "${cargo_version}" ]
 }
 
 @test "Cargo help flag works" {

@@ -10,11 +10,11 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
 }
 
 @test "Listening on port 3100" {
-  result="$(netstat -peanut | grep LISTEN | grep loki | grep 3100 | awk '{print $4}' | awk '{split($0, a, ":"); print a[2]}')"
-  [ "${result}" -eq 3100 ]
+  output="$(netstat -peanut | grep LISTEN | grep loki | grep 3100 | awk '{print $4}' | awk '{split($0, a, ":"); print a[2]}')"
+  [ "${output}" -eq 3100 ]
 }
 
 @test "Listening on port 9095" {
-  result="$(netstat -peanut | grep LISTEN | grep loki | grep 9095 | awk '{print $4}' | awk '{split($0, a, ":"); print a[2]}')"
-  [ "${result}" -eq 9095 ]
+  output="$(netstat -peanut | grep LISTEN | grep loki | grep 9095 | awk '{print $4}' | awk '{split($0, a, ":"); print a[2]}')"
+  [ "${output}" -eq 9095 ]
 }

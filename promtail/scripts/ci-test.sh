@@ -7,6 +7,7 @@ PLAN_DIRECTORY="$(dirname "${SCRIPTS_DIRECTORY}")"
 
 sudo bio pkg install --binlink themelio/bats
 sudo bio pkg install --binlink core/curl
+sudo bio pkg install --binlink core/net-tools
 
 #cp "${PLAN_DIRECTORY}/plan-debug.sh" "${PLAN_DIRECTORY}/plan.sh"
 

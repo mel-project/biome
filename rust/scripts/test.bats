@@ -14,8 +14,3 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
   output="$(cargo --version | awk '{print $2}')"
   [ "$output" = "${cargo_version}" ]
 }
-
-@test "Help flag works" {
-  run cargo --help
-  [ $status -eq 0 ]
-}

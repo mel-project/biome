@@ -275,11 +275,12 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: Build, Run BATS Tests
+      - name: Build And Check
         env:
           HAB_ORIGIN: "themelio"
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DO_CHECK: "true"
         run: bio pkg build bats
 
 # Rust

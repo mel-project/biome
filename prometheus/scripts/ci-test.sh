@@ -24,6 +24,8 @@ sudo bio pkg install --binlink --force "results/${pkg_artifact}"
 
 sudo useradd hab -s /bin/bash -p '*'
 
+# Changing the directory to the root of the filesystem is necessary to start the supervisor/prometheus service, because
+# it looks for the `static` directory in /static.
 pushd /
 
 sudo bio sup run &
@@ -37,6 +39,7 @@ echo "Sleeping for 5 seconds for the service to start."
 sleep 5
 
 popd
+
 
 if bats --print-output-on-failure "${SCRIPTS_DIRECTORY}/test.bats"; then
   sudo rm -rf /bin/htmlq

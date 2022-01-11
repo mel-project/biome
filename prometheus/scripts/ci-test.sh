@@ -31,6 +31,10 @@ sudo bio svc load "${pkg_ident}"
 echo "Sleeping for 5 seconds for the service to start."
 sleep 5
 
+ls -la /
+
+ls -la /static
+
 curl http://127.0.0.1:9090
 
 curl http://127.0.0.1:9090/graph

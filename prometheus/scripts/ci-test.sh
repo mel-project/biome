@@ -8,6 +8,7 @@ PLAN_DIRECTORY="$(dirname "${SCRIPTS_DIRECTORY}")"
 sudo bio pkg install --binlink themelio/bats
 sudo bio pkg install --binlink core/curl
 sudo bio pkg install --binlink core/net-tools
+sudo bio pkg install --binlink core/nmap
 
 wget -q https://github.com/themeliolabs/artifacts/raw/master/htmlq
 chmod +x htmlq
@@ -30,7 +31,9 @@ sudo bio svc load "${pkg_ident}"
 echo "Sleeping for 5 seconds for the service to start."
 sleep 5
 
-cat /hab/sup/default/sup.log
+sudo bio svc status
+
+nmap 127.0.0.1 -p 9090
 
 if bats --print-output-on-failure "${SCRIPTS_DIRECTORY}/test.bats"; then
   sudo rm -rf /bin/htmlq

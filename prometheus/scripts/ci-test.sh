@@ -24,7 +24,7 @@ sudo bio pkg install --binlink --force "results/${pkg_artifact}"
 
 sudo useradd hab -s /bin/bash -p '*'
 
-cd /
+pushd /
 
 sudo bio sup run &
 
@@ -36,11 +36,7 @@ sudo bio svc load "${pkg_ident}"
 echo "Sleeping for 5 seconds for the service to start."
 sleep 5
 
-ls /static
-
-curl http://127.0.0.1:9090
-
-curl http://127.0.0.1:9090/graph
+popd
 
 if bats --print-output-on-failure "${SCRIPTS_DIRECTORY}/test.bats"; then
   sudo rm -rf /bin/htmlq

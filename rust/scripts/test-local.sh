@@ -5,7 +5,7 @@ set -e
 SCRIPTS_DIRECTORY="$(dirname "${0}")"
 PLAN_DIRECTORY="$(dirname "${SCRIPTS_DIRECTORY}")"
 
-bio pkg install --binlink core/bats
+bio pkg install --binlink themelio/bats
 
 source "${PLAN_DIRECTORY}/plan.sh"
 
@@ -23,4 +23,4 @@ else
   bio pkg install --binlink --force "${PLAN_DIRECTORY}/results/${pkg_artifact}"
 fi
 
-bats "${SCRIPTS_DIRECTORY}/test-local.bats"
+bats --print-output-on-failure "${SCRIPTS_DIRECTORY}/test-local.bats"

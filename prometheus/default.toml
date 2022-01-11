@@ -1,6 +1,7 @@
 port = 9090
 scrape_interval = "5s"
 evaluation_interval = "5s"
+log_level = "debug"
 
 [storage]
 retention_size = "50GB"

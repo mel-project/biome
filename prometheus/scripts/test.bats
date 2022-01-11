@@ -1,8 +1,8 @@
 source "${BATS_TEST_DIRNAME}/../plan.sh"
 
 @test "Version matches" {
-  result="$(prometheus --version | head -n 1 | awk '{print $3}')"
-  [ "$result" = "${pkg_version}" ]
+  output="$(prometheus --version | head -n 1 | awk '{print $3}')"
+  [ "$output" = "${pkg_version}" ]
 }
 
 @test "Help flag works" {
@@ -11,13 +11,18 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
 }
 
 @test "Curl returns 302" {
-  result="$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:9090)"
-  [ "$result" = "302" ]
+  output="$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:9090)"
+  [ "$output" = "302" ]
 }
 
 @test "Curl shows the proper link" {
-  result="$(curl --silent http://127.0.0.1:9090 | htmlq --attribute href a | grep "/graph")"
-  [ "$result" = "/graph" ]
+  output="$(curl --silent http://127.0.0.1:9090 | htmlq --attribute href a | grep "/graph")"
+  [ "$output" = "/graph" ]
+}
+
+@test "Graph link can be reached" {
+  output="$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:9090/graph)"
+  [ "$output" = "200" ]
 }
 
 @test "Service is running" {
@@ -25,6 +30,6 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
 }
 
 @test "Listening on port 9090" {
-  result="$(sudo netstat -peanut | grep LISTEN | grep prometheus | awk '{print $4}' | tr -d ':')"
-  [ "${result}" -eq 9090 ]
+  output="$(sudo netstat -peanut | grep LISTEN | grep prometheus | awk '{print $4}' | tr -d ':')"
+  [ "${output}" -eq 9090 ]
 }

@@ -31,9 +31,9 @@ sudo bio svc load "${pkg_ident}"
 echo "Sleeping for 5 seconds for the service to start."
 sleep 5
 
-sudo bio svc status
+curl http://127.0.0.1:9090
 
-nmap 127.0.0.1 -p 9090
+curl http://127.0.0.1:9090/graph
 
 if bats --print-output-on-failure "${SCRIPTS_DIRECTORY}/test.bats"; then
   sudo rm -rf /bin/htmlq

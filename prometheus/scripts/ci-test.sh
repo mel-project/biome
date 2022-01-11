@@ -27,12 +27,10 @@ sudo useradd hab -s /bin/bash -p '*'
 
 sudo bio svc load "${pkg_ident}"
 
-echo "Sleeping for 15 seconds for the service to start."
-sleep 15
+echo "Sleeping for 5 seconds for the service to start."
+sleep 5
 
-CURL_OUTPUT=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:9090/graph)
-
-echo "Curl output is: $CURL_OUTPUT"
+cat /hab/sup/default/sup.log
 
 if bats --print-output-on-failure "${SCRIPTS_DIRECTORY}/test.bats"; then
   sudo rm -rf /bin/htmlq

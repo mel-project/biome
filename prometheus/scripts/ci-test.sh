@@ -16,8 +16,6 @@ sudo mv htmlq /bin
 
 source "${PLAN_DIRECTORY}/plan.sh"
 
-sudo bio sup run &
-
 bio pkg build "${pkg_name}"
 
 source results/last_build.env
@@ -26,14 +24,19 @@ sudo bio pkg install --binlink --force "results/${pkg_artifact}"
 
 sudo useradd hab -s /bin/bash -p '*'
 
+cd /
+
+sudo bio sup run &
+
+echo "Sleeping for 3 seconds for the supervisor to start."
+sleep 3
+
 sudo bio svc load "${pkg_ident}"
 
 echo "Sleeping for 5 seconds for the service to start."
 sleep 5
 
-ls -la /
-
-ls -la /static
+ls /static
 
 curl http://127.0.0.1:9090
 

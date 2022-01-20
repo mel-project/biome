@@ -20,15 +20,17 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "gnetId": null,
   "graphTooltip": 0,
   "id": 3,
-  "iteration": 1634851216104,
+  "iteration": 1642719122046,
   "links": [],
   "liveNow": false,
   "panels": [
     {
-      "datasource": "Loki",
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
       "gridPos": {
         "h": 8,
         "w": 24,
@@ -56,7 +58,10 @@
       "type": "logs"
     },
     {
-      "datasource": "Loki",
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
       "gridPos": {
         "h": 8,
         "w": 24,
@@ -85,7 +90,10 @@
       "type": "logs"
     },
     {
-      "datasource": "Loki",
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
       "gridPos": {
         "h": 8,
         "w": 24,
@@ -113,25 +121,21 @@
       "type": "logs"
     }
   ],
-  "schemaVersion": 31,
+  "refresh": "10s",
+  "schemaVersion": 34,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
-        "allValue": null,
         "current": {
           "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": null,
         "definition": "label_values(network)",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
-        "label": null,
         "multi": false,
         "name": "network",
         "options": [],
@@ -146,19 +150,14 @@
         "type": "query"
       },
       {
-        "allValue": null,
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": null,
         "definition": "label_values({network=~\"$network\"}, hostname) ",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
-        "label": null,
         "multi": false,
         "name": "hostname",
         "options": [],
@@ -173,19 +172,14 @@
         "type": "query"
       },
       {
-        "allValue": null,
         "current": {
-          "selected": true,
-          "text": "51.79.92.25:8080",
-          "value": "51.79.92.25:8080"
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
         },
-        "datasource": null,
         "definition": "label_values({network=~\"$network\", hostname=~\"$hostname\"}, instance) ",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
-        "label": null,
         "multi": false,
         "name": "instance",
         "options": [],
@@ -200,19 +194,14 @@
         "type": "query"
       },
       {
-        "allValue": null,
         "current": {
           "selected": false,
-          "text": "51.79.92.25",
-          "value": "51.79.92.25"
+          "text": "18.133.237.41",
+          "value": "18.133.237.41"
         },
-        "datasource": null,
         "definition": "label_values({network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\",}, ip_address) ",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": null,
         "multi": false,
         "name": "ip_address",
         "options": [],
@@ -236,5 +225,6 @@
   "timezone": "",
   "title": "Themelio-Node Logs",
   "uid": "themelio-node-logs",
-  "version": 5
+  "version": 6,
+  "weekStart": ""
 }

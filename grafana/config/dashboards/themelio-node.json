@@ -108,7 +108,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(themelio_node_highest_block{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
+          "expr": "sum(themelio_node_highest_block{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (network, hostname, instance)",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -202,7 +202,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(themelio_node_uptime_seconds{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
+          "expr": "sum(themelio_node_uptime_seconds{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (network, hostname, instance)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -294,7 +294,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(themelio_node_network_transmitted_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
+          "expr": "sum(themelio_node_network_transmitted_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (network, hostname, instance)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -386,7 +386,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(themelio_node_network_received_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
+          "expr": "sum(themelio_node_network_received_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (network, hostname, instance)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -489,7 +489,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(themelio_node_memory_total_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
+          "expr": "sum(themelio_node_memory_total_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (network, hostname, instance)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -581,7 +581,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(themelio_node_memory_free_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
+          "expr": "sum(themelio_node_memory_free_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (network, hostname, instance)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -673,7 +673,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(themelio_node_root_filesystem_total_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
+          "expr": "sum(themelio_node_root_filesystem_total_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (network, hostname, instance)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -765,7 +765,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(themelio_node_root_filesystem_free_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
+          "expr": "sum(themelio_node_root_filesystem_free_bytes{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (network, hostname, instance)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -832,7 +832,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(themelio_node_cpu_load_user_percentage{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
+          "expr": "sum(themelio_node_cpu_load_user_percentage{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (network, hostname, instance)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -899,7 +899,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(themelio_node_cpu_load_system_percentage{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
+          "expr": "sum(themelio_node_cpu_load_system_percentage{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (network, hostname, instance)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -966,7 +966,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(themelio_node_cpu_load_idle_percentage{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (hostname, instance)",
+          "expr": "sum(themelio_node_cpu_load_idle_percentage{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (network, hostname, instance)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"

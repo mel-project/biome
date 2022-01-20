@@ -6,3 +6,195 @@ scrape_configs:
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
+
+  - job_name: 'ap-northeast-1'
+    ec2_sd_configs:
+      - region: 'ap-northeast-1'
+    relabel_configs:
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: __address__
+        action: replace
+        replacement: '${1}:8080'
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: ip_address
+        replacement: '${1}'
+
+  - job_name: 'ap-northeast-2'
+    ec2_sd_configs:
+      - region: 'ap-northeast-2'
+    relabel_configs:
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: __address__
+        action: replace
+        replacement: '${1}:8080'
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: ip_address
+        replacement: '${1}'
+
+  - job_name: 'ap-northeast-3'
+    ec2_sd_configs:
+      - region: 'ap-northeast-3'
+    relabel_configs:
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: __address__
+        action: replace
+        replacement: '${1}:8080'
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: ip_address
+        replacement: '${1}'
+
+  - job_name: 'ap-south-1'
+    ec2_sd_configs:
+      - region: 'ap-south-1'
+    relabel_configs:
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: __address__
+        action: replace
+        replacement: '${1}:8080'
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: ip_address
+        replacement: '${1}'
+
+  - job_name: 'ap-southeast-1'
+    ec2_sd_configs:
+      - region: 'ap-southeast-1'
+    relabel_configs:
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: __address__
+        action: replace
+        replacement: '${1}:8080'
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: ip_address
+        replacement: '${1}'
+
+  - job_name: 'ap-southeast-2'
+    ec2_sd_configs:
+      - region: 'ap-southeast-2'
+    relabel_configs:
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: __address__
+        action: replace
+        replacement: '${1}:8080'
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: ip_address
+        replacement: '${1}'
+
+  - job_name: 'ca-central-1'
+    ec2_sd_configs:
+      - region: 'ca-central-1'
+    relabel_configs:
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: __address__
+        action: replace
+        replacement: '${1}:8080'
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: ip_address
+        replacement: '${1}'
+
+  - job_name: 'eu-central-1'
+    ec2_sd_configs:
+      - region: 'eu-central-1'
+    relabel_configs:
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: __address__
+        action: replace
+        replacement: '${1}:8080'
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: ip_address
+        replacement: '${1}'
+
+  - job_name: 'eu-west-1'
+    ec2_sd_configs:
+      - region: 'eu-west-1'
+    relabel_configs:
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: __address__
+        action: replace
+        replacement: '${1}:8080'
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: ip_address
+        replacement: '${1}'
+
+  - job_name: 'eu-west-2'
+    ec2_sd_configs:
+      - region: 'eu-west-2'
+    relabel_configs:
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: __address__
+        action: replace
+        replacement: '${1}:8080'
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: ip_address
+        replacement: '${1}'
+
+  - job_name: 'eu-west-3'
+    ec2_sd_configs:
+      - region: 'eu-west-3'
+    relabel_configs:
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: __address__
+        action: replace
+        replacement: '${1}:8080'
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: ip_address
+        replacement: '${1}'
+
+  - job_name: 'sa-east-1'
+    ec2_sd_configs:
+      - region: 'sa-east-1'
+    relabel_configs:
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: __address__
+        action: replace
+        replacement: '${1}:8080'
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: ip_address
+        replacement: '${1}'
+
+  - job_name: 'us-east-1'
+    ec2_sd_configs:
+      - region: 'us-east-1'
+    relabel_configs:
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: __address__
+        action: replace
+        replacement: '${1}:8080'
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: ip_address
+        replacement: '${1}'
+
+  - job_name: 'us-east-2'
+    ec2_sd_configs:
+      - region: 'us-east-2'
+    relabel_configs:
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: __address__
+        action: replace
+        replacement: '${1}:8080'
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: ip_address
+        replacement: '${1}'
+
+  - job_name: 'us-west-1'
+    ec2_sd_configs:
+      - region: 'us-west-1'
+    relabel_configs:
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: __address__
+        action: replace
+        replacement: '${1}:8080'
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: ip_address
+        replacement: '${1}'
+
+  - job_name: 'us-west-2'
+    ec2_sd_configs:
+      - region: 'us-west-2'
+    relabel_configs:
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: __address__
+        action: replace
+        replacement: '${1}:8080'
+      - source_labels: [ __meta_ec2_public_ip ]
+        target_label: ip_address
+        replacement: '${1}'

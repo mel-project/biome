@@ -22,7 +22,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 3,
-  "iteration": 1642719122046,
+  "iteration": 1642719974376,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -45,7 +45,7 @@
         "showCommonLabels": false,
         "showLabels": false,
         "showTime": false,
-        "sortOrder": "Descending",
+        "sortOrder": "Ascending",
         "wrapLogMessage": false
       },
       "targets": [
@@ -76,7 +76,7 @@
         "showCommonLabels": false,
         "showLabels": false,
         "showTime": false,
-        "sortOrder": "Descending",
+        "sortOrder": "Ascending",
         "wrapLogMessage": false
       },
       "targets": [
@@ -108,7 +108,7 @@
         "showCommonLabels": false,
         "showLabels": false,
         "showTime": false,
-        "sortOrder": "Descending",
+        "sortOrder": "Ascending",
         "wrapLogMessage": false
       },
       "targets": [
@@ -121,7 +121,7 @@
       "type": "logs"
     }
   ],
-  "refresh": "10s",
+  "refresh": "5s",
   "schemaVersion": 34,
   "style": "dark",
   "tags": [],

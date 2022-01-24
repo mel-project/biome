@@ -32,3 +32,6 @@ url = "https://loki.infra.themelio.org"
 basic_auth_enabled = true
 basic_auth_user = "changeme"
 basic_auth_password = "changeme"
+
+[cloudwatch]
+enabled = true

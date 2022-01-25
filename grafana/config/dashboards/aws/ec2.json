@@ -21,7 +21,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 18,
+  "id": 19,
+  "iteration": 1643136164075,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -115,7 +116,7 @@
           "period": "",
           "queryMode": "Metrics",
           "refId": "A",
-          "region": "default",
+          "region": "$region",
           "sql": {
             "from": {
               "property": {
@@ -245,7 +246,7 @@
           "period": "",
           "queryMode": "Metrics",
           "refId": "A",
-          "region": "default",
+          "region": "$region",
           "sql": {
             "from": {
               "property": {
@@ -375,7 +376,7 @@
           "period": "",
           "queryMode": "Metrics",
           "refId": "A",
-          "region": "default",
+          "region": "$region",
           "sql": {
             "from": {
               "property": {
@@ -420,7 +421,31 @@
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": "default",
+          "value": "default"
+        },
+        "datasource": {
+          "type": "cloudwatch",
+          "uid": "P034F075C744B399F"
+        },
+        "definition": "regions()",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "region",
+        "options": [],
+        "query": "regions()",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
   },
   "time": {
     "from": "now-6h",
@@ -430,6 +455,6 @@
   "timezone": "",
   "title": "EC2",
   "uid": "ec2",
-  "version": 3,
+  "version": 1,
   "weekStart": ""
 }

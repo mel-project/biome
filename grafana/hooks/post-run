@@ -12,4 +12,4 @@ cp {{pkg.svc_config_path}}/datasource-loki.yaml {{pkg.svc_var_path}}/provisionin
 cp {{pkg.svc_config_path}}/datasource-cloudwatch.yaml {{pkg.svc_var_path}}/provisioning/datasources
 {{~/if}}
 
-cp -rf {{pkg.svc_config_path}}/dashboards/*.json {{pkg.svc_var_path}}/dashboards/
+cp -rf {{pkg.svc_config_path}}/dashboards/* {{pkg.svc_var_path}}/dashboards/

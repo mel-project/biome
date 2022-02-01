@@ -22,7 +22,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 13,
-  "iteration": 1642730550477,
+  "iteration": 1643747843438,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -822,6 +822,7 @@
         "y": 32
       },
       "id": 15,
+      "interval": "$timeframe",
       "options": {
         "legend": {
           "calcs": [],
@@ -835,14 +836,19 @@
       "pluginVersion": "8.3.4",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
-          "expr": "sum(themelio_node_cpu_load_user_percentage{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (network, hostname, instance)",
+          "expr": "sum(avg_over_time(themelio_node_cpu_load_user_percentage{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}[$__interval])) by (network, hostname, instance)",
+          "hide": false,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "title": "CPU Load (User)",
+      "title": "CPU Load (User, Timeframe Adjustable)",
       "transformations": [],
       "type": "timeseries"
     },
@@ -913,6 +919,7 @@
         "y": 44
       },
       "id": 16,
+      "interval": "$timeframe",
       "options": {
         "legend": {
           "calcs": [],
@@ -926,14 +933,18 @@
       "pluginVersion": "8.3.4",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
-          "expr": "sum(themelio_node_cpu_load_system_percentage{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (network, hostname, instance)",
+          "expr": "sum(avg_over_time(themelio_node_cpu_load_system_percentage{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}[$__interval])) by (network, hostname, instance)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "title": "CPU Load (System)",
+      "title": "CPU Load (System, Timeframe Adjustable)",
       "transformations": [],
       "type": "timeseries"
     },
@@ -1004,6 +1015,7 @@
         "y": 54
       },
       "id": 17,
+      "interval": "$timeframe",
       "options": {
         "legend": {
           "calcs": [],
@@ -1017,14 +1029,18 @@
       "pluginVersion": "8.3.4",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
-          "expr": "sum(themelio_node_cpu_load_idle_percentage{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (network, hostname, instance)",
+          "expr": "sum(avg_over_time(themelio_node_cpu_load_idle_percentage{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}[$__interval])) by (network, hostname, instance)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "title": "CPU Load (Idle)",
+      "title": "CPU Load (Idle, Timeframe Adjustable)",
       "transformations": [],
       "type": "timeseries"
     }
@@ -1038,8 +1054,8 @@
       {
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "mainnet",
+          "value": "mainnet"
         },
         "definition": "label_values(network)",
         "hide": 0,
@@ -1100,6 +1116,70 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "auto": false,
+        "auto_count": 30,
+        "auto_min": "10s",
+        "current": {
+          "selected": true,
+          "text": "5m",
+          "value": "5m"
+        },
+        "hide": 0,
+        "name": "timeframe",
+        "options": [
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": true,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
+            "selected": false,
+            "text": "10m",
+            "value": "10m"
+          },
+          {
+            "selected": false,
+            "text": "30m",
+            "value": "30m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "3h",
+            "value": "3h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "12h",
+            "value": "12h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          }
+        ],
+        "query": "1m,5m,10m,30m,1h,3h,6h,12h,1d",
+        "queryValue": "",
+        "refresh": 2,
+        "skipUrlSync": false,
+        "type": "interval"
       }
     ]
   },

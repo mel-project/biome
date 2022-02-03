@@ -1,6 +1,6 @@
 pkg_name=rust
 pkg_origin=themelio
-pkg_version=1.58.0
+pkg_version=1.58.1
 rustc_version=${pkg_version}
 cargo_version=1.58.0
 pkg_maintainer="Meade Kincke <meade@themelio.org>"

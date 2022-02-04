@@ -1,6 +1,6 @@
 pkg_name=rust
 pkg_origin=themelio
-pkg_version=1.58.0
+pkg_version=1.58.1
 rustc_version=${pkg_version}
 cargo_version=1.58.0
 pkg_maintainer="Meade Kincke <meade@themelio.org>"
@@ -12,7 +12,7 @@ pkg_upstream_url="https://www.rust-lang.org/"
 pkg_license=('Apache-2.0' 'MIT')
 _url_base="https://static.rust-lang.org/dist"
 pkg_source="$_url_base/${pkg_name}-${pkg_version}-x86_64-unknown-linux-gnu.tar.gz"
-pkg_shasum="1d7ec4bceb0d31f163540fe7ebebed68ca8853e7982821108770eaec5d66f871"
+pkg_shasum="4fac6df9ea49447682c333e57945bebf4f9f45ec7b08849e507a64b2ccd5f8fb"
 pkg_dirname="${pkg_name}-${pkg_version}-x86_64-unknown-linux-gnu"
 pkg_deps=(
   core/glibc
@@ -35,7 +35,7 @@ _target_sources=(
 )
 
 _target_shasums=(
-    "10d911a65381b624cd1d33a913c9a2270355dbcd6db66b847e63f0f9b0f85f35"
+    "c4e56dfcf9d3d8466eb7d065af44763369df6e641a812a0a6974f94c98ef9a12"
 )
 
 do_download() {

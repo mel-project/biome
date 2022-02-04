@@ -22,7 +22,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 13,
-  "iteration": 1643747843438,
+  "iteration": 1644006434065,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -86,8 +86,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 7,
+        "w": 24,
         "x": 0,
         "y": 0
       },
@@ -181,8 +181,8 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 12,
-        "y": 0
+        "x": 0,
+        "y": 7
       },
       "id": 11,
       "options": {
@@ -205,7 +205,102 @@
           "refId": "A"
         }
       ],
-      "title": "Uptime",
+      "title": "Uptime (Themelio-Node)",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Metrics (Specific)",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node/themelio-node?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}"
+            },
+            {
+              "targetBlank": true,
+              "title": "Logs",
+              "url": "https://grafana.infra.themelio.org/d/themelio-node-logs/themelio-node-logs?orgId=1&var-network=All&var-hostname=All&var-instance=${__field.labels.instance}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 7
+      },
+      "id": 18,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "exemplar": true,
+          "expr": "sum(themelio_node_system_uptime_seconds{network=~\"$network\", hostname=~\"$hostname\", instance=~\"$instance\"}) by (network, hostname, instance)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Uptime (System)",
       "transformations": [],
       "type": "timeseries"
     },
@@ -273,7 +368,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 8
+        "y": 15
       },
       "id": 4,
       "options": {
@@ -364,7 +459,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 8
+        "y": 15
       },
       "id": 2,
       "options": {
@@ -455,7 +550,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 16
+        "y": 23
       },
       "id": 8,
       "options": {
@@ -546,7 +641,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 16
+        "y": 23
       },
       "id": 12,
       "options": {
@@ -637,7 +732,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 24
+        "y": 31
       },
       "id": 13,
       "options": {
@@ -728,7 +823,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 24
+        "y": 31
       },
       "id": 14,
       "options": {
@@ -819,7 +914,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 39
       },
       "id": 15,
       "interval": "$timeframe",
@@ -916,7 +1011,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 44
+        "y": 51
       },
       "id": 16,
       "interval": "$timeframe",
@@ -1012,7 +1107,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 54
+        "y": 61
       },
       "id": 17,
       "interval": "$timeframe",
@@ -1122,7 +1217,7 @@
         "auto_count": 30,
         "auto_min": "10s",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "5m",
           "value": "5m"
         },

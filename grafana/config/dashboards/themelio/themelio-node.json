@@ -21,8 +21,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 13,
-  "iteration": 1644006434065,
+  "id": 25,
+  "iteration": 1644010532670,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -1148,9 +1148,9 @@
     "list": [
       {
         "current": {
-          "selected": false,
-          "text": "mainnet",
-          "value": "mainnet"
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
         },
         "definition": "label_values(network)",
         "hide": 0,
@@ -1286,6 +1286,6 @@
   "timezone": "",
   "title": "Themelio-Node",
   "uid": "themelio-node",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }

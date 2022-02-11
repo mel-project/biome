@@ -2,12 +2,12 @@ pkg_name=prometheus
 pkg_description="Prometheus monitoring"
 pkg_upstream_url=http://prometheus.io
 pkg_origin=themelio
-pkg_version=2.33.1
+pkg_version=2.33.2
 pkg_maintainer="Meade Kincke <meade@themelio.org>"
 pkg_license=('Apache-2.0')
 pkg_bin_dirs=(bin)
 pkg_source="https://github.com/prometheus/prometheus/archive/v${pkg_version}.tar.gz"
-pkg_shasum=a3ec7bde701b0663e706c718ea58722544c4a3bbb902d89cf64d3b7f34523ad5
+pkg_shasum=1538304ceabce774c89d22dfc7e466a4b0cb9238117f4e4af0871ddff68e7826
 prom_pkg_dir="${HAB_CACHE_SRC_PATH}/${pkg_name}-${pkg_version}"
 prom_build_dir="${prom_pkg_dir}/src/${pkg_source}"
 pkg_build_deps=(
@@ -65,15 +65,31 @@ do_build() {
   npm install
   fix_interpreter "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/module/codemirror-promql/node_modules/.bin/*" core/coreutils bin/env
   npm run build
+
   cd "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui"
   go generate -x -v
+
   cd "${prom_pkg_dir}/src/github.com/prometheus/prometheus"
   make ui-install
   npm install -g react-scripts
   fix_interpreter "$(which react-scripts)" core/coreutils bin/env
+
   cd "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/react-app"
+# Temporary fix for fontawesome incompatibility. Fix here: https://github.com/FortAwesome/react-fontawesome/issues/462#issuecomment-1035307718
+#  This:
+#  "@fortawesome/fontawesome-svg-core": "^1.2.36",
+#  Needs to change to:
+#  "@fortawesome/fontawesome-svg-core": "1.2.36",
+#  And this:
+#  "@fortawesome/react-fontawesome": "^0.1.16",
+#  Needs to change to:
+#  "@fortawesome/react-fontawesome": "0.1.16",
+  sed -i 's#\"\@fortawesome\/fontawesome-svg-core\"\: \"\^1.2.36\"\,#\"\@fortawesome\/fontawesome-svg-core\"\: \"1.2.36\"\,#g' "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/react-app/package.json"
+  sed -i 's#\"\@fortawesome\/react-fontawesome\"\: \"\^0.1.16\"\,#\"\@fortawesome\/react-fontawesome\"\: \"0.1.16\"\,#g' "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/react-app/package.json"
+
   npm install
   fix_interpreter "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/react-app/node_modules/.bin/*" core/coreutils bin/env
+
   cd "${prom_pkg_dir}/src/github.com/prometheus/prometheus"
   make ui-build
 

@@ -30,8 +30,8 @@ pushd /
 
 sudo bio sup run &
 
-echo "Sleeping for 3 seconds for the supervisor to start."
-sleep 3
+echo "Sleeping for 5 seconds for the supervisor to start."
+sleep 5
 
 sudo bio svc load "${pkg_ident}"
 

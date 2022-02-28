@@ -1,12 +1,12 @@
 pkg_name=grafana
 pkg_origin=themelio
-pkg_version=8.4.1
+pkg_version=8.4.2
 pkg_maintainer="Meade Kincke <meade@themelio.org>"
 pkg_license=("Apache-2.0")
 pkg_upstream_url=https://grafana.com/
 pkg_source="https://dl.grafana.com/oss/release/${pkg_name}-${pkg_version}.linux-amd64.tar.gz"
 pkg_filename="${pkg_name}-${pkg_version}.linux-amd64.tar.gz"
-pkg_shasum=453ba9910f4b969a497b27e6806333b4c5b69beb095e426e0c076da5cc9119ed
+pkg_shasum=e24fba28ca12ce811f7cf165ff2da96a179e635177e6344fb07b47d39671aff6
 pkg_deps=(
   core/bash
   core/cacerts

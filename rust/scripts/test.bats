@@ -5,7 +5,7 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
   [ "$output" = "${rustc_version}" ]
 }
 
-@test "Help flag works" {
+@test "Rust help flag works" {
   run rustc --help
   [ $status -eq 0 ]
 }
@@ -13,4 +13,9 @@ source "${BATS_TEST_DIRNAME}/../plan.sh"
 @test "Cargo version matches" {
   output="$(cargo --version | awk '{print $2}')"
   [ "$output" = "${cargo_version}" ]
+}
+
+@test "Cargo help flag works" {
+  run cargo --help
+  [ $status -eq 0 ]
 }

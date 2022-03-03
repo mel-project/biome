@@ -16,6 +16,7 @@ pkg_build_deps=(
   core/gcc
   themelio/go
   core/make
+  themelio/node
   core/sed
   core/yarn
   core/which
@@ -59,39 +60,18 @@ do_build() {
   mkdir -p /etc/ssl
   ln -s "$(pkg_path_for core/cacerts)/ssl/certs/cacert.pem" /etc/ssl/ca-bundle.pem
 
-  pip install yamllint
-
   cd web/ui/module/codemirror-promql
   npm install
   fix_interpreter "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/module/codemirror-promql/node_modules/.bin/*" core/coreutils bin/env
   npm run build
 
-  cd "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui"
-  go generate -x -v
-
   cd "${prom_pkg_dir}/src/github.com/prometheus/prometheus"
   make ui-install
-  npm install -g react-scripts
-  fix_interpreter "$(which react-scripts)" core/coreutils bin/env
-
-  cd "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/react-app"
-# Temporary fix for fontawesome incompatibility. Fix here: https://github.com/FortAwesome/react-fontawesome/issues/462#issuecomment-1035307718
-#  This:
-#  "@fortawesome/fontawesome-svg-core": "^1.2.36",
-#  Needs to change to:
-#  "@fortawesome/fontawesome-svg-core": "1.2.36",
-#  And this:
-#  "@fortawesome/react-fontawesome": "^0.1.16",
-#  Needs to change to:
-#  "@fortawesome/react-fontawesome": "0.1.16",
-  sed -i 's#\"\@fortawesome\/fontawesome-svg-core\"\: \"\^1.2.36\"\,#\"\@fortawesome\/fontawesome-svg-core\"\: \"1.2.36\"\,#g' "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/react-app/package.json"
-  sed -i 's#\"\@fortawesome\/react-fontawesome\"\: \"\^0.1.16\"\,#\"\@fortawesome\/react-fontawesome\"\: \"0.1.16\"\,#g' "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/react-app/package.json"
-
-  npm install
   fix_interpreter "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/react-app/node_modules/.bin/*" core/coreutils bin/env
+  fix_interpreter "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/node_modules/.bin/*" core/coreutils bin/env
 
-  cd "${prom_pkg_dir}/src/github.com/prometheus/prometheus"
-  make ui-build
+#  The environment variable is explained here: https://stackoverflow.com/questions/69394632/webpack-build-failing-with-err-ossl-evp-unsupported
+  env NODE_OPTIONS=--openssl-legacy-provider make ui-build
 
   LDFLAGS="-X github.com/prometheus/common/version.Version=$pkg_version \
     -X github.com/prometheus/common/version.Revision=$pkg_version \
@@ -103,8 +83,6 @@ do_build() {
   go build -trimpath -buildmode=pie -mod=readonly -modcacherw -ldflags "-linkmode external $LDFLAGS" ./cmd/promtool
 
   popd || exit 1
-
-  rm -rf /etc/ssl
 }
 
 do_install() {
@@ -115,4 +93,8 @@ do_install() {
   mkdir -p "${pkg_prefix}/share/prometheus/web/ui"
   cp -R web/ui/static "${pkg_prefix}/share/prometheus/web/ui/"
   cp -R web/ui/templates "${pkg_prefix}/share/prometheus/web/ui/"
+}
+
+do_end() {
+  rm -rf /etc/ssl
 }

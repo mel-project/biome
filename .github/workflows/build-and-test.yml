@@ -1157,10 +1157,9 @@ jobs:
 
   build-prometheus-if-go-changed:
     needs:
-      - verify-go17
       - verify-prometheus
       - build-go
-    if: contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && contains(needs.verify-prometheus.outputs.build, 'true') && !contains(needs.verify-node.outputs.build, 'true')
+    if: contains(needs.build-go.outputs.complete, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:
@@ -1214,12 +1213,9 @@ jobs:
 
   build-prometheus-if-node-changed:
     needs:
-      - verify-go
-      - verify-go17
-      - verify-node
       - verify-prometheus
       - build-node
-    if: contains(needs.verify-node.outputs.build, 'true') && !contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
+    if: contains(needs.build-node.outputs.complete, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:

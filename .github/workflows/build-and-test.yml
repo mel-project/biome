@@ -32,6 +32,27 @@ jobs:
         if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
 
+  verify-node:
+    runs-on: ubuntu-latest
+
+    outputs:
+      build: ${{ steps.changed.outputs.build }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch
+        run: git fetch
+
+      - name: Set Enviromnent Variable
+        shell: bash
+        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- node || echo true)" >> $GITHUB_ENV
+
+      - name: Output Complete
+        id: changed
+        if: ${{ env.CHANGED == 'true' }}
+        run: echo "::set-output name=build::true"
+
   verify-bats:
     runs-on: ubuntu-latest
 
@@ -338,6 +359,63 @@ jobs:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./rust/scripts/ci-test.sh
+
+# Node
+  build-node:
+    needs: verify-node
+    if: contains(needs.verify-node.outputs.build, 'true')
+    runs-on: ubuntu-latest
+
+    outputs:
+      complete: ${{ steps.build.outputs.complete }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: ~/.hab/cache
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('node/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build Node
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bio pkg build node
+
+      - name: Copy Hart File
+        run: cp $(ls -1t results/themelio-node-*.hart | head -1) results/node-dev.hart
+
+      - name: Create Hart Export
+        uses: actions/upload-artifact@v2
+        with:
+          name: node-dev
+          path: results/node-dev.hart
+
+      - name: Set Enviromnent Variable
+        shell: bash
+        run: echo "COMPLETE=true" >> $GITHUB_ENV
+
+      - name: Echo COMPLETE Environment Variable
+        run: echo ${{ env.COMPLETE }}
+
+      - name: Output Complete
+        id: build
+        if: ${{ env.COMPLETE == 'true' }}
+        run: echo "::set-output name=complete::true"
 
 
 # Caddy Plans
@@ -773,7 +851,7 @@ jobs:
       - build-go17
       - build-go-if-go17-changed
       - verify-prometheus
-    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go-if-go17-changed.outputs.complete, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
+    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go-if-go17-changed.outputs.complete, 'true') && contains(needs.verify-prometheus.outputs.build, 'true') && !contains(needs.verify-node.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:
@@ -797,6 +875,79 @@ jobs:
 
       - name: Install Go
         run: sudo bio pkg install go-go17-changed-dev.hart
+
+      - name: Fix Directory Permissions
+        run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Remove net-tools
+        run: sudo apt -y remove net-tools
+
+      - name: Remove nisdomainname
+        run: sudo rm /usr/bin/nisdomainname
+
+      - name: Remove hostname
+        run: sudo rm /usr/bin/hostname
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: |
+            ~/.hab/cache/artifacts
+            /hab/cache/artifacts
+            /hab/pkgs
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('prometheus/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build, Run BATS Tests
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./prometheus/scripts/ci-test.sh
+
+
+  build-prometheus-if-go17-and-go-and-node-changed:
+    needs:
+      - build-go17
+      - build-go-if-go17-changed
+      - build-node
+      - verify-prometheus
+    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go-if-go17-changed.outputs.complete, 'true') && contains(needs.build-node.outputs.complete, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: go17-dev
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: go-go17-changed-dev
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: node-dev
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - name: Install Go17
+        run: sudo bio pkg install go17-dev.hart
+
+      - name: Install Go
+        run: sudo bio pkg install go-go17-changed-dev.hart
+
+      - name: Install Node
+        run: sudo bio pkg install node-dev.hart
 
       - name: Fix Directory Permissions
         run: sudo chown -R $(whoami):$(id -ng) /hab
@@ -1009,7 +1160,7 @@ jobs:
       - verify-go17
       - verify-prometheus
       - build-go
-    if: contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
+    if: contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && contains(needs.verify-prometheus.outputs.build, 'true') && !contains(needs.verify-node.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:
@@ -1026,6 +1177,128 @@ jobs:
 
       - name: Install Go
         run: sudo bio pkg install go-dev.hart
+
+      - name: Fix Directory Permissions
+        run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Remove net-tools
+        run: sudo apt -y remove net-tools
+
+      - name: Remove nisdomainname
+        run: sudo rm /usr/bin/nisdomainname
+
+      - name: Remove hostname
+        run: sudo rm /usr/bin/hostname
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: |
+            ~/.hab/cache/artifacts
+            /hab/cache/artifacts
+            /hab/pkgs
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('prometheus/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build, Run BATS Tests
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./prometheus/scripts/ci-test.sh
+
+  build-prometheus-if-node-changed:
+    needs:
+      - verify-node
+      - verify-prometheus
+      - build-node
+    if: contains(needs.verify-node.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: node-dev
+
+      - name: Install Node
+        run: sudo bio pkg install node-dev.hart
+
+      - name: Fix Directory Permissions
+        run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Remove net-tools
+        run: sudo apt -y remove net-tools
+
+      - name: Remove nisdomainname
+        run: sudo rm /usr/bin/nisdomainname
+
+      - name: Remove hostname
+        run: sudo rm /usr/bin/hostname
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: |
+            ~/.hab/cache/artifacts
+            /hab/cache/artifacts
+            /hab/pkgs
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('prometheus/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build, Run BATS Tests
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./prometheus/scripts/ci-test.sh
+
+  build-prometheus-if-go-and-node-changed:
+    needs:
+      - verify-go17
+      - verify-prometheus
+      - build-go
+      - build-node
+    if: contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && contains(needs.verify-prometheus.outputs.build, 'true') && !contains(needs.verify-node.outputs.build, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: go-dev
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: node-dev
+
+      - name: Install Go
+        run: sudo bio pkg install go-dev.hart
+
+      - name: Install Go
+        run: sudo bio pkg install node-dev.hart
 
       - name: Fix Directory Permissions
         run: sudo chown -R $(whoami):$(id -ng) /hab
@@ -1216,7 +1489,7 @@ jobs:
       - verify-go17
       - verify-go
       - verify-prometheus
-    if: contains(needs.verify-prometheus.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && !contains(needs.verify-go.outputs.build, 'true')
+    if: contains(needs.verify-prometheus.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && !contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-node.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:

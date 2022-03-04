@@ -851,7 +851,7 @@ jobs:
       - build-go17
       - build-go-if-go17-changed
       - verify-prometheus
-    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go-if-go17-changed.outputs.complete, 'true') && contains(needs.verify-prometheus.outputs.build, 'true') && !contains(needs.verify-node.outputs.build, 'true')
+    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go-if-go17-changed.outputs.complete, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:

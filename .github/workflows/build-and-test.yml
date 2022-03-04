@@ -1271,7 +1271,7 @@ jobs:
     needs:
       - build-go
       - build-node
-      - verify-grafana
+      - verify-prometheus
     if: contains(needs.build-go.outputs.complete, 'true') && contains(needs.build-node.outputs.complete, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
     runs-on: ubuntu-latest
 

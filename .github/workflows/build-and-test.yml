@@ -1269,11 +1269,10 @@ jobs:
 
   build-prometheus-if-go-and-node-changed:
     needs:
-      - verify-go17
-      - verify-prometheus
       - build-go
       - build-node
-    if: contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && contains(needs.verify-prometheus.outputs.build, 'true') && !contains(needs.verify-node.outputs.build, 'true')
+      - verify-grafana
+    if: contains(needs.build-go.outputs.complete, 'true') && contains(needs.build-node.outputs.complete, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:

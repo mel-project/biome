@@ -5,8 +5,6 @@ set -ex
 SCRIPTS_DIRECTORY="$(dirname "${0}")"
 PLAN_DIRECTORY="$(dirname "${SCRIPTS_DIRECTORY}")"
 
-sudo rm -rf /usr/share/rust/
-
 sudo bio pkg install --binlink themelio/bats
 
 source "${PLAN_DIRECTORY}/plan.sh"

@@ -8,7 +8,6 @@ PLAN_DIRECTORY="$(dirname "${SCRIPTS_DIRECTORY}")"
 sudo bio pkg install --binlink themelio/bats
 sudo bio pkg install --binlink core/curl
 sudo bio pkg install --binlink core/net-tools
-sudo bio pkg install --binlink core/nmap
 
 wget -q https://github.com/themeliolabs/artifacts/raw/master/htmlq
 chmod +x htmlq

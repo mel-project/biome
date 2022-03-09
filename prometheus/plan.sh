@@ -60,17 +60,13 @@ do_build() {
   mkdir -p /etc/ssl
   ln -s "$(pkg_path_for core/cacerts)/ssl/certs/cacert.pem" /etc/ssl/ca-bundle.pem
 
-  cd web/ui/module/codemirror-promql
-  npm install
-  fix_interpreter "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/module/codemirror-promql/node_modules/.bin/*" core/coreutils bin/env
-  npm run build
-
-  cd "${prom_pkg_dir}/src/github.com/prometheus/prometheus"
   make ui-install
+
+  fix_interpreter "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/module/codemirror-promql/node_modules/.bin/*" core/coreutils bin/env
   fix_interpreter "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/react-app/node_modules/.bin/*" core/coreutils bin/env
   fix_interpreter "${prom_pkg_dir}/src/github.com/prometheus/prometheus/web/ui/node_modules/.bin/*" core/coreutils bin/env
 
-#  The environment variable is explained here: https://stackoverflow.com/questions/69394632/webpack-build-failing-with-err-ossl-evp-unsupported
+
   env NODE_OPTIONS=--openssl-legacy-provider make ui-build
 
   LDFLAGS="-X github.com/prometheus/common/version.Version=$pkg_version \

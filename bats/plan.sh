@@ -1,6 +1,6 @@
 pkg_name=bats
 pkg_origin=themelio
-pkg_version=1.5.0
+pkg_version=1.7.0
 pkg_maintainer="Meade Kincke <meade@themelio.org>"
 pkg_description="\
 Bats is a TAP-compliant testing framework for Bash. It provides a simple way \
@@ -10,7 +10,7 @@ pkg_upstream_url="https://github.com/bats-core/bats-core"
 pkg_dirname="bats-core-${pkg_version}"
 pkg_license=('MIT')
 pkg_source="https://github.com/bats-core/bats-core/archive/refs/tags/v$pkg_version.zip"
-pkg_shasum="435fd37f8933856d96f24c4b6440e5fe39b38d08cff0fae0de92359e784e403a"
+pkg_shasum="ecc8832757b01723f4d403de35d1feab0784878dccafd0006663355268dfeada"
 pkg_deps=(
   core/bash
   core/coreutils

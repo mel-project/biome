@@ -301,60 +301,38 @@ jobs:
 
   # Rust
 
-#  build-rust:
-#    needs:
-#      - verify-rust
-#    if: contains(needs.verify-rust.outputs.build, 'true')
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - uses: actions/checkout@v3
-#
-#      - uses: themeliolabs/actions-biome@v1
-#        with:
-#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-#          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-#
-#      - name: Fix Directory Permissions
-#        run: sudo chown -R $(whoami):$(id -ng) /hab
-#
-#      - name: Cache Biome
-#        uses: actions/cache@v2
-#        env:
-#          CACHE_NAME: cache-biome
-#        with:
-#          path: |
-#            ~/.hab/cache/artifacts
-#            /hab/cache/artifacts
-#            /hab/pkgs
-#          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('rust/plan.sh') }}
-#          restore-keys: |
-#            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-#            ${{ runner.os }}-build-
-#            ${{ runner.os }}-
-#
-#      - name: Remove Rust
-#        run: sudo rm -rf /usr/share/rust/
-#
-#      - name: Remove Rustc
-#        run: sudo rm -rf /home/runner/.cargo/bin/rustc
-#
-#      - name: Remove Cargo
-#        run: sudo rm -rf /home/runner/.cargo/bin/cargo
-#
-#      #      - name: See If Rust Exists
-#      #        run: which rustc
-#
-#      #      - name: See If Cargo Exists
-#      #        run: which cargo
-#
-#      - name: Build, Run BATS Tests
-#        env:
-#          HAB_ORIGIN: "themelio"
-#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        run: ./rust/scripts/ci-test.sh
-#
+  build-rust:
+    needs:
+      - verify-rust
+    if: contains(needs.verify-rust.outputs.build, 'true')
+    runs-on: self-hosted
+
+    container:
+      image: ghcr.io/themeliolabs/biome:latest
+      options: --privileged
+      volumes:
+        - /var/lib/docker:/var/lib/docker
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Import Biome Public Key
+        env:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+        run: echo "$BIOME_PUBLIC_KEY" | bio origin key import
+
+      - name: Import Biome Signing Key
+        env:
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+        run: echo "$BIOME_SIGNING_KEY" | bio origin key import
+
+      - name: Build, Run BATS Tests
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./rust/scripts/ci-test.sh
+
 #  # Node
 #  build-node:
 #    needs: verify-node

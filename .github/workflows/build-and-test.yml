@@ -9,7 +9,7 @@ env:
 
 jobs:
 
-# Verify Section
+  # Verify Section
 
   verify-rust:
     runs-on: self-hosted
@@ -18,7 +18,7 @@ jobs:
       build: ${{ steps.changed.outputs.build }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Fetch
         run: git fetch
@@ -32,6 +32,27 @@ jobs:
         if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
 
+  verify-node:
+    runs-on: self-hosted
+
+    outputs:
+      build: ${{ steps.changed.outputs.build }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Fetch
+        run: git fetch
+
+      - name: Set Enviromnent Variable
+        shell: bash
+        run: echo "CHANGED=$(git diff --quiet HEAD origin/master -- node || echo true)" >> $GITHUB_ENV
+
+      - name: Output Complete
+        id: changed
+        if: ${{ env.CHANGED == 'true' }}
+        run: echo "::set-output name=build::true"
+
   verify-bats:
     runs-on: self-hosted
 
@@ -39,7 +60,7 @@ jobs:
       build: ${{ steps.changed.outputs.build }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Fetch
         run: git fetch
@@ -60,7 +81,7 @@ jobs:
       build: ${{ steps.changed.outputs.build }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Fetch
         run: git fetch
@@ -81,7 +102,7 @@ jobs:
       build: ${{ steps.changed.outputs.build }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Fetch
         run: git fetch
@@ -102,7 +123,7 @@ jobs:
       build: ${{ steps.changed.outputs.build }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Fetch
         run: git fetch
@@ -123,7 +144,7 @@ jobs:
       build: ${{ steps.changed.outputs.build }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Fetch
         run: git fetch
@@ -144,7 +165,7 @@ jobs:
       build: ${{ steps.changed.outputs.build }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Fetch
         run: git fetch
@@ -165,7 +186,7 @@ jobs:
       build: ${{ steps.changed.outputs.build }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Fetch
         run: git fetch
@@ -186,7 +207,7 @@ jobs:
       build: ${{ steps.changed.outputs.build }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Fetch
         run: git fetch
@@ -207,7 +228,7 @@ jobs:
       build: ${{ steps.changed.outputs.build }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Fetch
         run: git fetch
@@ -228,7 +249,7 @@ jobs:
       build: ${{ steps.changed.outputs.build }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Fetch
         run: git fetch
@@ -242,7 +263,7 @@ jobs:
         if: ${{ env.CHANGED == 'true' }}
         run: echo "::set-output name=build::true"
 
-# BATS
+  # BATS
   build-bats:
     needs:
       - verify-bats
@@ -250,7 +271,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: themeliolabs/actions-biome@v1
         with:
@@ -280,10 +301,10 @@ jobs:
           HAB_ORIGIN: "themelio"
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          DO_CHECK: "true"
+        #          DO_CHECK: "true"
         run: bio pkg build bats
 
-# Rust
+  # Rust
 
   build-rust:
     needs:
@@ -292,7 +313,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: themeliolabs/actions-biome@v1
         with:
@@ -326,11 +347,11 @@ jobs:
       - name: Remove Cargo
         run: sudo rm -rf /home/runner/.cargo/bin/cargo
 
-#      - name: See If Rust Exists
-#        run: which rustc
+      #      - name: See If Rust Exists
+      #        run: which rustc
 
-#      - name: See If Cargo Exists
-#        run: which cargo
+      #      - name: See If Cargo Exists
+      #        run: which cargo
 
       - name: Build, Run BATS Tests
         env:
@@ -339,8 +360,65 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./rust/scripts/ci-test.sh
 
+  # Node
+  build-node:
+    needs: verify-node
+    if: contains(needs.verify-node.outputs.build, 'true')
+    runs-on: ubuntu-latest
 
-# Caddy Plans
+    outputs:
+      complete: ${{ steps.build.outputs.complete }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: ~/.hab/cache
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('node/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build Node
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bio pkg build node
+
+      - name: Copy Hart File
+        run: cp $(ls -1t results/themelio-node-*.hart | head -1) results/node-dev.hart
+
+      - name: Create Hart Export
+        uses: actions/upload-artifact@v2
+        with:
+          name: node-dev
+          path: results/node-dev.hart
+
+      - name: Set Enviromnent Variable
+        shell: bash
+        run: echo "COMPLETE=true" >> $GITHUB_ENV
+
+      - name: Echo COMPLETE Environment Variable
+        run: echo ${{ env.COMPLETE }}
+
+      - name: Output Complete
+        id: build
+        if: ${{ env.COMPLETE == 'true' }}
+        run: echo "::set-output name=complete::true"
+
+
+  # Caddy Plans
 
   build-caddy-prometheus:
     needs:
@@ -349,7 +427,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: themeliolabs/actions-biome@v1
         with:
@@ -388,7 +466,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: themeliolabs/actions-biome@v1
         with:
@@ -427,7 +505,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: themeliolabs/actions-biome@v1
         with:
@@ -461,7 +539,7 @@ jobs:
 
 
 
-# Build Go17 And Go Section
+  # Build Go17 And Go Section
 
   build-go17:
     needs: verify-go17
@@ -472,7 +550,7 @@ jobs:
       complete: ${{ steps.build.outputs.complete }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: themeliolabs/actions-biome@v1
         with:
@@ -530,7 +608,7 @@ jobs:
       complete: ${{ steps.build.outputs.complete }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: themeliolabs/actions-biome@v1
         with:
@@ -589,7 +667,7 @@ jobs:
       complete: ${{ steps.build.outputs.complete }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: themeliolabs/actions-biome@v1
         with:
@@ -638,7 +716,7 @@ jobs:
 
 
 
-# Go17 And Go Change Plan Builds
+  # Go17 And Go Change Plan Builds
 
   build-grafana-if-go17-and-go-changed:
     needs:
@@ -649,13 +727,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: go17-dev
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: go-go17-changed-dev
 
@@ -713,13 +791,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: go17-dev
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: go-go17-changed-dev
 
@@ -777,13 +855,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: go17-dev
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: go-go17-changed-dev
 
@@ -832,6 +910,79 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./prometheus/scripts/ci-test.sh
 
+
+  build-prometheus-if-go17-and-go-and-node-changed:
+    needs:
+      - build-go17
+      - build-go-if-go17-changed
+      - build-node
+      - verify-prometheus
+    if: contains(needs.build-go17.outputs.complete, 'true') && contains(needs.build-go-if-go17-changed.outputs.complete, 'true') && contains(needs.build-node.outputs.complete, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: go17-dev
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: go-go17-changed-dev
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: node-dev
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - name: Install Go17
+        run: sudo bio pkg install go17-dev.hart
+
+      - name: Install Go
+        run: sudo bio pkg install go-go17-changed-dev.hart
+
+      - name: Install Node
+        run: sudo bio pkg install node-dev.hart
+
+      - name: Fix Directory Permissions
+        run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Remove net-tools
+        run: sudo apt -y remove net-tools
+
+      - name: Remove nisdomainname
+        run: sudo rm /usr/bin/nisdomainname
+
+      - name: Remove hostname
+        run: sudo rm /usr/bin/hostname
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: |
+            ~/.hab/cache/artifacts
+            /hab/cache/artifacts
+            /hab/pkgs
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('prometheus/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build, Run BATS Tests
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./prometheus/scripts/ci-test.sh
+
   build-promtail-if-go17-and-go-changed:
     needs:
       - build-go17
@@ -841,13 +992,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: go17-dev
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: go-go17-changed-dev
 
@@ -888,7 +1039,7 @@ jobs:
         run: ./promtail/scripts/ci-test.sh
 
 
-# Go Change Builds
+  # Go Change Builds
 
   build-grafana-if-go-changed:
     needs:
@@ -899,14 +1050,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: themeliolabs/actions-biome@v1
         with:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: go-dev
 
@@ -956,14 +1107,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: themeliolabs/actions-biome@v1
         with:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: go-dev
 
@@ -1006,26 +1157,145 @@ jobs:
 
   build-prometheus-if-go-changed:
     needs:
-      - verify-go17
       - verify-prometheus
       - build-go
-    if: contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
+    if: contains(needs.build-go.outputs.complete, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: themeliolabs/actions-biome@v1
         with:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: go-dev
 
       - name: Install Go
         run: sudo bio pkg install go-dev.hart
+
+      - name: Fix Directory Permissions
+        run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Remove net-tools
+        run: sudo apt -y remove net-tools
+
+      - name: Remove nisdomainname
+        run: sudo rm /usr/bin/nisdomainname
+
+      - name: Remove hostname
+        run: sudo rm /usr/bin/hostname
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: |
+            ~/.hab/cache/artifacts
+            /hab/cache/artifacts
+            /hab/pkgs
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('prometheus/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build, Run BATS Tests
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./prometheus/scripts/ci-test.sh
+
+  build-prometheus-if-node-changed:
+    needs:
+      - verify-prometheus
+      - build-node
+    if: contains(needs.build-node.outputs.complete, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: node-dev
+
+      - name: Install Node
+        run: sudo bio pkg install node-dev.hart
+
+      - name: Fix Directory Permissions
+        run: sudo chown -R $(whoami):$(id -ng) /hab
+
+      - name: Remove net-tools
+        run: sudo apt -y remove net-tools
+
+      - name: Remove nisdomainname
+        run: sudo rm /usr/bin/nisdomainname
+
+      - name: Remove hostname
+        run: sudo rm /usr/bin/hostname
+
+      - name: Cache Biome
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-biome
+        with:
+          path: |
+            ~/.hab/cache/artifacts
+            /hab/cache/artifacts
+            /hab/pkgs
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('prometheus/plan.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build, Run BATS Tests
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./prometheus/scripts/ci-test.sh
+
+  build-prometheus-if-go-and-node-changed:
+    needs:
+      - build-go
+      - build-node
+      - verify-prometheus
+    if: contains(needs.build-go.outputs.complete, 'true') && contains(needs.build-node.outputs.complete, 'true') && contains(needs.verify-prometheus.outputs.build, 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: themeliolabs/actions-biome@v1
+        with:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: go-dev
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: node-dev
+
+      - name: Install Go
+        run: sudo bio pkg install go-dev.hart
+
+      - name: Install Go
+        run: sudo bio pkg install node-dev.hart
 
       - name: Fix Directory Permissions
         run: sudo chown -R $(whoami):$(id -ng) /hab
@@ -1070,14 +1340,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: themeliolabs/actions-biome@v1
         with:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: go-dev
 
@@ -1109,7 +1379,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./promtail/scripts/ci-test.sh
 
-# Plan-Only Change Builds
+  # Plan-Only Change Builds
 
   build-grafana:
     needs:
@@ -1120,7 +1390,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: themeliolabs/actions-biome@v1
         with:
@@ -1170,7 +1440,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: themeliolabs/actions-biome@v1
         with:
@@ -1215,12 +1485,13 @@ jobs:
     needs:
       - verify-go17
       - verify-go
+      - verify-node
       - verify-prometheus
-    if: contains(needs.verify-prometheus.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && !contains(needs.verify-go.outputs.build, 'true')
+    if: contains(needs.verify-prometheus.outputs.build, 'true') && !contains(needs.verify-go17.outputs.build, 'true') && !contains(needs.verify-go.outputs.build, 'true') && !contains(needs.verify-node.outputs.build, 'true')
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: themeliolabs/actions-biome@v1
         with:
@@ -1270,7 +1541,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: themeliolabs/actions-biome@v1
         with:

@@ -1,9 +1,9 @@
 pkg_name=caddy-loki
 pkg_origin=themelio
-pkg_version=2.4.6
+pkg_version=2.5.1
 pkg_maintainer="Meade Kincke <meade@themelio.org>"
 pkg_source="https://github.com/caddyserver/caddy/releases/download/v${pkg_version}/caddy_${pkg_version}_linux_amd64.tar.gz"
-pkg_shasum=690ad64538a39d555294cd09b26bb22ade36abc0e3212342f0ed151de51ec128
+pkg_shasum=b454e0de3070543cbbb2b723bbadbbe17e5a855c94373fc5500972e8f142e907
 pkg_description="This is a load balancer for loki."
 pkg_upstream_url=https://caddyserver.com
 pkg_deps=(

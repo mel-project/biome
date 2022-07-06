@@ -51,8 +51,8 @@ else
   fi
 fi
 
-echo "Sleeping for 7 seconds for the service to start."
-sleep 7
+echo "Sleeping for 10 seconds for the service to start."
+sleep 10
 
 if bats --print-output-on-failure "${SCRIPTS_DIRECTORY}/test-local.bats"; then
   rm -rf /hab/bin/htmlq

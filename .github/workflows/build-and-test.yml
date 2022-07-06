@@ -12,7 +12,7 @@ jobs:
 # Verify Section
 
   verify-rust:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     outputs:
       build: ${{ steps.changed.outputs.build }}
@@ -33,7 +33,7 @@ jobs:
         run: echo "::set-output name=build::true"
 
   verify-bats:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     outputs:
       build: ${{ steps.changed.outputs.build }}
@@ -54,7 +54,7 @@ jobs:
         run: echo "::set-output name=build::true"
 
   verify-go17:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     outputs:
       build: ${{ steps.changed.outputs.build }}
@@ -75,7 +75,7 @@ jobs:
         run: echo "::set-output name=build::true"
 
   verify-go:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     outputs:
       build: ${{ steps.changed.outputs.build }}
@@ -96,7 +96,7 @@ jobs:
         run: echo "::set-output name=build::true"
 
   verify-grafana:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     outputs:
       build: ${{ steps.changed.outputs.build }}
@@ -117,7 +117,7 @@ jobs:
         run: echo "::set-output name=build::true"
 
   verify-loki:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     outputs:
       build: ${{ steps.changed.outputs.build }}
@@ -138,7 +138,7 @@ jobs:
         run: echo "::set-output name=build::true"
 
   verify-prometheus:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     outputs:
       build: ${{ steps.changed.outputs.build }}
@@ -159,7 +159,7 @@ jobs:
         run: echo "::set-output name=build::true"
 
   verify-promtail:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     outputs:
       build: ${{ steps.changed.outputs.build }}
@@ -180,7 +180,7 @@ jobs:
         run: echo "::set-output name=build::true"
 
   verify-caddy-grafana:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     outputs:
       build: ${{ steps.changed.outputs.build }}
@@ -201,7 +201,7 @@ jobs:
         run: echo "::set-output name=build::true"
 
   verify-caddy-loki:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     outputs:
       build: ${{ steps.changed.outputs.build }}
@@ -222,7 +222,7 @@ jobs:
         run: echo "::set-output name=build::true"
 
   verify-caddy-prometheus:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     outputs:
       build: ${{ steps.changed.outputs.build }}

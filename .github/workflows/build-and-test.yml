@@ -333,64 +333,63 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./rust/scripts/ci-test.sh
 
-#  # Node
-#  build-node:
-#    needs: verify-node
-#    if: contains(needs.verify-node.outputs.build, 'true')
-#    runs-on: ubuntu-latest
-#
-#    outputs:
-#      complete: ${{ steps.build.outputs.complete }}
-#
-#    steps:
-#      - uses: actions/checkout@v3
-#
-#      - uses: themeliolabs/actions-biome@v1
-#        with:
-#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-#          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-#
-#      - name: Cache Biome
-#        uses: actions/cache@v2
-#        env:
-#          CACHE_NAME: cache-biome
-#        with:
-#          path: ~/.hab/cache
-#          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ hashFiles('node/plan.sh') }}
-#          restore-keys: |
-#            ${{ runner.os }}-build-${{ env.CACHE_NAME }}-
-#            ${{ runner.os }}-build-
-#            ${{ runner.os }}-
-#
-#      - name: Build Node
-#        env:
-#          HAB_ORIGIN: "themelio"
-#          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        run: bio pkg build node
-#
-#      - name: Copy Hart File
-#        run: cp $(ls -1t results/themelio-node-*.hart | head -1) results/node-dev.hart
-#
-#      - name: Create Hart Export
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: node-dev
-#          path: results/node-dev.hart
-#
-#      - name: Set Enviromnent Variable
-#        shell: bash
-#        run: echo "COMPLETE=true" >> $GITHUB_ENV
-#
-#      - name: Echo COMPLETE Environment Variable
-#        run: echo ${{ env.COMPLETE }}
-#
-#      - name: Output Complete
-#        id: build
-#        if: ${{ env.COMPLETE == 'true' }}
-#        run: echo "::set-output name=complete::true"
-#
-#
+  # Node
+  build-node:
+    needs: verify-node
+    if: contains(needs.verify-node.outputs.build, 'true')
+    runs-on: self-hosted
+
+    container:
+      image: ghcr.io/themeliolabs/biome:latest
+      options: --privileged
+      volumes:
+        - /var/lib/docker:/var/lib/docker
+
+    outputs:
+      complete: ${{ steps.build.outputs.complete }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Import Biome Public Key
+        env:
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+        run: echo "$BIOME_PUBLIC_KEY" | bio origin key import
+
+      - name: Import Biome Signing Key
+        env:
+          BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
+        run: echo "$BIOME_SIGNING_KEY" | bio origin key import
+
+      - name: Build Node
+        env:
+          HAB_ORIGIN: "themelio"
+          BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bio pkg build node
+
+      - name: Copy Hart File
+        run: cp $(ls -1t results/themelio-node-*.hart | head -1) results/node-dev.hart
+
+      - name: Create Hart Export
+        uses: actions/upload-artifact@v2
+        with:
+          name: node-dev
+          path: results/node-dev.hart
+
+      - name: Set Enviromnent Variable
+        shell: bash
+        run: echo "COMPLETE=true" >> $GITHUB_ENV
+
+      - name: Echo COMPLETE Environment Variable
+        run: echo ${{ env.COMPLETE }}
+
+      - name: Output Complete
+        id: build
+        if: ${{ env.COMPLETE == 'true' }}
+        run: echo "::set-output name=complete::true"
+
+
 #  # Caddy Plans
 #
 #  build-caddy-prometheus:

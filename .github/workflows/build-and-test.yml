@@ -277,6 +277,8 @@ jobs:
       options: --privileged
       volumes:
         - /var/lib/docker:/var/lib/docker
+        - /hab/cache/artifacts:/hab/cache/artifacts
+        - /hab/pkgs:/hab/pkgs
 
     steps:
       - uses: actions/checkout@v3
@@ -312,6 +314,8 @@ jobs:
       options: --privileged
       volumes:
         - /var/lib/docker:/var/lib/docker
+        - /hab/cache/artifacts:/hab/cache/artifacts
+        - /hab/pkgs:/hab/pkgs
 
     steps:
       - uses: actions/checkout@v3
@@ -344,6 +348,8 @@ jobs:
       options: --privileged
       volumes:
         - /var/lib/docker:/var/lib/docker
+        - /hab/cache/artifacts:/hab/cache/artifacts
+        - /hab/pkgs:/hab/pkgs
 
     outputs:
       complete: ${{ steps.build.outputs.complete }}

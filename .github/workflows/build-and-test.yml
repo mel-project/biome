@@ -270,7 +270,7 @@ jobs:
     needs:
       - verify-bats
     if: contains(needs.verify-bats.outputs.build, 'true')
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     container:
       image: ghcr.io/themeliolabs/biome:latest

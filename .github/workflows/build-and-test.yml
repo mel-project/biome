@@ -654,9 +654,12 @@ jobs:
           BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
         run: echo "$BIOME_SIGNING_KEY" | bio origin key import
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: go17-dev
+
+      - name: Install Go17
+        run: sudo bio pkg install go17-dev.hart
 
       - name: Build Go
         env:

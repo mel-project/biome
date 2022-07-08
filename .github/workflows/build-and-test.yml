@@ -659,14 +659,14 @@ jobs:
           name: go17-dev
 
       - name: Install Go17
-        run: sudo bio pkg install go17-dev.hart
+        run: bio pkg install go17-dev.hart
 
       - name: Build Go
         env:
           HAB_ORIGIN: "themelio"
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: sudo bio pkg build go
+        run: bio pkg build go
 
       - name: Copy Hart File
         run: cp $(ls -1t results/themelio-go-*.hart | head -1) results/go-go17-changed-dev.hart

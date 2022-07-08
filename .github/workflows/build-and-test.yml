@@ -661,6 +661,15 @@ jobs:
       - name: Install Go17
         run: sudo bio pkg install go17-dev.hart
 
+      - name: List Packages
+        run: ls -la /hab/pkgs
+
+      - name: List Origin Packages
+        run: ls -la /hab/pkgs/themelio/
+
+      - name: List Go17 Packages
+        run: ls -la /hab/pkgs/themelio/go17
+
       - name: Build Go
         env:
           HAB_ORIGIN: "themelio"

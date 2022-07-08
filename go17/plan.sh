@@ -1,13 +1,13 @@
 pkg_name=go17
 pkg_origin=themelio
-pkg_version=1.16
+pkg_version=1.18.3
 pkg_description="Go is an open source programming language that makes it easy to
   build simple, reliable, and efficient software."
 pkg_upstream_url=https://golang.org/
 pkg_license=('BSD')
 pkg_maintainer="Meade Kincke <meade@themelio.org>"
 pkg_source=https://storage.googleapis.com/golang/go${pkg_version}.src.tar.gz
-pkg_shasum=7688063d55656105898f323d90a79a39c378d86fe89ae192eb3b7fc46347c95a
+pkg_shasum=0012386ddcbb5f3350e407c679923811dbd283fcdc421724931614a842ecbc2d
 pkg_dirname=go
 pkg_deps=(
   core/cacerts
@@ -111,7 +111,7 @@ do_install() {
   fi
 
   # For godoc
-  install -v -Dm644 favicon.ico "$pkg_prefix/favicon.ico"
+#  install -v -Dm644 favicon.ico "$pkg_prefix/favicon.ico"
 
   # Install the license
   install -v -Dm644 LICENSE "$pkg_prefix/share/licenses/LICENSE"

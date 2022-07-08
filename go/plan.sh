@@ -5,7 +5,7 @@ pkg_version=1.18.3
 # Rolled back recent change to core/go17 to facillitate a from-scratch
 # base-plan refresh.
 pkg_bootstrap_pkg="themelio/go17"
-pkg_bootstrap_version=1.7.6
+pkg_bootstrap_version=1.18.3
 pkg_description="Go is an open source programming language that makes it easy to
   build simple, reliable, and efficient software."
 pkg_upstream_url=https://golang.org/

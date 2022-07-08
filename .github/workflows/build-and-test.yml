@@ -654,6 +654,10 @@ jobs:
           BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
         run: echo "$BIOME_SIGNING_KEY" | bio origin key import
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: go17-dev
+
       - name: Build Go
         env:
           HAB_ORIGIN: "themelio"

@@ -635,7 +635,7 @@ jobs:
 
     container:
       image: ghcr.io/themeliolabs/biome:latest
-      options: --privileged
+      options: --privileged --user root
       volumes:
         - /var/lib/docker:/var/lib/docker
         - /hab/cache/artifacts:/hab/cache/artifacts
@@ -659,14 +659,14 @@ jobs:
           name: go17-dev
 
       - name: Install Go17
-        run: bio pkg install go17-dev.hart
+        run: sudo bio pkg install go17-dev.hart
 
       - name: Build Go
         env:
           HAB_ORIGIN: "themelio"
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bio pkg build go
+        run: sudo bio pkg build go
 
       - name: Copy Hart File
         run: cp $(ls -1t results/themelio-go-*.hart | head -1) results/go-go17-changed-dev.hart

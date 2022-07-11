@@ -654,11 +654,11 @@ jobs:
           BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
         run: echo "$BIOME_SIGNING_KEY" | sudo bio origin key import
 
-      - name: List Keys
-        run: ls -la ~/.hab/cache/keys
+      - name: Create Keys Directory
+        run: mkdir -p /hab/cache/keys
 
       - name: List Keys
-        run: ls -la /hab/cache/keys
+        run: sudo cp /root/.hab/cache/keys/* /hab/cache/keys/
 
       - uses: actions/download-artifact@v3
         with:

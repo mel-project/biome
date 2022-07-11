@@ -1,13 +1,13 @@
 pkg_name=promtail
 pkg_origin=themelio
-pkg_version="2.4.2"
+pkg_version="2.5.0"
 pkg_maintainer="Meade Kincke <meade@themelio.org>"
 pkg_description="Promtail is an agent which ships the contents of local logs to a private Loki instance or Grafana Cloud."
 pkg_license=('Apache-2.0')
 pkg_upstream_url=https://github.com/grafana/loki
 pkg_source="https://github.com/grafana/loki/archive/v${pkg_version}.tar.gz"
 pkg_filename="v${pkg_version}.tar.gz"
-pkg_shasum="725af867fa3bece6ccd46e0722eb68fe72462b15faa15c8ada609b5b2a476b07"
+pkg_shasum="f9ca9e52f4d9125cc31f9a593aba6a46ed6464c9cd99b2be4e35192a0ab4a76e"
 loki_pkg_dir="${HAB_CACHE_SRC_PATH}/${pkg_name}-${pkg_version}"
 loki_build_dir="${loki_pkg_dir}/src/${pkg_source}"
 pkg_build_deps=(

@@ -1,18 +1,18 @@
 # shellcheck disable=SC2034
 pkg_name=go
 pkg_origin=themelio
-pkg_version=1.17.3
+pkg_version=1.18.3
 # Rolled back recent change to core/go17 to facillitate a from-scratch
 # base-plan refresh.
 pkg_bootstrap_pkg="themelio/go17"
-pkg_bootstrap_version=1.7.6
+pkg_bootstrap_version=1.18.3
 pkg_description="Go is an open source programming language that makes it easy to
   build simple, reliable, and efficient software."
 pkg_upstream_url=https://golang.org/
 pkg_license=("BSD-3-Clause")
 pkg_maintainer="Meade Kincke <meade@themelio.org>"
 pkg_source="https://dl.google.com/go/go${pkg_version}.src.tar.gz"
-pkg_shasum=705c64251e5b25d5d55ede1039c6aa22bea40a7a931d14c370339853643c3df0
+pkg_shasum=0012386ddcbb5f3350e407c679923811dbd283fcdc421724931614a842ecbc2d
 pkg_dirname=go
 pkg_deps=(
   core/glibc

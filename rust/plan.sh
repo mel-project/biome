@@ -1,8 +1,8 @@
 pkg_name=rust
 pkg_origin=themelio
-pkg_version=1.59.0
+pkg_version=1.62.0
 rustc_version=${pkg_version}
-cargo_version=1.59.0
+cargo_version=1.62.0
 pkg_maintainer="Meade Kincke <meade@themelio.org>"
 pkg_description="\
 Rust is a systems programming language that runs blazingly fast, prevents \
@@ -12,7 +12,7 @@ pkg_upstream_url="https://www.rust-lang.org/"
 pkg_license=('Apache-2.0' 'MIT')
 _url_base="https://static.rust-lang.org/dist"
 pkg_source="$_url_base/${pkg_name}-${pkg_version}-x86_64-unknown-linux-gnu.tar.gz"
-pkg_shasum="0c1c2da3fa26372e5178123aa5bb0fdcd4933fbad9bfb268ffbd71807182ecae"
+pkg_shasum="4172d3cb316498025410bdf33a4d0f756f5e77fbaee1fb042ccdef78239be1db"
 pkg_dirname="${pkg_name}-${pkg_version}-x86_64-unknown-linux-gnu"
 pkg_deps=(
   core/glibc
@@ -35,7 +35,7 @@ _target_sources=(
 )
 
 _target_shasums=(
-    "dfad080e9d86d97929f040a3e2a113a17d4906809c47e9ab6410418b492116af"
+    "44f3efb98179a2482ace8a5a126a1f2f58e4f649d35bac1760515af47bfb2d3d"
 )
 
 do_download() {

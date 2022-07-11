@@ -647,24 +647,12 @@ jobs:
       - name: Import Biome Public Key
         env:
           BIOME_PUBLIC_KEY: ${{ secrets.BIOME_PUBLIC_KEY }}
-        run: echo "$BIOME_PUBLIC_KEY" | bio origin key import
+        run: echo "$BIOME_PUBLIC_KEY" | sudo bio origin key import --cache-key-path /hab/cache/keys
 
       - name: Import Biome Signing Key
         env:
           BIOME_SIGNING_KEY: ${{ secrets.BIOME_SIGNING_KEY }}
-        run: echo "$BIOME_SIGNING_KEY" | bio origin key import
-
-      - name: Create Keys Directory
-        run: sudo mkdir -p /hab/cache/keys
-
-      - name: Copy Keys
-        run: sudo cp ~/.hab/cache/keys/* /hab/cache/keys/
-
-      - name: List Keys
-        run: ls -la ~/.hab/cache/keys
-
-      - name: List Keys
-        run: ls -la /hab/cache/keys
+        run: echo "$BIOME_SIGNING_KEY" | sudo bio origin key import --cache-key-path /hab/cache/keys
 
       - uses: actions/download-artifact@v3
         with:

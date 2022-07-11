@@ -657,8 +657,14 @@ jobs:
       - name: Create Keys Directory
         run: sudo mkdir -p /hab/cache/keys
 
-      - name: List Keys
+      - name: Copy Keys
         run: sudo cp ~/.hab/cache/keys/* /hab/cache/keys/
+
+      - name: List Keys
+        run: ls -la ~/.hab/cache/keys
+
+      - name: List Keys
+        run: ls -la /hab/cache/keys
 
       - uses: actions/download-artifact@v3
         with:
